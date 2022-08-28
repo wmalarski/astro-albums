@@ -1,6 +1,9 @@
 ---
 import Layout from '@layouts/Layout.astro';
 import Card from '@components/Card.astro';
+
+import { getUser } from '@utils/supabase';
+const user = await getUser(Astro.request);
 ---
 
 <Layout title="Welcome to Astro.">
@@ -32,6 +35,9 @@ import Card from '@components/Card.astro';
 				body="Come say hi to our amazing Discord community. ❤️"
 			/>
 		</ul>
+		<pre>{JSON.stringify(user, null, 2)}</pre>
+		<a href="/login" class="underline">Log In</a>
+		<a href="/logout" class="underline">Log Out</a>
 	</main>
 </Layout>
 

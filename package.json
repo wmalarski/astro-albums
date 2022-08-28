@@ -17,6 +17,7 @@
   "devDependencies": {
     "@astrojs/solid-js": "^1.1.0",
     "@astrojs/tailwind": "^1.0.0",
+    "@types/cookie": "^0.5.1",
     "@typescript-eslint/eslint-plugin": "^5.30.3",
     "@typescript-eslint/parser": "^5.30.3",
     "astro": "^1.1.1",

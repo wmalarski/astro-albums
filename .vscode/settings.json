@@ -4,6 +4,8 @@
     "astrojs",
     "clsx",
     "daisyui",
-    "supabase"
+    "sbat",
+    "supabase",
+    "tsconfigs"
   ]
 }
