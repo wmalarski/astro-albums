@@ -33,9 +33,11 @@
     "eslint-plugin-sort-keys-fix": "^1.1.2",
     "plop": "^3.1.1",
     "prettier": "^2.7.1",
-    "prettier-plugin-astro": "^0.5.3"
+    "prettier-plugin-astro": "^0.5.3",
+    "prisma": "^4.2.1"
   },
   "dependencies": {
+    "@prisma/client": "4.2.1",
     "@supabase/supabase-js": "^1.35.6",
     "clsx": "^1.2.1",
     "cookie": "^0.5.0",

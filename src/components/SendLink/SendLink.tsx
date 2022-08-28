@@ -1,4 +1,4 @@
-import { supabase } from "@utils/supabase";
+import { supabase } from "@server/supabase";
 import clsx from "clsx";
 import { createSignal, JSX, Show } from "solid-js";
 
