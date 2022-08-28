@@ -4,6 +4,10 @@ import Layout from "../layouts/Layout.astro";
 import { SendLink } from "@components/SendLink/SendLink";
 
 const user = await getUser(Astro.request);
+
+if (user) {
+  return Astro.redirect("/");
+}
 ---
 
 <Layout title="Login" user={user}>

@@ -3,6 +3,10 @@ import Layout from "@layouts/Layout.astro";
 import { getUser } from "@utils/supabase";
 
 const user = await getUser(Astro.request);
+
+if (!user) {
+	return Astro.redirect("/login");
+}
 ---
 
 <Layout title="Welcome to Astro." user={user}>

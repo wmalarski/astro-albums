@@ -54,7 +54,7 @@ export const SendLink = (): JSX.Element => {
       <div class="pt-3 relative">
         <button
           disabled={status().isLoading}
-          class={clsx("button", { loading: status().isLoading })}
+          class={clsx("btn btn-primary", { loading: status().isLoading })}
           type="button"
           onClick={handleSendLink}
         >
