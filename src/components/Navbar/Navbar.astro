@@ -1,0 +1,30 @@
+---
+import type { User } from "@supabase/supabase-js";
+
+export interface Props {
+  user: User | null;
+}
+
+const { user } = Astro.props;
+const isLoggedIn = user !== null;
+---
+
+<nav class="navbar bg-base-300">
+  <div class="flex-1">
+    <a href="/" class="btn btn-ghost normal-case text-xl">🎵 Albums</a>
+  </div>
+  <div class="flex-none">
+    <ul class="menu menu-horizontal p-0">
+      <li><a href="/reviews">Reviews</a></li>
+      <li>
+        {
+          isLoggedIn ? (
+            <a href="/logout">Log out</a>
+          ) : (
+            <a href="/login">Log in</a>
+          )
+        }
+      </li>
+    </ul>
+  </div>
+</nav>

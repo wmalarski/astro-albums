@@ -1,15 +1,13 @@
 ---
-import Layout from '@layouts/Layout.astro';
-import { getUser } from '@utils/supabase';
+import Layout from "@layouts/Layout.astro";
+import { getUser } from "@utils/supabase";
 
 const user = await getUser(Astro.request);
 ---
-<Layout title="Welcome to Astro.">
+
+<Layout title="Welcome to Astro." user={user}>
 	<main class="p-4">
 		<h1>Welcome to <span>Astro</span></h1>
 		<pre>{JSON.stringify(user, null, 2)}</pre>
-		<a href="/login" class="underline">Log In</a>
-		<a href="/logout" class="underline">Log Out</a>
 	</main>
 </Layout>
-

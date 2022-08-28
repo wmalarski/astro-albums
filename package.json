@@ -10,7 +10,7 @@
     "astro": "astro",
     "=== LINTERS ===": "",
     "lint": "eslint src --fix --ext .tsx,.ts",
-    "prettier": "prettier 'src/**/*.(ts|tsx)' --write",
+    "prettier": "prettier 'src/**/*.(ts|tsx|astro)' --write",
     "tsc": "tsc --noEmit",
     "code-check": "yarn lint --max-warnings=0 && yarn tsc"
   },
@@ -32,7 +32,8 @@
     "eslint-plugin-solid": "^0.7.0",
     "eslint-plugin-sort-keys-fix": "^1.1.2",
     "plop": "^3.1.1",
-    "prettier": "^2.7.1"
+    "prettier": "^2.7.1",
+    "prettier-plugin-astro": "^0.5.3"
   },
   "dependencies": {
     "@supabase/supabase-js": "^1.35.6",

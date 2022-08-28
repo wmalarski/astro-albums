@@ -1,22 +1,26 @@
 ---
+import Navbar from "@components/Navbar/Navbar.astro";
+import type { User } from "@supabase/supabase-js";
+
 export interface Props {
-	title: string;
+  title: string;
+  user: User | null;
 }
 
-const { title } = Astro.props;
+const { title, user } = Astro.props;
 ---
 
 <!DOCTYPE html>
 <html lang="en">
-	<head>
-		<meta charset="UTF-8" />
-		<meta name="viewport" content="width=device-width" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<meta name="generator" content={Astro.generator} />
-		<title>{title}</title>
-	</head>
-	<body>
-		<slot />
-	</body>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="generator" content={Astro.generator} />
+    <title>{title}</title>
+  </head>
+  <body>
+    <Navbar user={user} />
+    <slot />
+  </body>
 </html>
-

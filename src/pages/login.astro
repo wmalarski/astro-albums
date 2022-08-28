@@ -1,11 +1,11 @@
 ---
-import { getUser } from '@utils/supabase';
+import { getUser } from "@utils/supabase";
+import Layout from "../layouts/Layout.astro";
+import { SendLink } from "@components/SendLink/SendLink";
+
 const user = await getUser(Astro.request);
-import Layout from '../layouts/Layout.astro';
-import { SendLink } from '@components/SendLink/SendLink';
 ---
-<Layout title="Login">
-    <SendLink client:load/>
-    <a href="/logout" class="underline">Log out</a>
-    <pre>{JSON.stringify(user, null, 2)}</pre>
+
+<Layout title="Login" user={user}>
+  <SendLink client:load />
 </Layout>
