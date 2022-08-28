@@ -3,6 +3,7 @@
     "astro",
     "astrojs",
     "clsx",
-    "daisyui"
+    "daisyui",
+    "supabase"
   ]
 }
