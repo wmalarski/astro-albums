@@ -6,7 +6,7 @@ generator client {
 }
 
 datasource db {
-  provider = "sqlite"
+  provider = "postgresql"
   url      = env("DATABASE_URL")
 }
 
@@ -26,7 +26,7 @@ model Album {
   artist    Artist   @relation(fields: [artistId], references: [id])
   artistId  String
   createdAt DateTime @default(now())
-  sid       String
+  sid       String?
   title     String
   userId    String
   year      Int

@@ -1,17 +1,31 @@
 ---
 import Layout from "@layouts/Layout.astro";
 import { getUser } from "@server/supabase";
+import { findRandomAlbums } from "@server/albums";
+import AlbumCard from "@components/AlbumCard/AlbumCard.astro";
 
 const user = await getUser(Astro.request);
 
 if (!user) {
 	return Astro.redirect("/login");
 }
+
+const skipParam = parseInt(Astro.url.searchParams.get("skip") || "") || null;
+const idParam = Astro.url.searchParams.get("id");
+
+const { albums, skip } = await findRandomAlbums({
+	take: 4,
+	userId: user.id,
+	skip: skipParam,
+});
 ---
 
 <Layout title="Welcome to Astro." user={user}>
 	<main class="p-4">
-		<h1>Welcome to <span>Astro</span></h1>
-		<pre>{JSON.stringify(user, null, 2)}</pre>
+		<h1>Random Albums</h1>
+		<pre>{JSON.stringify({skipParam, idParam}, null, 2)}</pre>
+		<div class="flex flex-col">
+			{albums.map((album) => <AlbumCard album={album} skip={skip} />)}
+		</div>
 	</main>
 </Layout>
