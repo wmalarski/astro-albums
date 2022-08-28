@@ -4,11 +4,12 @@ import { formatAlbum } from "@utils/format";
 import { fetchCovers } from "@server/coverArt";
 
 export interface Props {
-  album: Album & { artist: Artist };
+  album: Album;
+  artist: Artist;
   skip: number;
 }
 
-const { album, skip } = Astro.props;
+const { album, skip, artist } = Astro.props;
 
 const covers = album.sid
   ? await fetchCovers({ mBid: album.sid, kind: "small" })
@@ -17,14 +18,14 @@ const covers = album.sid
 
 <article class="card">
   <div class="card-body">
-    <h3 class="card-title">{formatAlbum({ album, artist: album.artist })}</h3>
+    <h3 class="card-title">{formatAlbum({ album, artist })}</h3>
     <pre>    
       {JSON.stringify({album, covers}, null, 2)}
     </pre>
     <div class="card-actions">
       <a
         class="link"
-        href={`/?${new URLSearchParams({ id: album.id, skip: String(skip) })}`}
+        href={`/?${new URLSearchParams({ id: album.id, skip: `${skip}` })}`}
       >
         Show more
       </a>

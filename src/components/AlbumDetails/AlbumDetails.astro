@@ -1,0 +1,42 @@
+---
+import { formatAlbum } from "@utils/format";
+import { fetchCovers } from "@server/coverArt";
+import { findAlbum } from "@server/albums";
+import AlbumCard from "@components/AlbumCard/AlbumCard.astro";
+
+export interface Props {
+  albumId: string;
+  skip: number;
+  userId: string;
+}
+
+const { albumId, skip, userId } = Astro.props;
+
+const { album, albums } = await findAlbum({ id: albumId, userId });
+
+if (!album) {
+  return Astro.redirect(`/${new URLSearchParams({ skip: `${skip}` })}`);
+}
+
+const covers = album.sid
+  ? await fetchCovers({ mBid: album.sid, kind: "small" })
+  : [];
+---
+
+<article class="card">
+  <div class="card-body">
+    <h3 class="card-title">{formatAlbum({ album, artist: album.artist })}</h3>
+    <pre>    
+      {JSON.stringify({album, covers}, null, 2)}
+    </pre>
+    <div class="flex flex-col">
+      {
+        albums.map((artistAlbum) => (
+          <div>
+            <AlbumCard album={artistAlbum} artist={album.artist} skip={skip} />
+          </div>
+        ))
+      }
+    </div>
+  </div>
+</article>

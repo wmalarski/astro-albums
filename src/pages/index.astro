@@ -3,6 +3,7 @@ import Layout from "@layouts/Layout.astro";
 import { getUser } from "@server/supabase";
 import { findRandomAlbums } from "@server/albums";
 import AlbumCard from "@components/AlbumCard/AlbumCard.astro";
+import AlbumDetails from "@components/AlbumDetails/AlbumDetails.astro";
 
 const user = await getUser(Astro.request);
 
@@ -24,8 +25,21 @@ const { albums, skip } = await findRandomAlbums({
 	<main class="p-4">
 		<h1>Random Albums</h1>
 		<pre>{JSON.stringify({skipParam, idParam}, null, 2)}</pre>
-		<div class="flex flex-col">
-			{albums.map((album) => <AlbumCard album={album} skip={skip} />)}
+		<div class="flex flex-row">
+			<div class="flex flex-col">
+				{
+					albums.map((album) => (
+						<AlbumCard album={album} artist={album.artist} skip={skip} />
+					))
+				}
+			</div>
+			<div>
+				{
+					idParam ? (
+						<AlbumDetails albumId={idParam} skip={skip} userId={user.id} />
+					) : null
+				}
+			</div>
 		</div>
 	</main>
 </Layout>

@@ -36,3 +36,26 @@ export const findRandomAlbums = async ({
 
   return { albums, skip: findSkip };
 };
+
+type FindAlbum = {
+  id: string;
+  userId: string;
+};
+
+export const findAlbum = async ({ id, userId }: FindAlbum) => {
+  const album = await prisma.album.findFirst({
+    include: { artist: true, reviews: true },
+    where: { id },
+  });
+
+  if (!album) {
+    return { album: null, albums: [] };
+  }
+
+  const albums = await prisma.album.findMany({
+    include: { reviews: { where: { userId } } },
+    where: { artistId: album.artistId },
+  });
+
+  return { album, albums };
+};
