@@ -1,7 +1,6 @@
 ---
 import type { Album, Artist } from "@prisma/client";
 import { formatAlbum } from "@utils/format";
-import { fetchCovers } from "@server/coverArt";
 
 export interface Props {
   album: Album;
@@ -10,17 +9,13 @@ export interface Props {
 }
 
 const { album, skip, artist } = Astro.props;
-
-const covers = album.sid
-  ? await fetchCovers({ mBid: album.sid, kind: "small" })
-  : [];
 ---
 
 <article class="card">
   <div class="card-body">
     <h3 class="card-title">{formatAlbum({ album, artist })}</h3>
     <pre>    
-      {JSON.stringify({album, covers}, null, 2)}
+      {JSON.stringify(album, null, 2)}
     </pre>
     <div class="card-actions">
       <a

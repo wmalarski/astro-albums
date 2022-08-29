@@ -1,5 +1,6 @@
 ---
 import Layout from "@layouts/Layout.astro";
+import { findReviews } from "@server/reviews";
 import { getUser } from "@server/supabase";
 
 const user = await getUser(Astro.request);
@@ -7,11 +8,18 @@ const user = await getUser(Astro.request);
 if (!user) {
   return Astro.redirect("/login");
 }
+
+const page = parseInt(Astro.url.searchParams.get("page") || "0") || 0;
+
+const take = 10;
+const skip = page * take;
+
+const reviews = await findReviews({ skip, take, userId: user.id });
 ---
 
 <Layout title="Reviews" user={user}>
   <main class="p-4">
     <h1>Welcome to Reviews</h1>
-    <pre>{JSON.stringify(user, null, 2)}</pre>
+    <pre>{JSON.stringify(reviews, null, 2)}</pre>
   </main>
 </Layout>

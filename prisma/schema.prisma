@@ -32,6 +32,8 @@ model Album {
   year      Int
   reviews   Review[]
   visits    Visit[]
+  release   String?
+  covers    Json?
 
   @@index([userId])
 }

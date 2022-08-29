@@ -59,3 +59,36 @@ export const findAlbum = async ({ id, userId }: FindAlbum) => {
 
   return { album, albums };
 };
+
+type FindAlbums = {
+  take: number;
+  skip: number;
+  query: string;
+};
+
+export const findAlbums = async ({ skip, take, query }: FindAlbums) => {
+  const [albums, count] = await Promise.all([
+    prisma.album.findMany({
+      include: { artist: true },
+      orderBy: { createdAt: "desc" },
+      skip,
+      take,
+      where: {
+        OR: [
+          { title: { contains: query } },
+          { artist: { name: { contains: query } } },
+        ],
+      },
+    }),
+    prisma.album.count({
+      where: {
+        OR: [
+          { title: { contains: query } },
+          { artist: { name: { contains: query } } },
+        ],
+      },
+    }),
+  ]);
+
+  return { albums, count };
+};
