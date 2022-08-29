@@ -1,6 +1,7 @@
 ---
 import type { Album, Artist } from "@prisma/client";
 import { formatAlbum } from "@utils/format";
+import { frontCover } from "@server/coverArt";
 
 export interface Props {
   album: Album;
@@ -11,12 +12,16 @@ export interface Props {
 const { album, skip, artist } = Astro.props;
 ---
 
-<article class="card">
+<article class="card card-side bg-base-300 w-full">
+  <figure class="w-56">
+    <img
+      class="w-56"
+      src={frontCover(album.sid)}
+      alt={formatAlbum({ album, artist })}
+    />
+  </figure>
   <div class="card-body">
     <h3 class="card-title">{formatAlbum({ album, artist })}</h3>
-    <pre>    
-      {JSON.stringify(album, null, 2)}
-    </pre>
     <div class="card-actions">
       <a
         class="link"
@@ -24,6 +29,13 @@ const { album, skip, artist } = Astro.props;
       >
         Show more
       </a>
+      {
+        album.release && (
+          <a class="link" href={album.release}>
+            Details
+          </a>
+        )
+      }
     </div>
   </div>
 </article>
