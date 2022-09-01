@@ -3,6 +3,7 @@ import type { Album, Artist } from "@prisma/client";
 import { formatAlbum } from "@utils/format";
 import { frontCover } from "@server/coverArt";
 import { paths } from "@utils/paths";
+import { ReviewButton } from "@components/ReviewButton/ReviewButton";
 
 export interface Props {
   album: Album;
@@ -13,18 +14,16 @@ const { album, artist } = Astro.props;
 
 const details =
   album.release || (album.sid && paths.albumRelease({ sid: album.sid }));
+
+const title = formatAlbum({ album, artist });
 ---
 
-<article class="card card-side bg-base-300 w-full">
+<article class="card card-side bg-base-300 w-full h-60">
   <figure class="w-56">
-    <img
-      class="w-56"
-      src={frontCover(album.sid)}
-      alt={formatAlbum({ album, artist })}
-    />
+    <img class="w-56" src={frontCover(album.sid)} alt={title} />
   </figure>
   <div class="card-body">
-    <h3 class="card-title">{formatAlbum({ album, artist })}</h3>
+    <h3 class="card-title">{title}</h3>
     <div class="card-actions">
       <a class="link" href={paths.album({ id: album.id })}> Show more</a>
       {
@@ -34,6 +33,7 @@ const details =
           </a>
         )
       }
+      <ReviewButton client:load albumId={album.id} title={title} />
     </div>
   </div>
 </article>
