@@ -62,7 +62,7 @@ export const findAlbum = async ({ id, userId }: FindAlbum) => {
 
 type FindAlbums = {
   take: number;
-  skip: number;
+  skip: number | null;
   query: string;
 };
 
@@ -71,7 +71,7 @@ export const findAlbums = async ({ skip, take, query }: FindAlbums) => {
     prisma.album.findMany({
       include: { artist: true },
       orderBy: { createdAt: "desc" },
-      skip,
+      skip: skip || 0,
       take,
       where: {
         OR: [

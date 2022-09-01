@@ -6,16 +6,15 @@ import { frontCover } from "@server/coverArt";
 
 export interface Props {
   albumId: string;
-  skip: number;
   userId: string;
 }
 
-const { albumId, skip, userId } = Astro.props;
+const { albumId, userId } = Astro.props;
 
 const { album, albums } = await findAlbum({ id: albumId, userId });
 
 if (!album) {
-  return Astro.redirect(`/${new URLSearchParams({ skip: `${skip}` })}`);
+  return Astro.redirect(`/${new URLSearchParams({})}`);
 }
 ---
 
@@ -40,7 +39,7 @@ if (!album) {
       {
         albums.map((artistAlbum) => (
           <div>
-            <AlbumCard album={artistAlbum} artist={album.artist} skip={skip} />
+            <AlbumCard album={artistAlbum} artist={album.artist} />
           </div>
         ))
       }

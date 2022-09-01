@@ -6,10 +6,9 @@ import { frontCover } from "@server/coverArt";
 export interface Props {
   album: Album;
   artist: Artist;
-  skip: number;
 }
 
-const { album, skip, artist } = Astro.props;
+const { album, artist } = Astro.props;
 ---
 
 <article class="card card-side bg-base-300 w-full">
@@ -23,10 +22,7 @@ const { album, skip, artist } = Astro.props;
   <div class="card-body">
     <h3 class="card-title">{formatAlbum({ album, artist })}</h3>
     <div class="card-actions">
-      <a
-        class="link"
-        href={`/?${new URLSearchParams({ id: album.id, skip: `${skip}` })}`}
-      >
+      <a class="link" href={`/album?${new URLSearchParams({ id: album.id })}`}>
         Show more
       </a>
       {

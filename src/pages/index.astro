@@ -1,9 +1,8 @@
 ---
 import Layout from "@layouts/Layout.astro";
 import { getUser } from "@server/supabase";
-import { findRandomAlbums } from "@server/albums";
+import { findAlbums, findRandomAlbums } from "@server/albums";
 import AlbumCard from "@components/AlbumCard/AlbumCard.astro";
-import AlbumDetails from "@components/AlbumDetails/AlbumDetails.astro";
 
 const user = await getUser(Astro.request);
 
@@ -12,32 +11,36 @@ if (!user) {
 }
 
 const skipParam = parseInt(Astro.url.searchParams.get("skip") || "") || null;
-const idParam = Astro.url.searchParams.get("id");
+const queryParam = Astro.url.searchParams.get("query") || "";
 
-const { albums, skip } = await findRandomAlbums({
-	take: 20,
-	userId: user.id,
-	skip: skipParam,
-});
+const findContent = async () => {
+	if (queryParam) {
+		const { albums, count } = await findAlbums({
+			query: queryParam,
+			skip: skipParam,
+			take: 20,
+		});
+		return { albums, count, kind: "query" };
+	}
+	const { albums } = await findRandomAlbums({
+		take: 20,
+		userId: user.id,
+	});
+	return { albums, kind: "random" };
+};
+
+const data = await findContent();
 ---
 
 <Layout title="Welcome to Astro." user={user}>
 	<main class="p-4">
 		<h1>Random Albums</h1>
-		<pre>{JSON.stringify({skipParam, idParam}, null, 2)}</pre>
 		<div class="flex flex-row">
 			<div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-2">
 				{
-					albums.map((album) => (
-						<AlbumCard album={album} artist={album.artist} skip={skip} />
+					data.albums.map((album) => (
+						<AlbumCard album={album} artist={album.artist} />
 					))
-				}
-			</div>
-			<div>
-				{
-					idParam ? (
-						<AlbumDetails albumId={idParam} skip={skip} userId={user.id} />
-					) : null
 				}
 			</div>
 		</div>
