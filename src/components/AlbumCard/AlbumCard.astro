@@ -2,6 +2,7 @@
 import type { Album, Artist } from "@prisma/client";
 import { formatAlbum } from "@utils/format";
 import { frontCover } from "@server/coverArt";
+import { paths } from "@utils/paths";
 
 export interface Props {
   album: Album;
@@ -9,6 +10,9 @@ export interface Props {
 }
 
 const { album, artist } = Astro.props;
+
+const details =
+  album.release || (album.sid && paths.albumRelease({ sid: album.sid }));
 ---
 
 <article class="card card-side bg-base-300 w-full">
@@ -22,12 +26,10 @@ const { album, artist } = Astro.props;
   <div class="card-body">
     <h3 class="card-title">{formatAlbum({ album, artist })}</h3>
     <div class="card-actions">
-      <a class="link" href={`/album?${new URLSearchParams({ id: album.id })}`}>
-        Show more
-      </a>
+      <a class="link" href={paths.album({ id: album.id })}> Show more</a>
       {
-        album.release && (
-          <a class="link" href={album.release}>
+        details && (
+          <a class="link" href={details}>
             Details
           </a>
         )

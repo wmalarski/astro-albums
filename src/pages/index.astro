@@ -10,20 +10,21 @@ if (!user) {
 	return Astro.redirect("/login");
 }
 
-const skipParam = parseInt(Astro.url.searchParams.get("skip") || "") || null;
+const pageParam = parseInt(Astro.url.searchParams.get("page") || "0") || 0;
 const queryParam = Astro.url.searchParams.get("query") || "";
 
 const findContent = async () => {
+	const take = 20;
 	if (queryParam) {
 		const { albums, count } = await findAlbums({
 			query: queryParam,
-			skip: skipParam,
-			take: 20,
+			skip: take * pageParam,
+			take,
 		});
 		return { albums, count, kind: "query" };
 	}
 	const { albums } = await findRandomAlbums({
-		take: 20,
+		take: take,
 		userId: user.id,
 	});
 	return { albums, kind: "random" };
