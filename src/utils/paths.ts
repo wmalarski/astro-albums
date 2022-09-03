@@ -13,6 +13,7 @@ export const paths = {
   },
   login: "/login",
   logout: "/logout",
+  notFound: "/notFound",
   reviews: ({
     lower,
     page,

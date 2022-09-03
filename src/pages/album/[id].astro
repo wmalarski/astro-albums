@@ -1,0 +1,37 @@
+---
+import AlbumCard from "@components/AlbumCard/AlbumCard.astro";
+import Layout from "@layouts/Layout.astro";
+import { findAlbum } from "@server/albums";
+import { getUser, updateSessionHeaders } from "@server/supabase";
+import { formatAlbum } from "@utils/format";
+
+const id = Astro.params.id;
+if (!id) {
+  return Astro.redirect("/notFound");
+}
+
+const { user, session } = await getUser(Astro.request);
+
+if (!user) {
+  return Astro.redirect("/login");
+}
+
+updateSessionHeaders(Astro.response.headers, session);
+
+const { album, albums } = await findAlbum({ id: `${id}`, userId: user.id });
+
+if (!album) {
+  return Astro.redirect("/notFound");
+}
+
+const title = formatAlbum({ album, artist: album.artist });
+---
+
+<Layout title={`${title} - Astro Albums`} user={user}>
+  <main class="p-4 flex flex-col gap-4">
+    <AlbumCard album={album} artist={album.artist} />
+    <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
+      {albums.map((entry) => <AlbumCard album={entry} artist={album.artist} />)}
+    </div>
+  </main>
+</Layout>
