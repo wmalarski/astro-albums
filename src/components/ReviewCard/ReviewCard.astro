@@ -1,0 +1,50 @@
+---
+import type { Album, Artist, Review } from "@prisma/client";
+import { formatAlbum } from "@utils/format";
+import { frontCover } from "@server/coverArt";
+import { paths } from "@utils/paths";
+
+export interface Props {
+  review: Review;
+  album: Album;
+  artist: Artist;
+}
+
+const { album, artist, review } = Astro.props;
+
+const details =
+  album.release || (album.sid && paths.albumRelease({ sid: album.sid }));
+
+const title = formatAlbum({ album, artist });
+---
+
+<article class="card card-side bg-base-300 w-full h-60">
+  <figure class="w-56">
+    <img class="w-56" src={frontCover(album.sid)} alt={title} />
+  </figure>
+  <div class="card-body flex flex-col gap-2">
+    <h3 class="card-title">{title}</h3>
+    <div class="flex gap-2">
+      <span class="font-semibold">Date:</span>
+      <span>{new Intl.DateTimeFormat().format(review.createdAt)}</span>
+    </div>
+    <div class="flex gap-2">
+      <span class="font-semibold">Text:</span>
+      <span>{review.text}</span>
+    </div>
+    <div class="flex gap-2">
+      <span class="font-semibold">Rate:</span>
+      <span>{review.rate}</span>
+    </div>
+    <div class="card-actions">
+      <a class="link" href={paths.album({ id: album.id })}>Show more</a>
+      {
+        details && (
+          <a class="link" href={details}>
+            Details
+          </a>
+        )
+      }
+    </div>
+  </div>
+</article>

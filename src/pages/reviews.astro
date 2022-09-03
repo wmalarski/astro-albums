@@ -1,4 +1,5 @@
 ---
+import ReviewCard from "@components/ReviewCard/ReviewCard.astro";
 import Layout from "@layouts/Layout.astro";
 import { findReviews } from "@server/reviews";
 import { getUser, updateSessionHeaders } from "@server/supabase";
@@ -20,8 +21,17 @@ const reviews = await findReviews({ skip, take, userId: user.id });
 ---
 
 <Layout title="Reviews" user={user}>
-  <main class="p-4">
-    <h1>Welcome to Reviews</h1>
-    <pre>{JSON.stringify(reviews, null, 2)}</pre>
+  <main class="p-4 flex flex-col gap-4">
+    <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
+      {
+        reviews.reviews.map((review) => (
+          <ReviewCard
+            album={review.album}
+            artist={review.album.artist}
+            review={review}
+          />
+        ))
+      }
+    </div>
   </main>
 </Layout>
