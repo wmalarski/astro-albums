@@ -19,12 +19,12 @@ export const AlbumSearch = (props: Props): JSX.Element => {
 
   return (
     <div class="w-full flex flex-row gap-2">
-      <div class="flex gap-2 w-full grow">
+      <div class="flex gap-2 w-full grow items-center">
         <label for="input" class="label label-text">
           Search
         </label>
         <input
-          class="input input-sm flex-grow"
+          class="input flex-grow"
           id="input"
           onChange={(event) => setInput(event.currentTarget.value)}
           placeholder="Search"
@@ -35,6 +35,9 @@ export const AlbumSearch = (props: Props): JSX.Element => {
       <button class="btn btn-primary" type="button" onClick={handleSubmit}>
         Search
       </button>
+      <a class="btn btn-ghost" href={paths.index()}>
+        Random
+      </a>
     </div>
   );
 };
