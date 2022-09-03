@@ -4,24 +4,41 @@ import { getUser, updateSessionHeaders } from "@server/supabase";
 import { findAlbums, findRandomAlbums } from "@server/albums";
 import AlbumCard from "@components/AlbumCard/AlbumCard.astro";
 import { AlbumSearch } from "@components/AlbumSearch/AlbumSearch";
+import Pagination from "@components/Pagination/Pagination.astro";
+import { paths } from "@utils/paths";
+import { z } from "zod";
 
 const { user, session } = await getUser(Astro.request);
 
 if (!user) {
-  return Astro.redirect("/login");
+  return Astro.redirect(paths.login);
 }
 
 updateSessionHeaders(Astro.response.headers, session);
 
-const pageParam = parseInt(Astro.url.searchParams.get("page") || "0") || 0;
-const queryParam = Astro.url.searchParams.get("query") || "";
+const parseResult = z
+  .object({
+    page: z.number().min(0).int().nullable(),
+    query: z.string().nullable(),
+  })
+  .safeParse({
+    page: Astro.url.searchParams.get("page"),
+    query: Astro.url.searchParams.get("query"),
+  });
+
+if (!parseResult.success) {
+  return Astro.redirect(paths.error);
+}
+
+const take = 20;
+const page = parseResult.data.page || 0;
+const query = parseResult.data.query || "";
 
 const findContent = async () => {
-  const take = 20;
-  if (queryParam) {
+  if (query) {
     const { albums, count } = await findAlbums({
-      query: queryParam,
-      skip: take * pageParam,
+      query,
+      skip: take * page,
       take,
     });
     return { albums, count, kind: "query" };
@@ -34,13 +51,15 @@ const findContent = async () => {
 };
 
 const data = await findContent();
+
+const maxPage = Math.ceil((data.count || 0) / take);
 ---
 
 <Layout title="Welcome to Astro." user={user}>
   <main class="p-4 flex flex-col gap-4">
     <div class="card bg-base-300 card-compact">
       <div class="card-body flex gap-2">
-        <AlbumSearch client:idle query={queryParam} />
+        <AlbumSearch client:idle query={query} />
       </div>
     </div>
     <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
@@ -50,5 +69,15 @@ const data = await findContent();
         ))
       }
     </div>
+    {
+      data.kind === "query" ? (
+        <Pagination
+          current={page}
+          maxPage={maxPage}
+          nextHref={paths.index({ page: page + 1 })}
+          prevHref={paths.index({ page: page - 1 })}
+        />
+      ) : null
+    }
   </main>
 </Layout>

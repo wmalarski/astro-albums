@@ -1,8 +1,11 @@
 ---
+import Pagination from "@components/Pagination/Pagination.astro";
 import ReviewCard from "@components/ReviewCard/ReviewCard.astro";
 import Layout from "@layouts/Layout.astro";
 import { findReviews } from "@server/reviews";
+import { paths } from "@utils/paths";
 import { getUser, updateSessionHeaders } from "@server/supabase";
+import { z } from "zod";
 
 const { user, session } = await getUser(Astro.request);
 
@@ -12,12 +15,26 @@ if (!user) {
 
 updateSessionHeaders(Astro.response.headers, session);
 
-const page = parseInt(Astro.url.searchParams.get("page") || "0") || 0;
+const parseResult = z
+  .object({
+    page: z.number().min(0).int().nullable(),
+    query: z.string().nullable(),
+  })
+  .safeParse({
+    page: Astro.url.searchParams.get("page"),
+    query: Astro.url.searchParams.get("query"),
+  });
 
-const take = 10;
-const skip = page * take;
+if (!parseResult.success) {
+  return Astro.redirect(paths.error);
+}
 
-const reviews = await findReviews({ skip, take, userId: user.id });
+const take = 20;
+const page = parseResult.data.page || 0;
+
+const reviews = await findReviews({ skip: take * page, take, userId: user.id });
+
+const maxPage = Math.ceil(reviews.count / take);
 ---
 
 <Layout title="Reviews" user={user}>
@@ -33,5 +50,11 @@ const reviews = await findReviews({ skip, take, userId: user.id });
         ))
       }
     </div>
+    <Pagination
+      current={page}
+      maxPage={maxPage}
+      nextHref={paths.reviews({ page: page + 1 })}
+      prevHref={paths.reviews({ page: page - 1 })}
+    />
   </main>
 </Layout>

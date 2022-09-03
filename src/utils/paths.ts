@@ -5,6 +5,7 @@ export const paths = {
   albumRelease: ({ sid }: { sid: string }): string => {
     return `http://coverartarchive.org/release/${sid}`;
   },
+  error: "/error",
   index: ({ page, query }: { page?: number; query?: string } = {}): string => {
     const pageParam = page ? { page: `${page}` } : {};
     const queryParam = query ? { query } : {};

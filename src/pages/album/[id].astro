@@ -4,11 +4,7 @@ import Layout from "@layouts/Layout.astro";
 import { findAlbum } from "@server/albums";
 import { getUser, updateSessionHeaders } from "@server/supabase";
 import { formatAlbum } from "@utils/format";
-
-const id = Astro.params.id;
-if (!id) {
-  return Astro.redirect("/notFound");
-}
+import { z } from "zod";
 
 const { user, session } = await getUser(Astro.request);
 
@@ -18,7 +14,21 @@ if (!user) {
 
 updateSessionHeaders(Astro.response.headers, session);
 
-const { album, albums } = await findAlbum({ id: `${id}`, userId: user.id });
+const parseResult = z
+  .object({
+    id: z.string().min(1),
+  })
+  .safeParse({
+    page: Astro.params.id,
+  });
+
+if (!parseResult.success) {
+  return Astro.redirect(paths.error);
+}
+
+const id = parseResult.data.id;
+
+const { album, albums } = await findAlbum({ id, userId: user.id });
 
 if (!album) {
   return Astro.redirect("/notFound");
