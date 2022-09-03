@@ -1,5 +1,5 @@
 import { createReview } from "@server/reviews";
-import { getUser } from "@server/supabase";
+import { getSessionHeaders, getUser } from "@server/supabase";
 import { z } from "zod";
 
 const schema = z.object({
@@ -19,10 +19,11 @@ export const post = async (request: Request): Promise<Response> => {
     });
   }
 
-  const user = await getUser(request);
+  const { user, session } = await getUser(request);
 
   if (!user) {
     return new Response(JSON.stringify({ error: "Unauthorized" }), {
+      headers: getSessionHeaders(session),
       status: 403,
     });
   }
@@ -33,6 +34,7 @@ export const post = async (request: Request): Promise<Response> => {
   });
 
   return new Response(JSON.stringify({ data: review }), {
+    headers: getSessionHeaders(session),
     status: 200,
   });
 };

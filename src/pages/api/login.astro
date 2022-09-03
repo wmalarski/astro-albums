@@ -1,5 +1,7 @@
 ---
+import { updateSessionHeaders } from "@server/supabase";
+
 const body = await Astro.request.json();
 
-Astro.response.headers.set("Set-Cookie", `sbat=${body.access_token}; Path=/;`);
+updateSessionHeaders(Astro.response.headers, body);
 ---

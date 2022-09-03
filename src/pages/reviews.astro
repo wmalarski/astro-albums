@@ -1,13 +1,15 @@
 ---
 import Layout from "@layouts/Layout.astro";
 import { findReviews } from "@server/reviews";
-import { getUser } from "@server/supabase";
+import { getUser, updateSessionHeaders } from "@server/supabase";
 
-const user = await getUser(Astro.request);
+const { user, session } = await getUser(Astro.request);
 
 if (!user) {
   return Astro.redirect("/login");
 }
+
+updateSessionHeaders(Astro.response.headers, session);
 
 const page = parseInt(Astro.url.searchParams.get("page") || "0") || 0;
 

@@ -1,49 +1,50 @@
 ---
 import Layout from "@layouts/Layout.astro";
-import { getUser } from "@server/supabase";
+import { getUser, updateSessionHeaders } from "@server/supabase";
 import { findAlbums, findRandomAlbums } from "@server/albums";
 import AlbumCard from "@components/AlbumCard/AlbumCard.astro";
+import { AlbumSearch } from "@components/AlbumSearch/AlbumSearch";
 
-const user = await getUser(Astro.request);
+const { user, session } = await getUser(Astro.request);
 
 if (!user) {
-	return Astro.redirect("/login");
+  return Astro.redirect("/login");
 }
+
+updateSessionHeaders(Astro.response.headers, session);
 
 const pageParam = parseInt(Astro.url.searchParams.get("page") || "0") || 0;
 const queryParam = Astro.url.searchParams.get("query") || "";
 
 const findContent = async () => {
-	const take = 20;
-	if (queryParam) {
-		const { albums, count } = await findAlbums({
-			query: queryParam,
-			skip: take * pageParam,
-			take,
-		});
-		return { albums, count, kind: "query" };
-	}
-	const { albums } = await findRandomAlbums({
-		take: take,
-		userId: user.id,
-	});
-	return { albums, kind: "random" };
+  const take = 20;
+  if (queryParam) {
+    const { albums, count } = await findAlbums({
+      query: queryParam,
+      skip: take * pageParam,
+      take,
+    });
+    return { albums, count, kind: "query" };
+  }
+  const { albums } = await findRandomAlbums({
+    take: take,
+    userId: user.id,
+  });
+  return { albums, kind: "random" };
 };
 
 const data = await findContent();
 ---
 
 <Layout title="Welcome to Astro." user={user}>
-	<main class="p-4">
-		<h1>Random Albums</h1>
-		<div class="flex flex-row">
-			<div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-2">
-				{
-					data.albums.map((album) => (
-						<AlbumCard album={album} artist={album.artist} />
-					))
-				}
-			</div>
-		</div>
-	</main>
+  <main class="p-4 flex flex-col gap-4">
+    <AlbumSearch client:idle query={queryParam} />
+    <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-2">
+      {
+        data.albums.map((album) => (
+          <AlbumCard album={album} artist={album.artist} />
+        ))
+      }
+    </div>
+  </main>
 </Layout>

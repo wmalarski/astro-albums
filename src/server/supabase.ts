@@ -1,4 +1,4 @@
-import { createClient } from "@supabase/supabase-js";
+import { createClient, Session } from "@supabase/supabase-js";
 import cookie from "cookie";
 
 export const supabase = createClient(
@@ -10,15 +10,48 @@ export const getUser = async (req: Request) => {
   const parsedCookie = cookie.parse(req.headers.get("cookie") ?? "");
 
   if (!parsedCookie.sbat) {
-    return null;
+    return {};
   }
 
   const result = await supabase.auth.api.getUser(parsedCookie.sbat);
-  if (!result.user || result.user.role !== "authenticated") {
-    return null;
+
+  if (result.user && result.user.role === "authenticated") {
+    return { user: result.user };
   }
 
-  return result.user;
+  if (!parsedCookie.sret) {
+    return {};
+  }
+
+  const refresh = await supabase.auth.api.refreshAccessToken(parsedCookie.sret);
+
+  if (!refresh.data || !refresh.data.user) {
+    return {};
+  }
+
+  return { session: refresh.data, user: refresh.data.user };
+};
+
+export const updateSessionHeaders = (
+  headers: Headers,
+  session?: Session | null
+) => {
+  if (!session) {
+    return;
+  }
+
+  headers.set("Set-Cookie", `sbat=${session.access_token}; Path=/;`);
+  headers.append("Set-Cookie", `sret=${session.refresh_token}; Path=/;`);
+};
+
+export const getSessionHeaders = (session?: Session | null): HeadersInit => {
+  if (!session) {
+    return [];
+  }
+  return [
+    ["Set-Cookie", `sbat=${session.access_token}; Path=/;`],
+    ["Set-Cookie", `sret=${session.refresh_token}; Path=/;`],
+  ];
 };
 
 export const isLoggedIn = async (req: Request) => {
