@@ -35,3 +35,25 @@ export const createReview = ({ rate, text, albumId, userId }: CreateReview) => {
     data: { albumId, rate, text, userId },
   });
 };
+
+type UpdateReview = {
+  rate?: number | undefined;
+  text?: string | undefined;
+  reviewId: string;
+  userId: string;
+};
+
+export const updateReview = ({
+  rate,
+  text,
+  reviewId,
+  userId,
+}: UpdateReview) => {
+  return prisma.review.updateMany({
+    data: {
+      ...(rate || rate === 0 ? { rate } : {}),
+      ...(text ? { text } : {}),
+    },
+    where: { id: reviewId, userId },
+  });
+};
