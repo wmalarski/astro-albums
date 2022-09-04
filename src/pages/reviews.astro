@@ -6,6 +6,7 @@ import { findReviews } from "@server/reviews";
 import { paths } from "@utils/paths";
 import { getUser, updateSessionHeaders } from "@server/supabase";
 import { z } from "zod";
+import { ReviewSearch } from "@components/ReviewSearch/ReviewSearch";
 
 const { user, session } = await getUser(Astro.request);
 
@@ -17,12 +18,18 @@ updateSessionHeaders(Astro.response.headers, session);
 
 const parseResult = z
   .object({
+    lower: z.number().min(0).max(10).nullable(),
     page: z.number().min(0).int().nullable(),
     query: z.string().nullable(),
+    upper: z.number().min(0).max(10).nullable(),
+    order: z.union([z.literal("createdAt"), z.literal("rate")]).nullable(),
   })
   .safeParse({
+    lower: Astro.url.searchParams.get("page"),
     page: Astro.url.searchParams.get("page"),
     query: Astro.url.searchParams.get("query"),
+    upper: Astro.url.searchParams.get("page"),
+    order: Astro.url.searchParams.get("order"),
   });
 
 if (!parseResult.success) {
@@ -31,6 +38,10 @@ if (!parseResult.success) {
 
 const take = 20;
 const page = parseResult.data.page || 0;
+const lower = parseResult.data.lower || 0;
+const query = parseResult.data.query || "";
+const upper = parseResult.data.upper || 10;
+const order = parseResult.data.order || "createdAt";
 
 const reviews = await findReviews({ skip: take * page, take, userId: user.id });
 
@@ -39,6 +50,17 @@ const maxPage = Math.ceil(reviews.count / take);
 
 <Layout title="Reviews" user={user}>
   <main class="p-4 flex flex-col gap-4">
+    <div class="card bg-base-300 card-compact">
+      <div class="card-body flex gap-2">
+        <ReviewSearch
+          client:idle
+          lower={lower}
+          upper={upper}
+          query={query}
+          order={order}
+        />
+      </div>
+    </div>
     <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
       {
         reviews.reviews.map((review) => (

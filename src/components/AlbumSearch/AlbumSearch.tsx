@@ -10,7 +10,7 @@ export const AlbumSearch = (props: Props): JSX.Element => {
   const [input, setInput] = createSignal("");
 
   createEffect(() => {
-    setInput(props.query || "");
+    setInput((current) => props.query || current);
   });
 
   const handleSubmit = () => {
