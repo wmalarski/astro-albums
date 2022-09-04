@@ -3,6 +3,7 @@ import type { Album, Artist, Review } from "@prisma/client";
 import { formatAlbum } from "@utils/format";
 import { frontCover } from "@server/coverArt";
 import { paths } from "@utils/paths";
+import { EditReviewButton } from "@components/EditReviewButton/EditReviewButton";
 
 export interface Props {
   review: Review;
@@ -45,6 +46,13 @@ const title = formatAlbum({ album, artist });
           </a>
         )
       }
+      <EditReviewButton
+        client:load
+        reviewId={review.id}
+        title={title}
+        text={review.text}
+        rate={review.rate}
+      />
     </div>
   </div>
 </article>

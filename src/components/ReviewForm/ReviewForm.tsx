@@ -1,39 +1,35 @@
 /* eslint-disable jsx-a11y/label-has-associated-control */
 import clsx from "clsx";
-import { createSignal, JSX, Show } from "solid-js";
+import { createEffect, createSignal, JSX, Show } from "solid-js";
+
+export type ReviewFormData = {
+  text: string;
+  rate: number;
+};
 
 type Props = {
-  albumId: string;
-  onSuccess: () => void;
+  error: string;
+  initial?: ReviewFormData;
+  isLoading: boolean;
   onCancel: () => void;
+  onSubmit: (args: ReviewFormData) => void;
 };
 
 export const ReviewForm = (props: Props): JSX.Element => {
   const [text, setText] = createSignal("");
   const [rate, setRate] = createSignal(5);
 
-  const [isLoading, setIsLoading] = createSignal(false);
-  const [error, setError] = createSignal("");
-
-  const handleSubmit = async () => {
-    setError("");
-    setIsLoading(true);
-
-    const body = JSON.stringify({
-      albumId: props.albumId,
-      rate: rate(),
-      text: text(),
-    });
-    const response = await fetch("/api/review", { body });
-    const result = await response.json();
-
-    setError(result.error || "");
-    setIsLoading(false);
-
-    if (!result.error) {
-      props.onSuccess();
-    }
+  const handleSubmit = () => {
+    props.onSubmit({ rate: rate(), text: text() });
   };
+
+  createEffect(() => {
+    if (!props.initial) {
+      return;
+    }
+    setText(props.initial.text);
+    setRate(props.initial.rate);
+  });
 
   return (
     <div class="w-full flex flex-col gap-2">
@@ -43,7 +39,7 @@ export const ReviewForm = (props: Props): JSX.Element => {
         </label>
         <input
           class="input input-sm  flex-grow"
-          disabled={isLoading()}
+          disabled={props.isLoading}
           id="review"
           onChange={(event) => setText(event.currentTarget.value)}
           placeholder="Review"
@@ -57,7 +53,7 @@ export const ReviewForm = (props: Props): JSX.Element => {
         </label>
         <input
           class="input input-sm flex-grow"
-          disabled={isLoading()}
+          disabled={props.isLoading}
           id="rate"
           max={10}
           min={0}
@@ -68,21 +64,21 @@ export const ReviewForm = (props: Props): JSX.Element => {
           value={rate()}
         />
       </div>
-      <Show when={error()} keyed>
+      <Show when={props.error} keyed>
         {(error) => <div class="text-sm text-red-400">{error}</div>}
       </Show>
       <div class="flex justify-end w-full gap-2">
         <button
-          disabled={isLoading()}
-          class={clsx("btn btn-ghost", { loading: isLoading() })}
+          disabled={props.isLoading}
+          class={clsx("btn btn-ghost", { loading: props.isLoading })}
           type="button"
           onClick={() => props.onCancel()}
         >
           Cancel
         </button>
         <button
-          disabled={isLoading()}
-          class={clsx("btn btn-primary", { loading: isLoading() })}
+          disabled={props.isLoading}
+          class={clsx("btn btn-primary", { loading: props.isLoading })}
           type="button"
           onClick={handleSubmit}
         >
