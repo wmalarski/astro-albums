@@ -1,11 +1,13 @@
 ---
-import AlbumCard from "@components/AlbumCard/AlbumCard.astro";
 import Layout from "@layouts/Layout.astro";
 import { findAlbum } from "@server/albums";
 import { getUser, updateSessionHeaders } from "@server/supabase";
+import { frontCover } from "@server/coverArt";
 import { formatAlbum } from "@utils/format";
 import { z } from "zod";
 import { paths } from "@utils/paths";
+import AlbumActions from "@components/AlbumActions/AlbumActions.astro";
+import AlbumReviewsCard from "@components/AlbumReviewsCard/AlbumReviewsCard.astro";
 
 const { user, session } = await getUser(Astro.request);
 
@@ -32,7 +34,7 @@ const id = parseResult.data.id;
 const { album, albums } = await findAlbum({ id, userId: user.id });
 
 if (!album) {
-  return Astro.redirect("/notFound");
+  return Astro.redirect(paths.notFound);
 }
 
 const title = formatAlbum({ album, artist: album.artist });
@@ -40,10 +42,29 @@ const title = formatAlbum({ album, artist: album.artist });
 
 <Layout title={`${title} - Astro Albums`} user={user}>
   <main class="p-4 flex flex-col gap-4">
-    {paths.login}
-    <AlbumCard album={album} artist={album.artist} />
-    <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
-      {albums.map((entry) => <AlbumCard album={entry} artist={album.artist} />)}
+    <span>
+      {paths.login}
+    </span>
+    <span></span>
+    <article class="card card-side bg-base-300 w-full">
+      <figure>
+        <img src={frontCover(album.sid, 500)} alt={title} />
+      </figure>
+      <div class="card-body">
+        <h3 class="card-title">{title}</h3>
+        <AlbumActions album={album} artist={album.artist} />
+      </div>
+    </article>
+    <div class="grid grid-cols-1 gap-4">
+      {
+        albums.map((entry) => (
+          <AlbumReviewsCard
+            album={entry}
+            artist={album.artist}
+            reviews={album.reviews}
+          />
+        ))
+      }
     </div>
   </main>
 </Layout>

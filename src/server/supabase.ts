@@ -25,6 +25,8 @@ export const getUser = async (req: Request) => {
 
   const refresh = await supabase.auth.setSession(parsedCookie.sret);
 
+  console.log({ parsedCookie, refresh, result });
+
   if (!refresh.session || !refresh.session.user) {
     return {};
   }
@@ -40,17 +42,30 @@ export const updateSessionHeaders = (
     return;
   }
 
-  headers.set("Set-Cookie", `sbat=${session.access_token}; Path=/;`);
-  headers.append("Set-Cookie", `sret=${session.refresh_token}; Path=/;`);
+  headers.set(
+    "Set-Cookie",
+    cookie.serialize("sbat", session.access_token, { path: "/" })
+  );
+  headers.append(
+    "Set-Cookie",
+    cookie.serialize("sret", session.refresh_token || "", { path: "/" })
+  );
 };
 
 export const getSessionHeaders = (session?: Session | null): HeadersInit => {
   if (!session) {
     return [];
   }
+
   return [
-    ["Set-Cookie", `sbat=${session.access_token}; Path=/;`],
-    ["Set-Cookie", `sret=${session.refresh_token}; Path=/;`],
+    [
+      "Set-Cookie",
+      cookie.serialize("sbat", session.access_token, { path: "/" }),
+    ],
+    [
+      "Set-Cookie",
+      cookie.serialize("sret", session.refresh_token || "", { path: "/" }),
+    ],
   ];
 };
 

@@ -1,0 +1,30 @@
+---
+import type { Album, Artist } from "@prisma/client";
+import { formatAlbum } from "@utils/format";
+import { paths } from "@utils/paths";
+import { AddReviewButton } from "./AddReviewButton/AddReviewButton";
+
+export interface Props {
+  album: Album;
+  artist: Artist;
+}
+
+const { album, artist } = Astro.props;
+
+const details =
+  album.release || (album.sid && paths.albumRelease({ sid: album.sid }));
+
+const title = formatAlbum({ album, artist });
+---
+
+<div class="card-actions">
+  <a class="link" href={paths.album({ id: album.id })}> Show more</a>
+  {
+    details && (
+      <a class="link" href={details}>
+        Details
+      </a>
+    )
+  }
+  <AddReviewButton client:load albumId={album.id} title={title} />
+</div>

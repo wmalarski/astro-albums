@@ -12,6 +12,10 @@ if (user) {
 ---
 
 <Layout title="Login" user={null}>
-  {paths.index()}
-  <SendLink client:load />
+  <span class="relative hidden">
+    {paths.index()}
+  </span>
+  <main class="flex w-full justify-center pt-4 items-center">
+    <SendLink client:load />
+  </main>
 </Layout>

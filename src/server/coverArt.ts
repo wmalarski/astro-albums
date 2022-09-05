@@ -11,9 +11,12 @@ export const jsonToCoversField = (json?: Prisma.JsonValue): CoversField => {
   return json as CoversField;
 };
 
-export const frontCover = (sid?: string | null): string | null => {
+export const frontCover = (
+  sid?: string | null,
+  size: 250 | 500 = 250
+): string | null => {
   if (!sid) {
     return null;
   }
-  return `http://coverartarchive.org/release/${sid}/front-250.jpg`;
+  return `http://coverartarchive.org/release/${sid}/front-${size}.jpg`;
 };
