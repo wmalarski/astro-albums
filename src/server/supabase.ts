@@ -23,13 +23,13 @@ export const getUser = async (req: Request) => {
     return {};
   }
 
-  const refresh = await supabase.auth.api.refreshAccessToken(parsedCookie.sret);
+  const refresh = await supabase.auth.setSession(parsedCookie.sret);
 
-  if (!refresh.data || !refresh.data.user) {
+  if (!refresh.session || !refresh.session.user) {
     return {};
   }
 
-  return { session: refresh.data, user: refresh.data.user };
+  return { session: refresh.session, user: refresh.session.user };
 };
 
 export const updateSessionHeaders = (

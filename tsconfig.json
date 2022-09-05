@@ -16,6 +16,9 @@
       ],
       "@server/*": [
         "src/server/*"
+      ],
+      "@modules/*": [
+        "src/modules/*"
       ]
     }
   }

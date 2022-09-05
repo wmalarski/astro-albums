@@ -11,7 +11,7 @@ import { ReviewSearch } from "@components/ReviewSearch/ReviewSearch";
 const { user, session } = await getUser(Astro.request);
 
 if (!user) {
-  return Astro.redirect("/login");
+  return Astro.redirect(paths.login());
 }
 
 updateSessionHeaders(Astro.response.headers, session);

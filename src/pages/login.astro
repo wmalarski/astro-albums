@@ -2,14 +2,16 @@
 import { getUser } from "@server/supabase";
 import Layout from "../layouts/Layout.astro";
 import { SendLink } from "@components/SendLink/SendLink";
+import { paths } from "@utils/paths";
 
 const { user } = await getUser(Astro.request);
 
 if (user) {
-  return Astro.redirect("/");
+  return Astro.redirect(paths.index());
 }
 ---
 
 <Layout title="Login" user={null}>
+  {paths.index()}
   <SendLink client:load />
 </Layout>
