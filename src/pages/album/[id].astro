@@ -1,13 +1,16 @@
 ---
 import Layout from "@layouts/Layout.astro";
 import { findAlbum } from "@server/albums";
+import { findReviewsByArtist } from "@server/reviews";
 import { getUser, updateSessionHeaders } from "@server/supabase";
 import { frontCover } from "@server/coverArt";
 import { formatAlbum } from "@utils/format";
 import { z } from "zod";
 import { paths } from "@utils/paths";
 import AlbumActions from "@components/AlbumActions/AlbumActions.astro";
-import AlbumReviewsCard from "@components/AlbumReviewsCard/AlbumReviewsCard.astro";
+import AlbumCard from "@components/AlbumCard/AlbumCard.astro";
+import ReviewCard from "@components/ReviewCard/ReviewCard.astro";
+import CardGrid from "@components/CardGrid/CardGrid.astro";
 
 const { user, session } = await getUser(Astro.request);
 
@@ -36,16 +39,22 @@ const { album, albums } = await findAlbum({ id, userId: user.id });
 if (!album) {
   return Astro.redirect(paths.notFound);
 }
+const { reviews } = await findReviewsByArtist({
+  artistId: album.artistId,
+  skip: 0,
+  take: 20,
+  userId: user.id,
+});
 
 const title = formatAlbum({ album, artist: album.artist });
 ---
 
 <Layout title={`${title} - Astro Albums`} user={user}>
   <main class="p-4 flex flex-col gap-4">
-    <span>
+    <span class="relative hidden">
       {paths.login}
     </span>
-    <span></span>
+    <h2>Album</h2>
     <article class="card card-side bg-base-300 w-full">
       <figure>
         <img src={frontCover(album.sid, 500)} alt={title} />
@@ -55,16 +64,21 @@ const title = formatAlbum({ album, artist: album.artist });
         <AlbumActions album={album} artist={album.artist} />
       </div>
     </article>
-    <div class="grid grid-cols-1 gap-4">
+    <h2>Albums</h2>
+    <CardGrid>
+      {albums.map((entry) => <AlbumCard album={entry} artist={album.artist} />)}
+    </CardGrid>
+    <h2>Reviews</h2>
+    <CardGrid>
       {
-        albums.map((entry) => (
-          <AlbumReviewsCard
-            album={entry}
+        reviews.map((entry) => (
+          <ReviewCard
+            review={entry}
+            album={entry.album}
             artist={album.artist}
-            reviews={album.reviews}
           />
         ))
       }
-    </div>
+    </CardGrid>
   </main>
 </Layout>

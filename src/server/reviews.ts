@@ -13,10 +13,39 @@ export const findReviews = async ({ skip, take, userId }: FindReviews) => {
       orderBy: { createdAt: "desc" },
       skip,
       take,
-      // where: { userId },
+      where: { userId },
     }),
     prisma.review.count({
-      // where: { userId },
+      where: { userId },
+    }),
+  ]);
+
+  return { count, reviews };
+};
+
+type FindReviewsByArtist = {
+  artistId: string;
+  skip: number;
+  take: number;
+  userId: string;
+};
+
+export const findReviewsByArtist = async ({
+  artistId,
+  skip,
+  take,
+  userId,
+}: FindReviewsByArtist) => {
+  const [reviews, count] = await Promise.all([
+    prisma.review.findMany({
+      include: { album: true },
+      orderBy: { createdAt: "desc" },
+      skip,
+      take,
+      where: { album: { artistId }, userId },
+    }),
+    prisma.review.count({
+      where: { album: { artistId }, userId },
     }),
   ]);
 

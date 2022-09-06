@@ -49,15 +49,19 @@ export const findAlbum = async ({ id, userId }: FindAlbum) => {
   });
 
   if (!album) {
-    return { album: null, albums: [] };
+    return { album: null, albums: [], reviews: [] };
   }
 
-  const albums = await prisma.album.findMany({
-    include: { reviews: { where: { userId } } },
-    where: { artistId: album.artistId },
-  });
+  const [albums, reviews] = await Promise.all([
+    prisma.album.findMany({
+      where: { artistId: album.artistId },
+    }),
+    prisma.review.findMany({
+      where: { album: { artistId: album.artistId }, userId },
+    }),
+  ]);
 
-  return { album, albums };
+  return { album, albums, reviews };
 };
 
 type FindAlbums = {

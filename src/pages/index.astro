@@ -7,6 +7,7 @@ import { AlbumSearch } from "@components/AlbumSearch/AlbumSearch";
 import Pagination from "@components/Pagination/Pagination.astro";
 import { paths } from "@utils/paths";
 import { z } from "zod";
+import CardGrid from "@components/CardGrid/CardGrid.astro";
 
 const { user, session } = await getUser(Astro.request);
 
@@ -51,6 +52,7 @@ const findContent = async () => {
 };
 
 const data = await findContent();
+const { albums } = data;
 
 const maxPage = Math.ceil((data.count || 0) / take);
 ---
@@ -62,13 +64,9 @@ const maxPage = Math.ceil((data.count || 0) / take);
         <AlbumSearch client:idle query={query} />
       </div>
     </div>
-    <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
-      {
-        data.albums.map((album) => (
-          <AlbumCard album={album} artist={album.artist} />
-        ))
-      }
-    </div>
+    <CardGrid>
+      {albums.map((album) => <AlbumCard album={album} artist={album.artist} />)}
+    </CardGrid>
     {
       data.kind === "query" ? (
         <Pagination

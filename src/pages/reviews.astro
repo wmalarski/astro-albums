@@ -7,6 +7,7 @@ import { paths } from "@utils/paths";
 import { getUser, updateSessionHeaders } from "@server/supabase";
 import { z } from "zod";
 import { ReviewSearch } from "@components/ReviewSearch/ReviewSearch";
+import CardGrid from "@components/CardGrid/CardGrid.astro";
 
 const { user, session } = await getUser(Astro.request);
 
@@ -61,7 +62,7 @@ const maxPage = Math.ceil(reviews.count / take);
         />
       </div>
     </div>
-    <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
+    <CardGrid>
       {
         reviews.reviews.map((review) => (
           <ReviewCard
@@ -71,7 +72,7 @@ const maxPage = Math.ceil(reviews.count / take);
           />
         ))
       }
-    </div>
+    </CardGrid>
     <Pagination
       current={page}
       maxPage={maxPage}
