@@ -3,7 +3,7 @@ import Layout from "@layouts/Layout.astro";
 import { findAlbum } from "@server/albums";
 import { findReviewsByArtist } from "@server/reviews";
 import { getUser, updateSessionHeaders } from "@server/supabase";
-import { frontCover } from "@server/coverArt";
+import { jsonToCoversField } from "@server/coverArt";
 import { formatAlbum } from "@utils/format";
 import { z } from "zod";
 import { paths } from "@utils/paths";
@@ -48,18 +48,32 @@ const { reviews } = await findReviewsByArtist({
 });
 
 const title = formatAlbum({ album, artist: album.artist });
+
+const covers = jsonToCoversField(album.covers);
+
+const showCover = (covers.large || []).length > 0;
 ---
 
 <Layout title={`${title} - Astro Albums`} user={user}>
   <main class="p-4 flex flex-col gap-4">
-    <span class="relative hidden">
+    <span class="relative hidden" aria-hidden="true">
       {paths.login}
     </span>
     <h2 class="text-xl font-bold">Album</h2>
     <article class="card card-side bg-base-300 w-full">
-      <figure>
-        <img src={frontCover(album.sid, 500)} alt={title} />
-      </figure>
+      {
+        showCover && (
+          <figure class="max-w-lg">
+            <div class="carousel rounded-box">
+              {covers.large?.map((cover) => (
+                <div class="carousel-item">
+                  <img src={cover} alt={title} />
+                </div>
+              ))}
+            </div>
+          </figure>
+        )
+      }
       <div class="card-body">
         <h3 class="card-title">{title}</h3>
         <AlbumActions album={album} artist={album.artist} />

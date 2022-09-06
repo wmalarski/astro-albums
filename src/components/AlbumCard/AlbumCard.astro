@@ -1,7 +1,7 @@
 ---
 import type { Album, Artist } from "@prisma/client";
 import { formatAlbum } from "@utils/format";
-import { frontCover } from "@server/coverArt";
+import { jsonToCoversField } from "@server/coverArt";
 import AlbumActions from "@components/AlbumActions/AlbumActions.astro";
 
 export interface Props {
@@ -12,12 +12,26 @@ export interface Props {
 const { album, artist } = Astro.props;
 
 const title = formatAlbum({ album, artist });
+
+const covers = jsonToCoversField(album.covers);
+
+const showCover = (covers.small || []).length > 0;
 ---
 
 <article class="card card-side bg-base-300 w-full h-60">
-  <figure class="w-56">
-    <img class="w-56" src={frontCover(album.sid)} alt={title} />
-  </figure>
+  {
+    showCover && (
+      <figure class="w-56">
+        <div class="w-56 carousel rounded-box">
+          {covers.small?.map((cover) => (
+            <div class="carousel-item">
+              <img src={cover} alt={title} />
+            </div>
+          ))}
+        </div>
+      </figure>
+    )
+  }
   <div class="card-body">
     <h3 class="card-title">{title}</h3>
     <AlbumActions album={album} artist={artist} />
