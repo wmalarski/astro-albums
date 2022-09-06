@@ -8,6 +8,7 @@ import { getUser, updateSessionHeaders } from "@server/supabase";
 import { z } from "zod";
 import { ReviewSearch } from "@components/ReviewSearch/ReviewSearch";
 import CardGrid from "@components/CardGrid/CardGrid.astro";
+import EmptyPlaceholder from "@components/EmptyPlaceholder/EmptyPlaceholder.astro";
 
 const { user, session } = await getUser(Astro.request);
 
@@ -44,9 +45,13 @@ const query = parseResult.data.query || "";
 const upper = parseResult.data.upper || 10;
 const order = parseResult.data.order || "createdAt";
 
-const reviews = await findReviews({ skip: take * page, take, userId: user.id });
+const { count, reviews } = await findReviews({
+  skip: take * page,
+  take,
+  userId: user.id,
+});
 
-const maxPage = Math.ceil(reviews.count / take);
+const maxPage = Math.ceil(count / take);
 ---
 
 <Layout title="Reviews" user={user}>
@@ -64,7 +69,7 @@ const maxPage = Math.ceil(reviews.count / take);
     </div>
     <CardGrid>
       {
-        reviews.reviews.map((review) => (
+        reviews.map((review) => (
           <ReviewCard
             album={review.album}
             artist={review.album.artist}
@@ -73,6 +78,7 @@ const maxPage = Math.ceil(reviews.count / take);
         ))
       }
     </CardGrid>
+    {reviews.length === 0 && <EmptyPlaceholder />}
     <Pagination
       current={page}
       maxPage={maxPage}

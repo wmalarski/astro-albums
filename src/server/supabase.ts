@@ -3,7 +3,13 @@ import cookie from "cookie";
 
 export const supabase = createClient(
   import.meta.env.PUBLIC_SUPABASE_URL,
-  import.meta.env.PUBLIC_SUPABASE_KEY
+  import.meta.env.PUBLIC_SUPABASE_KEY,
+  {
+    autoRefreshToken: true,
+    cookieOptions: {
+      lifetime: 1000000000000,
+    },
+  }
 );
 
 export const getUser = async (req: Request) => {

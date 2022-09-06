@@ -8,6 +8,7 @@ import Pagination from "@components/Pagination/Pagination.astro";
 import { paths } from "@utils/paths";
 import { z } from "zod";
 import CardGrid from "@components/CardGrid/CardGrid.astro";
+import EmptyPlaceholder from "@components/EmptyPlaceholder/EmptyPlaceholder.astro";
 
 const { user, session } = await getUser(Astro.request);
 
@@ -67,6 +68,7 @@ const maxPage = Math.ceil((data.count || 0) / take);
     <CardGrid>
       {albums.map((album) => <AlbumCard album={album} artist={album.artist} />)}
     </CardGrid>
+    {albums.length === 0 && <EmptyPlaceholder />}
     {
       data.kind === "query" ? (
         <Pagination
