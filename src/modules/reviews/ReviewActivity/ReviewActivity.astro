@@ -1,13 +1,128 @@
 ---
 import type { CountReviewsByDatesResult } from "@server/reviews";
+import { paths } from "@utils/paths";
+import { getCountItems } from "./ReviewActivity.utils";
 
 export interface Props {
   groups: CountReviewsByDatesResult[];
 }
 
 const { groups } = Astro.props;
+
+const { items, months } = getCountItems(groups);
 ---
 
-<div>
-  <pre>{JSON.stringify(groups.map(group => ({count: Number(group.count), date: group.date})), null, 2)}</pre>
+<div class="grid gap-1 days-grid">
+  {
+    months?.map((item) => {
+      const content = new Intl.DateTimeFormat(undefined, {
+        month: "long",
+      }).format(new Date(0, item.month));
+      return (
+        <a
+          class="btn btn-xs truncate"
+          style={`grid-column: ${item.position} / span ${item.span};`}
+          title={content}
+        >
+          {content}
+        </a>
+      );
+    })
+  }
+  {
+    items.map((item) => (
+      <a
+        href={paths.reviews({})}
+        class={`btn btn-xs item-${item.suffix}`}
+        title={new Intl.DateTimeFormat().format(item.date)}
+      >
+        {item.count}
+      </a>
+    ))
+  }
 </div>
+
+<style>
+  :root {
+    --color-10: #ecfdf5;
+    --color-9: #d1fae5;
+    --color-8: #a7f3d0;
+    --color-7: #6ee7b7;
+    --color-6: #34d399;
+    --color-5: #10b981;
+    --color-4: #059669;
+    --color-3: #047857;
+    --color-2: #065f46;
+    --color-1: #064e3b;
+  }
+
+  .days-grid {
+    grid-template-columns: repeat(52, minmax(0, 1fr));
+  }
+
+  .item-10 {
+    background-color: var(--color-10);
+    color: #000;
+  }
+  .item-10:hover {
+    background-color: var(--color-9);
+  }
+  .item-9 {
+    background-color: var(--color-9);
+    color: #000;
+  }
+  .item-9:hover {
+    background-color: var(--color-8);
+  }
+  .item-8 {
+    background-color: var(--color-8);
+    color: #000;
+  }
+  .item-8:hover {
+    background-color: var(--color-7);
+  }
+  .item-7 {
+    background-color: var(--color-7);
+    color: #000;
+  }
+  .item-7:hover {
+    background-color: var(--color-6);
+  }
+  .item-6 {
+    background-color: var(--color-6);
+    color: #000;
+  }
+  .item-6:hover {
+    background-color: var(--color-5);
+  }
+  .item-5 {
+    background-color: var(--color-5);
+    color: #000;
+  }
+  .item-5:hover {
+    background-color: var(--color-4);
+  }
+  .item-4 {
+    background-color: var(--color-4);
+    color: #000;
+  }
+  .item-4:hover {
+    background-color: var(--color-3);
+    color: #fff;
+  }
+  .item-3 {
+    background-color: var(--color-3);
+  }
+  .item-3:hover {
+    background-color: var(--color-2);
+  }
+  .item-2 {
+    background-color: var(--color-2);
+  }
+  .item-2:hover {
+    background-color: var(--color-1);
+  }
+  .item-1 {
+    background-color: var(--color-1);
+  }
+</style>
