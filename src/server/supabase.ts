@@ -3,13 +3,7 @@ import cookie from "cookie";
 
 export const supabase = createClient(
   import.meta.env.PUBLIC_SUPABASE_URL,
-  import.meta.env.PUBLIC_SUPABASE_KEY,
-  {
-    autoRefreshToken: true,
-    cookieOptions: {
-      lifetime: 1000000000000,
-    },
-  }
+  import.meta.env.PUBLIC_SUPABASE_KEY
 );
 
 export const getUser = async (req: Request) => {
@@ -29,36 +23,16 @@ export const getUser = async (req: Request) => {
     return {};
   }
 
-  const refresh = await supabase.auth.setSession(parsedCookie.sret);
+  const refresh = await supabase.auth.api.refreshAccessToken(parsedCookie.sret);
 
-  console.log({ parsedCookie, refresh, result });
-
-  if (!refresh.session || !refresh.session.user) {
+  if (!refresh.data || !refresh.data.user) {
     return {};
   }
 
-  return { session: refresh.session, user: refresh.session.user };
+  return { session: refresh.data, user: refresh.data.user };
 };
 
-export const updateSessionHeaders = (
-  headers: Headers,
-  session?: Session | null
-) => {
-  if (!session) {
-    return;
-  }
-
-  headers.set(
-    "Set-Cookie",
-    cookie.serialize("sbat", session.access_token, { path: "/" })
-  );
-  headers.append(
-    "Set-Cookie",
-    cookie.serialize("sret", session.refresh_token || "", { path: "/" })
-  );
-};
-
-export const getSessionHeaders = (session?: Session | null): HeadersInit => {
+export const getSessionHeaders = (session?: Session | null): string[][] => {
   if (!session) {
     return [];
   }
@@ -73,6 +47,22 @@ export const getSessionHeaders = (session?: Session | null): HeadersInit => {
       cookie.serialize("sret", session.refresh_token || "", { path: "/" }),
     ],
   ];
+};
+
+export const updateSessionHeaders = (
+  headers: Headers,
+  session?: Session | null
+) => {
+  if (!session) {
+    return;
+  }
+
+  getSessionHeaders(session).forEach(([key, value]) => {
+    if (!key || !value) {
+      return;
+    }
+    headers.set(key, value);
+  });
 };
 
 export const isLoggedIn = async (req: Request) => {

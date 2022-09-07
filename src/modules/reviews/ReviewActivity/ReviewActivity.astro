@@ -1,0 +1,13 @@
+---
+import type { CountReviewsByDatesResult } from "@server/reviews";
+
+export interface Props {
+  groups: CountReviewsByDatesResult[];
+}
+
+const { groups } = Astro.props;
+---
+
+<div>
+  <pre>{JSON.stringify(groups.map(group => ({count: Number(group.count), date: group.date})), null, 2)}</pre>
+</div>

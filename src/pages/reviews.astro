@@ -2,18 +2,19 @@
 import Pagination from "@components/Pagination/Pagination.astro";
 import ReviewCard from "@components/ReviewCard/ReviewCard.astro";
 import Layout from "@layouts/Layout.astro";
-import { findReviews } from "@server/reviews";
+import { countReviewsByDates, findReviews } from "@server/reviews";
 import { paths } from "@utils/paths";
 import { getUser, updateSessionHeaders } from "@server/supabase";
 import { z } from "zod";
 import { ReviewSearch } from "@components/ReviewSearch/ReviewSearch";
 import CardGrid from "@components/CardGrid/CardGrid.astro";
 import EmptyPlaceholder from "@components/EmptyPlaceholder/EmptyPlaceholder.astro";
+import ReviewActivity from "@modules/reviews/ReviewActivity/ReviewActivity.astro";
 
 const { user, session } = await getUser(Astro.request);
 
 if (!user) {
-  return Astro.redirect(paths.login());
+  return Astro.redirect(paths.login);
 }
 
 updateSessionHeaders(Astro.response.headers, session);
@@ -45,17 +46,27 @@ const query = parseResult.data.query || "";
 const upper = parseResult.data.upper || 10;
 const order = parseResult.data.order || "createdAt";
 
-const { count, reviews } = await findReviews({
-  skip: take * page,
-  take,
-  userId: user.id,
-});
+const [{ count, reviews }, { groups }] = await Promise.all([
+  findReviews({
+    skip: take * page,
+    take,
+    userId: user.id,
+  }),
+  countReviewsByDates({
+    userId: user.id,
+  }),
+]);
 
 const maxPage = Math.ceil(count / take);
 ---
 
 <Layout title="Reviews" user={user}>
   <main class="p-4 flex flex-col gap-4">
+    <div class="card bg-base-300 card-compact">
+      <div class="card-body">
+        <ReviewActivity groups={groups} />
+      </div>
+    </div>
     <div class="card bg-base-300 card-compact">
       <div class="card-body flex gap-2">
         <ReviewSearch

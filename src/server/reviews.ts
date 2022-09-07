@@ -52,6 +52,23 @@ export const findReviewsByArtist = async ({
   return { count, reviews };
 };
 
+type CountReviewsByDates = {
+  userId: string;
+};
+
+export type CountReviewsByDatesResult = {
+  count: number;
+  date: Date;
+};
+
+export const countReviewsByDates = async ({ userId }: CountReviewsByDates) => {
+  const groups = await prisma.$queryRaw<CountReviewsByDatesResult[]>`
+    SELECT DATE_TRUNC('day', "createdAt") as date, count(id) FROM "public"."Review" WHERE "createdAt" > CURRENT_DATE - INTERVAL '1 year' AND "userId" = ${userId} GROUP BY DATE_TRUNC('day', "createdAt") ORDER BY DATE_TRUNC('day', "createdAt") DESC
+  `;
+
+  return { groups };
+};
+
 type CreateReview = {
   rate: number;
   text: string;
