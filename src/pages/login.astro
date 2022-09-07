@@ -1,7 +1,7 @@
 ---
 import { getUser } from "@server/supabase";
 import Layout from "../layouts/Layout.astro";
-import { SendLink } from "@components/SendLink/SendLink";
+import { SendLink } from "@modules/login/SendLink/SendLink";
 import { paths } from "@utils/paths";
 
 const { user } = await getUser(Astro.request);

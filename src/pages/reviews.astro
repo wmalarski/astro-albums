@@ -6,7 +6,7 @@ import { countReviewsByDates, findReviews } from "@server/reviews";
 import { paths } from "@utils/paths";
 import { getUser, updateSessionHeaders } from "@server/supabase";
 import { z } from "zod";
-import { ReviewSearch } from "@components/ReviewSearch/ReviewSearch";
+import { ReviewSearch } from "@modules/reviews/ReviewSearch/ReviewSearch";
 import CardGrid from "@components/CardGrid/CardGrid.astro";
 import EmptyPlaceholder from "@components/EmptyPlaceholder/EmptyPlaceholder.astro";
 import ReviewActivity from "@modules/reviews/ReviewActivity/ReviewActivity.astro";
