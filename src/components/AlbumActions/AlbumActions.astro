@@ -3,6 +3,8 @@ import type { Album, Artist } from "@prisma/client";
 import { formatAlbum } from "@utils/format";
 import { paths } from "@utils/paths";
 import { AddReviewButton } from "./AddReviewButton/AddReviewButton";
+import { YtButton } from "@components/YtButton/YtButton";
+import { GoogleButton } from "@components/GoogleButton/GoogleButton";
 
 export interface Props {
   album: Album;
@@ -18,6 +20,8 @@ const title = formatAlbum({ album, artist });
 ---
 
 <div class="card-actions gap-1">
+  <YtButton client:load title={album.title} name={artist.name} />
+  <GoogleButton client:load title={album.title} name={artist.name} />
   <a class="btn btn-xs" href={paths.album({ id: album.id })}>Show more</a>
   {
     details && (

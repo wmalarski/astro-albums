@@ -5,6 +5,8 @@ import { jsonToCoversField } from "@server/coverArt";
 import { paths } from "@utils/paths";
 import { EditReviewButton } from "./EditReviewButton/EditReviewButton";
 import CoversCarousel from "@components/CoversCarousel/CoversCarousel.astro";
+import { YtButton } from "@components/YtButton/YtButton";
+import { GoogleButton } from "@components/GoogleButton/GoogleButton";
 
 export interface Props {
   review: Review;
@@ -37,6 +39,8 @@ const covers = jsonToCoversField(album.covers);
       <span>{review.rate}</span>
     </div>
     <div class="card-actions gap-1">
+      <YtButton client:load title={album.title} name={artist.name} />
+      <GoogleButton client:load title={album.title} name={artist.name} />
       <a class="btn btn-xs" href={paths.album({ id: album.id })}> Show more</a>
       {
         details && (
