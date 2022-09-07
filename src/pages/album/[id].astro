@@ -12,6 +12,7 @@ import AlbumCard from "@components/AlbumCard/AlbumCard.astro";
 import ReviewCard from "@components/ReviewCard/ReviewCard.astro";
 import CardGrid from "@components/CardGrid/CardGrid.astro";
 import EmptyPlaceholder from "@components/EmptyPlaceholder/EmptyPlaceholder.astro";
+import CoversCarousel from "@components/CoversCarousel/CoversCarousel.astro";
 
 const { user, session } = await getUser(Astro.request);
 
@@ -50,8 +51,6 @@ const { reviews } = await findReviewsByArtist({
 const title = formatAlbum({ album, artist: album.artist });
 
 const covers = jsonToCoversField(album.covers);
-
-const showCover = (covers.large || []).length > 0;
 ---
 
 <Layout title={`${title} - Astro Albums`} user={user}>
@@ -61,19 +60,9 @@ const showCover = (covers.large || []).length > 0;
     </span>
     <h2 class="text-xl font-bold">Album</h2>
     <article class="card card-side bg-base-300 w-full">
-      {
-        showCover && (
-          <figure class="max-w-lg">
-            <div class="carousel rounded-box">
-              {covers.large?.map((cover) => (
-                <div class="carousel-item">
-                  <img src={cover} alt={title} />
-                </div>
-              ))}
-            </div>
-          </figure>
-        )
-      }
+      <figure class="max-w-[500px]">
+        <CoversCarousel covers={covers.large} title={title} />
+      </figure>
       <div class="card-body">
         <h3 class="card-title">{title}</h3>
         <AlbumActions album={album} artist={album.artist} />

@@ -17,11 +17,11 @@ const details =
 const title = formatAlbum({ album, artist });
 ---
 
-<div class="card-actions">
-  <a class="link" href={paths.album({ id: album.id })}> Show more</a>
+<div class="card-actions gap-1">
+  <a class="btn btn-xs" href={paths.album({ id: album.id })}>Show more</a>
   {
     details && (
-      <a class="link" href={details}>
+      <a class="btn btn-xs" href={details}>
         Details
       </a>
     )

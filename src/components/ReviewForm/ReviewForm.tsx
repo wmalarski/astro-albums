@@ -34,11 +34,11 @@ export const ReviewForm = (props: Props): JSX.Element => {
   return (
     <div class="w-full flex flex-col gap-2">
       <div class="flex gap-2 w-full">
-        <label for="review" class="label label-text">
-          Review
+        <label for="review" class="label label-text font-semibold">
+          Review:
         </label>
         <input
-          class="input input-sm  flex-grow"
+          class="input input-sm flex-grow"
           disabled={props.isLoading}
           id="review"
           onChange={(event) => setText(event.currentTarget.value)}
@@ -48,8 +48,8 @@ export const ReviewForm = (props: Props): JSX.Element => {
         />
       </div>
       <div class="flex gap-2  w-full">
-        <label for="rate" class="label label-text">
-          Rate
+        <label for="rate" class="label label-text font-semibold">
+          Rate:
         </label>
         <input
           class="input input-sm flex-grow"

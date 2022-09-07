@@ -27,7 +27,7 @@ export const AddReviewButton = (props: Props): JSX.Element => {
 
   return (
     <>
-      <button class="btn" onClick={() => setIsOpen(true)}>
+      <button class="btn btn-xs" onClick={() => setIsOpen(true)}>
         Review
       </button>
       <Show when={isOpen()}>

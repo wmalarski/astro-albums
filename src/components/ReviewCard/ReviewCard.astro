@@ -4,6 +4,7 @@ import { formatAlbum } from "@utils/format";
 import { jsonToCoversField } from "@server/coverArt";
 import { paths } from "@utils/paths";
 import { EditReviewButton } from "./EditReviewButton/EditReviewButton";
+import CoversCarousel from "@components/CoversCarousel/CoversCarousel.astro";
 
 export interface Props {
   review: Review;
@@ -19,43 +20,27 @@ const details =
 const title = formatAlbum({ album, artist });
 
 const covers = jsonToCoversField(album.covers);
-
-const showCover = (covers.small || []).length > 0;
 ---
 
-<article class="card card-side bg-base-300 w-full h-60">
-  {
-    showCover && (
-      <figure class="w-56">
-        <div class="w-56 carousel rounded-box">
-          {covers.small?.map((cover) => (
-            <div class="carousel-item">
-              <img src={cover} alt={title} />
-            </div>
-          ))}
-        </div>
-      </figure>
-    )
-  }
+<article class="card card-side card-compact bg-base-300 w-full h-60">
+  <figure class="max-w-[250px]">
+    <CoversCarousel title={title} covers={covers.small} />
+  </figure>
   <div class="card-body flex flex-col gap-2">
-    <h3 class="card-title">{title}</h3>
+    <h3 class="card-title line-clamp-2">{title}</h3>
     <div class="flex gap-2">
       <span class="font-semibold">Date:</span>
       <span>{new Intl.DateTimeFormat().format(review.createdAt)}</span>
     </div>
     <div class="flex gap-2">
-      <span class="font-semibold">Text:</span>
-      <span>{review.text}</span>
-    </div>
-    <div class="flex gap-2">
       <span class="font-semibold">Rate:</span>
       <span>{review.rate}</span>
     </div>
-    <div class="card-actions">
-      <a class="link" href={paths.album({ id: album.id })}>Show more</a>
+    <div class="card-actions gap-1">
+      <a class="btn btn-xs" href={paths.album({ id: album.id })}> Show more</a>
       {
         details && (
-          <a class="link" href={details}>
+          <a class="btn btn-xs" href={details}>
             Details
           </a>
         )
