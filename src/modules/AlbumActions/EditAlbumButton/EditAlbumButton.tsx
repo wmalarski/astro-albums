@@ -1,18 +1,18 @@
-import { ReviewForm, ReviewFormData } from "@modules/ReviewForm/ReviewForm";
 import { createSignal, JSX, Show } from "solid-js";
+import { AlbumForm, AlbumFormData } from "./AlbumForm/AlbumForm";
 
 type Props = {
   albumId: string;
   title: string;
 };
 
-export const EditReviewButton = (props: Props): JSX.Element => {
+export const EditAlbumButton = (props: Props): JSX.Element => {
   const [isOpen, setIsOpen] = createSignal(false);
 
   const [isLoading, setIsLoading] = createSignal(false);
   const [error, setError] = createSignal("");
 
-  const handleSubmit = async (data: ReviewFormData) => {
+  const handleSubmit = async (data: AlbumFormData) => {
     setError("");
     setIsLoading(true);
 
@@ -28,12 +28,12 @@ export const EditReviewButton = (props: Props): JSX.Element => {
   return (
     <>
       <button class="btn btn-xs" onClick={() => setIsOpen(true)}>
-        Review
+        Edit
       </button>
       <Show when={isOpen()}>
         <div class="absolute inset-0 bg-base-300 p-8 flex flex-col gap-4">
           <h3 class="text-xl font-semibold truncate">{props.title}</h3>
-          <ReviewForm
+          <AlbumForm
             error={error()}
             isLoading={isLoading()}
             onSubmit={handleSubmit}

@@ -3,6 +3,7 @@ import type { Album, Artist } from "@prisma/client";
 import { formatAlbum } from "@utils/format";
 import { paths } from "@utils/paths";
 import { AddReviewButton } from "./AddReviewButton/AddReviewButton";
+import { EditAlbumButton } from "./EditAlbumButton/EditAlbumButton";
 import { YtButton } from "@modules/YtButton/YtButton";
 import { GoogleButton } from "@modules/GoogleButton/GoogleButton";
 
@@ -30,5 +31,6 @@ const title = formatAlbum({ album, artist });
       </a>
     )
   }
+  <EditAlbumButton client:load albumId={album.id} title={title} />
   <AddReviewButton client:load albumId={album.id} title={title} />
 </div>
