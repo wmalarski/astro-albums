@@ -1,42 +1,29 @@
 import { prisma } from "./prisma";
 
-const randomNumber = (min: number, max: number) => {
-  return Math.max(0, Math.floor(Math.random() * (max - min + 1)) + min);
-};
-
-const randomSkip = async (take: number, userId: string) => {
-  const count = await prisma.album.count({
-    where: { reviews: { none: { userId } } },
-  });
-
-  const skip = randomNumber(0, count - take - 1);
-
-  return skip;
-};
-
 type FindRandomAlbums = {
   take: number;
   userId: string;
-  skip?: number | null;
 };
 
-export const findRandomAlbums = async ({
-  take,
-  userId,
-  skip,
-}: FindRandomAlbums) => {
-  const findSkip = skip || (await randomSkip(take, userId));
+export const findRandomAlbums = async ({ take, userId }: FindRandomAlbums) => {
+  const result = await prisma.$queryRaw<{ id: string }[]>`
+    select "Album".id from "Album" 
+    left join "Review" on "Album".id = "Review"."albumId" 
+    where "Review".id is NULL or "Review"."userId" != ${userId}
+    order by random()
+    LIMIT ${take};
+  `;
+
+  const ids = result.map((entry) => entry.id);
 
   const albums = await prisma.album.findMany({
     include: { artist: true },
-    skip: findSkip,
-    take,
-    where: { reviews: { none: { userId } } },
+    where: { id: { in: ids } },
   });
 
   const withReviews = albums.map((album) => ({ ...album, reviews: 0 }));
 
-  return { albums: withReviews, skip: findSkip };
+  return { albums: withReviews };
 };
 
 const addReviewCounts = async <T extends { id: string }>(
