@@ -42,6 +42,7 @@ const findContent = async () => {
       query,
       skip: take * page,
       take,
+      userId: user.id,
     });
     return { albums, count, kind: "query" };
   }
@@ -66,7 +67,15 @@ const maxPage = Math.ceil((data.count || 0) / take);
       </div>
     </div>
     <CardGrid>
-      {albums.map((album) => <AlbumCard album={album} artist={album.artist} />)}
+      {
+        albums.map((album) => (
+          <AlbumCard
+            album={album}
+            artist={album.artist}
+            reviews={album.reviews}
+          />
+        ))
+      }
     </CardGrid>
     {albums.length === 0 && <EmptyPlaceholder />}
     {

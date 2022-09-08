@@ -4,20 +4,26 @@ import { formatAlbum } from "@utils/format";
 import { jsonToCoversField } from "@server/coverArt";
 import AlbumActions from "@modules/AlbumActions/AlbumActions.astro";
 import CoversCarousel from "@components/CoversCarousel/CoversCarousel.astro";
+import clsx from "clsx";
 
 export interface Props {
   album: Album;
   artist: Artist;
+  reviews?: number;
 }
 
-const { album, artist } = Astro.props;
+const { album, artist, reviews } = Astro.props;
 
 const header = formatAlbum({ album, artist });
 
 const covers = jsonToCoversField(album.covers);
 ---
 
-<article class="card card-side card-compact bg-base-300 w-full h-60">
+<article
+  class={clsx("card card-side card-compact bg-base-300 w-full h-60", {
+    "card-bordered border-green-400": reviews,
+  })}
+>
   <figure class="max-w-[250px]">
     <CoversCarousel header={header} covers={covers.small} />
   </figure>

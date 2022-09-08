@@ -70,7 +70,15 @@ const covers = jsonToCoversField(album.covers);
     </article>
     <h2 class="text-xl font-bold">Albums</h2>
     <CardGrid>
-      {albums.map((entry) => <AlbumCard album={entry} artist={album.artist} />)}
+      {
+        albums.map((entry) => (
+          <AlbumCard
+            album={entry}
+            artist={album.artist}
+            reviews={entry.reviews}
+          />
+        ))
+      }
     </CardGrid>
     {albums.length === 0 && <EmptyPlaceholder />}
     <h2 class="text-xl font-bold">Reviews</h2>

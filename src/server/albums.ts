@@ -34,7 +34,30 @@ export const findRandomAlbums = async ({
     where: { reviews: { none: { userId } } },
   });
 
-  return { albums, skip: findSkip };
+  const withReviews = albums.map((album) => ({ ...album, reviews: 0 }));
+
+  return { albums: withReviews, skip: findSkip };
+};
+
+const addReviewCounts = async <T extends { id: string }>(
+  albums: T[],
+  userId: string
+) => {
+  const albumIds = albums.map((album) => album.id);
+
+  const groups = await prisma.review.groupBy({
+    _count: { albumId: true },
+    by: ["albumId"],
+    having: { albumId: { in: albumIds } },
+    where: { userId },
+  });
+
+  const counts = groups.reduce<Record<string, number>>((prev, curr) => {
+    prev[curr.albumId] = curr._count.albumId;
+    return prev;
+  }, {});
+
+  return albums.map((album) => ({ ...album, reviews: counts[album.id] || 0 }));
 };
 
 type FindAlbum = {
@@ -61,16 +84,28 @@ export const findAlbum = async ({ id, userId }: FindAlbum) => {
     }),
   ]);
 
-  return { album, albums, reviews };
+  const counts = reviews.reduce<Record<string, number>>((prev, curr) => {
+    const count = prev[curr.albumId] || 0;
+    prev[curr.albumId] = count + 1;
+    return prev;
+  }, {});
+
+  const withCounts = albums.map((album) => ({
+    ...album,
+    reviews: counts[album.id] || 0,
+  }));
+
+  return { album, albums: withCounts, reviews };
 };
 
 type FindAlbums = {
   take: number;
   skip: number | null;
   query: string;
+  userId: string;
 };
 
-export const findAlbums = async ({ skip, take, query }: FindAlbums) => {
+export const findAlbums = async ({ skip, take, query, userId }: FindAlbums) => {
   const [albums, count] = await Promise.all([
     prisma.album.findMany({
       include: { artist: true },
@@ -94,7 +129,9 @@ export const findAlbums = async ({ skip, take, query }: FindAlbums) => {
     }),
   ]);
 
-  return { albums, count };
+  const albumsWithCounts = await addReviewCounts(albums, userId);
+
+  return { albums: albumsWithCounts, count };
 };
 
 type UpdateAlbum = {
