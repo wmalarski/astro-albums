@@ -1,4 +1,4 @@
-import { ReviewForm, ReviewFormData } from "@components/ReviewForm/ReviewForm";
+import { ReviewForm, ReviewFormData } from "@modules/ReviewForm/ReviewForm";
 import { createSignal, JSX, Show } from "solid-js";
 
 type Props = {
@@ -6,7 +6,7 @@ type Props = {
   title: string;
 };
 
-export const AddReviewButton = (props: Props): JSX.Element => {
+export const EditReviewButton = (props: Props): JSX.Element => {
   const [isOpen, setIsOpen] = createSignal(false);
 
   const [isLoading, setIsLoading] = createSignal(false);
@@ -17,7 +17,7 @@ export const AddReviewButton = (props: Props): JSX.Element => {
     setIsLoading(true);
 
     const body = JSON.stringify({ albumId: props.albumId, ...data });
-    const response = await fetch("/api/review", { body, method: "PUT" });
+    const response = await fetch("/api/album", { body, method: "POST" });
     const result = await response.json();
 
     setError(result.error || "");

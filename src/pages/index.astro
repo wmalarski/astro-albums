@@ -2,8 +2,8 @@
 import Layout from "@layouts/Layout.astro";
 import { getUser, updateSessionHeaders } from "@server/supabase";
 import { findAlbums, findRandomAlbums } from "@server/albums";
-import AlbumCard from "@components/AlbumCard/AlbumCard.astro";
-import { AlbumSearch } from "@modules/albums/AlbumSearch/AlbumSearch";
+import AlbumCard from "@modules/AlbumCard/AlbumCard.astro";
+import { AlbumSearch } from "@modules/AlbumSearch/AlbumSearch";
 import Pagination from "@components/Pagination/Pagination.astro";
 import { paths } from "@utils/paths";
 import { z } from "zod";

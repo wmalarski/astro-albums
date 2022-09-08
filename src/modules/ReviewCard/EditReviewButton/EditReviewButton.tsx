@@ -1,8 +1,10 @@
-import { ReviewForm, ReviewFormData } from "@components/ReviewForm/ReviewForm";
+import { ReviewForm, ReviewFormData } from "@modules/ReviewForm/ReviewForm";
 import { createSignal, JSX, Show } from "solid-js";
 
 type Props = {
-  albumId: string;
+  reviewId: string;
+  rate: number;
+  text: string;
   title: string;
 };
 
@@ -16,8 +18,8 @@ export const EditReviewButton = (props: Props): JSX.Element => {
     setError("");
     setIsLoading(true);
 
-    const body = JSON.stringify({ albumId: props.albumId, ...data });
-    const response = await fetch("/api/album", { body, method: "POST" });
+    const body = JSON.stringify({ reviewId: props.reviewId, ...data });
+    const response = await fetch("/api/review", { body, method: "POST" });
     const result = await response.json();
 
     setError(result.error || "");
@@ -25,16 +27,24 @@ export const EditReviewButton = (props: Props): JSX.Element => {
     setIsOpen(false);
   };
 
+  const initial = () => {
+    return {
+      rate: props.rate,
+      text: props.text,
+    };
+  };
+
   return (
     <>
       <button class="btn btn-xs" onClick={() => setIsOpen(true)}>
-        Review
+        Edit
       </button>
       <Show when={isOpen()}>
         <div class="absolute inset-0 bg-base-300 p-8 flex flex-col gap-4">
           <h3 class="text-xl font-semibold truncate">{props.title}</h3>
           <ReviewForm
             error={error()}
+            initial={initial()}
             isLoading={isLoading()}
             onSubmit={handleSubmit}
             onCancel={() => setIsOpen(false)}

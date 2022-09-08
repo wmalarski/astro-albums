@@ -1,15 +1,15 @@
 ---
 import Pagination from "@components/Pagination/Pagination.astro";
-import ReviewCard from "@components/ReviewCard/ReviewCard.astro";
+import ReviewCard from "@modules/ReviewCard/ReviewCard.astro";
 import Layout from "@layouts/Layout.astro";
 import { countReviewsByDates, findReviews } from "@server/reviews";
 import { paths } from "@utils/paths";
 import { getUser, updateSessionHeaders } from "@server/supabase";
 import { z } from "zod";
-import { ReviewSearch } from "@modules/reviews/ReviewSearch/ReviewSearch";
+import { ReviewSearch } from "@modules/ReviewSearch/ReviewSearch";
 import CardGrid from "@components/CardGrid/CardGrid.astro";
 import EmptyPlaceholder from "@components/EmptyPlaceholder/EmptyPlaceholder.astro";
-import ReviewActivity from "@modules/reviews/ReviewActivity/ReviewActivity.astro";
+import ReviewActivity from "@modules/ReviewActivity/ReviewActivity.astro";
 
 const { user, session } = await getUser(Astro.request);
 

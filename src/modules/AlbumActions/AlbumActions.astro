@@ -3,8 +3,8 @@ import type { Album, Artist } from "@prisma/client";
 import { formatAlbum } from "@utils/format";
 import { paths } from "@utils/paths";
 import { AddReviewButton } from "./AddReviewButton/AddReviewButton";
-import { YtButton } from "@components/YtButton/YtButton";
-import { GoogleButton } from "@components/GoogleButton/GoogleButton";
+import { YtButton } from "@modules/YtButton/YtButton";
+import { GoogleButton } from "@modules/GoogleButton/GoogleButton";
 
 export interface Props {
   album: Album;
