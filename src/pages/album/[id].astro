@@ -66,6 +66,7 @@ const covers = jsonToCoversField(album.covers);
           album={album}
           artist={album.artist}
           deleteRedirect={paths.index()}
+          userId={user.id}
         />
       </div>
     </article>
@@ -77,6 +78,7 @@ const covers = jsonToCoversField(album.covers);
             album={entry}
             artist={album.artist}
             reviews={entry.reviews}
+            userId={user.id}
           />
         ))
       }
@@ -90,6 +92,7 @@ const covers = jsonToCoversField(album.covers);
             review={entry}
             album={entry.album}
             artist={album.artist}
+            userId={user.id}
           />
         ))
       }

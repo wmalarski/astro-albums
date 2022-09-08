@@ -13,9 +13,10 @@ export interface Props {
   review: Review;
   album: Album;
   artist: Artist;
+  userId: string;
 }
 
-const { album, artist, review } = Astro.props;
+const { album, artist, review, userId } = Astro.props;
 
 const details =
   album.release || (album.sid && paths.albumRelease({ sid: album.sid }));
@@ -50,14 +51,24 @@ const covers = jsonToCoversField(album.covers);
           </a>
         )
       }
-      <EditReviewButton
-        client:load
-        reviewId={review.id}
-        header={header}
-        text={review.text}
-        rate={review.rate}
-      />
-      <DeleteReviewButton client:load reviewId={review.id} header={header} />
+      {
+        review.userId === userId ? (
+          <>
+            <EditReviewButton
+              client:load
+              reviewId={review.id}
+              header={header}
+              text={review.text}
+              rate={review.rate}
+            />
+            <DeleteReviewButton
+              client:load
+              reviewId={review.id}
+              header={header}
+            />
+          </>
+        ) : null
+      }
     </div>
   </div>
 </article>
