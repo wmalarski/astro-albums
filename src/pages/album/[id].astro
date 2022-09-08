@@ -55,17 +55,18 @@ const covers = jsonToCoversField(album.covers);
 
 <Layout title={`${header} - Astro Albums`} user={user}>
   <main class="p-4 flex flex-col gap-4">
-    <span class="relative hidden" aria-hidden="true">
-      {paths.login}
-    </span>
     <h2 class="text-xl font-bold">Album</h2>
-    <article class="card card-side bg-base-300 w-full">
+    <article class="card card-side bg-base-300 w-full min-h-[250px]">
       <figure class="max-w-[500px]">
         <CoversCarousel covers={covers.large} header={header} />
       </figure>
       <div class="card-body">
         <h3 class="card-title">{header}</h3>
-        <AlbumActions album={album} artist={album.artist} />
+        <AlbumActions
+          album={album}
+          artist={album.artist}
+          deleteRedirect={paths.index()}
+        />
       </div>
     </article>
     <h2 class="text-xl font-bold">Albums</h2>

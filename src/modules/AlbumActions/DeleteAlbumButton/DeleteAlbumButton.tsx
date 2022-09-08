@@ -4,6 +4,7 @@ import { createSignal, JSX, Show } from "solid-js";
 type Props = {
   albumId: string;
   header: string;
+  redirect?: string | undefined;
 };
 
 export const DeleteAlbumButton = (props: Props): JSX.Element => {
@@ -23,6 +24,12 @@ export const DeleteAlbumButton = (props: Props): JSX.Element => {
     setError(result.error || "");
     setIsLoading(false);
     setIsOpen(false);
+
+    if (props.redirect) {
+      window.location.replace(props.redirect);
+    } else {
+      window.location.reload();
+    }
   };
 
   return (

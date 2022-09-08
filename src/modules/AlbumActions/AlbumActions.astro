@@ -11,9 +11,10 @@ import { GoogleButton } from "@modules/GoogleButton/GoogleButton";
 export interface Props {
   album: Album;
   artist: Artist;
+  deleteRedirect?: string;
 }
 
-const { album, artist } = Astro.props;
+const { album, artist, deleteRedirect } = Astro.props;
 
 const details =
   album.release || (album.sid && paths.albumRelease({ sid: album.sid }));
@@ -40,5 +41,10 @@ const header = formatAlbum({ album, artist });
     title={album.title}
     year={album.year}
   />
-  <DeleteAlbumButton client:load albumId={album.id} header={header} />
+  <DeleteAlbumButton
+    client:load
+    albumId={album.id}
+    header={header}
+    redirect={deleteRedirect}
+  />
 </div>
