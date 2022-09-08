@@ -4,6 +4,7 @@ import { formatAlbum } from "@utils/format";
 import { jsonToCoversField } from "@server/coverArt";
 import { paths } from "@utils/paths";
 import { EditReviewButton } from "./EditReviewButton/EditReviewButton";
+import { DeleteReviewButton } from "./DeleteReviewButton/DeleteReviewButton";
 import CoversCarousel from "@components/CoversCarousel/CoversCarousel.astro";
 import { YtButton } from "@modules/YtButton/YtButton";
 import { GoogleButton } from "@modules/GoogleButton/GoogleButton";
@@ -56,6 +57,7 @@ const covers = jsonToCoversField(album.covers);
         text={review.text}
         rate={review.rate}
       />
+      <DeleteReviewButton client:load reviewId={review.id} title={title} />
     </div>
   </div>
 </article>

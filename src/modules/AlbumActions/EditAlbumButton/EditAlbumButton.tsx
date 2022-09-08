@@ -3,7 +3,9 @@ import { AlbumForm, AlbumFormData } from "./AlbumForm/AlbumForm";
 
 type Props = {
   albumId: string;
+  header: string;
   title: string;
+  year: number;
 };
 
 export const EditAlbumButton = (props: Props): JSX.Element => {
@@ -25,6 +27,13 @@ export const EditAlbumButton = (props: Props): JSX.Element => {
     setIsOpen(false);
   };
 
+  const initial = () => {
+    return {
+      title: props.title,
+      year: props.year,
+    };
+  };
+
   return (
     <>
       <button class="btn btn-xs" onClick={() => setIsOpen(true)}>
@@ -32,11 +41,12 @@ export const EditAlbumButton = (props: Props): JSX.Element => {
       </button>
       <Show when={isOpen()}>
         <div class="absolute inset-0 bg-base-300 p-8 flex flex-col gap-4">
-          <h3 class="text-xl font-semibold truncate">{props.title}</h3>
+          <h3 class="text-xl font-semibold truncate">{`Edit ${props.header}`}</h3>
           <AlbumForm
             error={error()}
             isLoading={isLoading()}
             onSubmit={handleSubmit}
+            initial={initial()}
             onCancel={() => setIsOpen(false)}
           />
         </div>

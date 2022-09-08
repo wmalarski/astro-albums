@@ -18,7 +18,7 @@ const { album, artist } = Astro.props;
 const details =
   album.release || (album.sid && paths.albumRelease({ sid: album.sid }));
 
-const title = formatAlbum({ album, artist });
+const header = formatAlbum({ album, artist });
 ---
 
 <div class="card-actions gap-1">
@@ -32,7 +32,13 @@ const title = formatAlbum({ album, artist });
       </a>
     )
   }
-  <AddReviewButton client:load albumId={album.id} title={title} />
-  <EditAlbumButton client:load albumId={album.id} title={title} />
-  <DeleteAlbumButton client:load albumId={album.id} title={title} />
+  <AddReviewButton client:load albumId={album.id} title={header} />
+  <EditAlbumButton
+    client:load
+    albumId={album.id}
+    header={header}
+    title={album.title}
+    year={album.year}
+  />
+  <DeleteAlbumButton client:load albumId={album.id} title={header} />
 </div>
