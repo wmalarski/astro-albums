@@ -1,9 +1,10 @@
 import { invalidRequestError, unauthorizedError } from "@server/errors";
 import { createReview, deleteReview, updateReview } from "@server/reviews";
 import { getSessionHeaders, getUser } from "@server/supabase";
+import type { AstroApiRequest } from "@server/types";
 import { z } from "zod";
 
-export const put = async (request: Request): Promise<Response> => {
+export const put = async ({ request }: AstroApiRequest): Promise<Response> => {
   const { user, session } = await getUser(request);
 
   if (!user) {
@@ -35,7 +36,7 @@ export const put = async (request: Request): Promise<Response> => {
   });
 };
 
-export const post = async (request: Request): Promise<Response> => {
+export const post = async ({ request }: AstroApiRequest): Promise<Response> => {
   const { user, session } = await getUser(request);
 
   if (!user) {
@@ -68,7 +69,7 @@ export const post = async (request: Request): Promise<Response> => {
   });
 };
 
-export const del = async (request: Request): Promise<Response> => {
+export const del = async ({ request }: AstroApiRequest): Promise<Response> => {
   const { user, session } = await getUser(request);
 
   if (!user) {

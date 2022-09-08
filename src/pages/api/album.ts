@@ -1,9 +1,10 @@
 import { deleteAlbum, updateAlbum } from "@server/albums";
 import { invalidRequestError, unauthorizedError } from "@server/errors";
 import { getSessionHeaders, getUser } from "@server/supabase";
+import type { AstroApiRequest } from "@server/types";
 import { z } from "zod";
 
-export const post = async (request: Request): Promise<Response> => {
+export const post = async ({ request }: AstroApiRequest): Promise<Response> => {
   const { user, session } = await getUser(request);
 
   if (!user) {
@@ -36,7 +37,7 @@ export const post = async (request: Request): Promise<Response> => {
   });
 };
 
-export const del = async (request: Request): Promise<Response> => {
+export const del = async ({ request }: AstroApiRequest): Promise<Response> => {
   const { user, session } = await getUser(request);
 
   if (!user) {

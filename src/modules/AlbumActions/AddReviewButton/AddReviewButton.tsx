@@ -23,6 +23,8 @@ export const AddReviewButton = (props: Props): JSX.Element => {
     setError(result.error || "");
     setIsLoading(false);
     setIsOpen(false);
+
+    window.location.reload();
   };
 
   return (
