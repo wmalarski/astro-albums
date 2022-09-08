@@ -3,5 +3,7 @@ import { updateSessionHeaders } from "@server/supabase";
 
 const body = await Astro.request.json();
 
+console.log({ body });
+
 updateSessionHeaders(Astro.response.headers, body);
 ---

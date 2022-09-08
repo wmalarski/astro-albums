@@ -57,12 +57,13 @@ export const updateSessionHeaders = (
     return;
   }
 
+  headers.delete("Set-Cookie");
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   (getSessionHeaders(session) as any).forEach(([key, value]: string[]) => {
     if (!key || !value) {
       return;
     }
-    headers.set(key, value);
+    headers.append(key, value);
   });
 };
 

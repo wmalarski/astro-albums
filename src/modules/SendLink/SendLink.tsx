@@ -17,8 +17,6 @@ export const SendLink = (): JSX.Element => {
 
     const redirectTo = `${getBaseUrl()}/magic-link`;
 
-    console.log({ redirectTo });
-
     const result = await supabase.auth.signIn(
       { email: email() },
       { redirectTo }
