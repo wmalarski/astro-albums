@@ -3,7 +3,7 @@ import { createSignal, JSX, Show } from "solid-js";
 
 type Props = {
   reviewId: string;
-  title: string;
+  header: string;
 };
 
 export const DeleteReviewButton = (props: Props): JSX.Element => {
@@ -32,7 +32,7 @@ export const DeleteReviewButton = (props: Props): JSX.Element => {
       </button>
       <Show when={isOpen()}>
         <div class="absolute inset-0 bg-base-300 p-8 flex flex-col gap-4">
-          <h3 class="text-xl font-semibold truncate">{`Delete ${props.title}`}</h3>
+          <h3 class="text-xl font-semibold truncate">{`Delete ${props.header}`}</h3>
           <Show when={error()} keyed>
             {(error) => <div class="text-sm text-red-400">{error}</div>}
           </Show>

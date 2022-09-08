@@ -32,7 +32,7 @@ const header = formatAlbum({ album, artist });
       </a>
     )
   }
-  <AddReviewButton client:load albumId={album.id} title={header} />
+  <AddReviewButton client:load albumId={album.id} header={header} />
   <EditAlbumButton
     client:load
     albumId={album.id}
@@ -40,5 +40,5 @@ const header = formatAlbum({ album, artist });
     title={album.title}
     year={album.year}
   />
-  <DeleteAlbumButton client:load albumId={album.id} title={header} />
+  <DeleteAlbumButton client:load albumId={album.id} header={header} />
 </div>

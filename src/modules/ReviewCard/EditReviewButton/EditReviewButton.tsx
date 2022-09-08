@@ -5,7 +5,7 @@ type Props = {
   reviewId: string;
   rate: number;
   text: string;
-  title: string;
+  header: string;
 };
 
 export const EditReviewButton = (props: Props): JSX.Element => {
@@ -41,7 +41,7 @@ export const EditReviewButton = (props: Props): JSX.Element => {
       </button>
       <Show when={isOpen()}>
         <div class="absolute inset-0 bg-base-300 p-8 flex flex-col gap-4">
-          <h3 class="text-xl font-semibold truncate">{`Edit review: ${props.title}`}</h3>
+          <h3 class="text-xl font-semibold truncate">{`Edit review: ${props.header}`}</h3>
           <ReviewForm
             error={error()}
             initial={initial()}

@@ -20,17 +20,17 @@ const { album, artist, review } = Astro.props;
 const details =
   album.release || (album.sid && paths.albumRelease({ sid: album.sid }));
 
-const title = formatAlbum({ album, artist });
+const header = formatAlbum({ album, artist });
 
 const covers = jsonToCoversField(album.covers);
 ---
 
 <article class="card card-side card-compact bg-base-300 w-full h-60">
   <figure class="max-w-[250px]">
-    <CoversCarousel title={title} covers={covers.small} />
+    <CoversCarousel header={header} covers={covers.small} />
   </figure>
   <div class="card-body flex flex-col gap-2">
-    <h3 class="card-title line-clamp-2">{title}</h3>
+    <h3 class="card-title line-clamp-2">{header}</h3>
     <div class="flex gap-2">
       <span class="font-semibold">Date:</span>
       <span>{new Intl.DateTimeFormat().format(review.createdAt)}</span>
@@ -53,11 +53,11 @@ const covers = jsonToCoversField(album.covers);
       <EditReviewButton
         client:load
         reviewId={review.id}
-        title={title}
+        header={header}
         text={review.text}
         rate={review.rate}
       />
-      <DeleteReviewButton client:load reviewId={review.id} title={title} />
+      <DeleteReviewButton client:load reviewId={review.id} header={header} />
     </div>
   </div>
 </article>

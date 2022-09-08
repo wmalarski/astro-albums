@@ -48,12 +48,12 @@ const { reviews } = await findReviewsByArtist({
   userId: user.id,
 });
 
-const title = formatAlbum({ album, artist: album.artist });
+const header = formatAlbum({ album, artist: album.artist });
 
 const covers = jsonToCoversField(album.covers);
 ---
 
-<Layout title={`${title} - Astro Albums`} user={user}>
+<Layout title={`${header} - Astro Albums`} user={user}>
   <main class="p-4 flex flex-col gap-4">
     <span class="relative hidden" aria-hidden="true">
       {paths.login}
@@ -61,10 +61,10 @@ const covers = jsonToCoversField(album.covers);
     <h2 class="text-xl font-bold">Album</h2>
     <article class="card card-side bg-base-300 w-full">
       <figure class="max-w-[500px]">
-        <CoversCarousel covers={covers.large} title={title} />
+        <CoversCarousel covers={covers.large} header={header} />
       </figure>
       <div class="card-body">
-        <h3 class="card-title">{title}</h3>
+        <h3 class="card-title">{header}</h3>
         <AlbumActions album={album} artist={album.artist} />
       </div>
     </article>
