@@ -103,3 +103,14 @@ export const updateReview = ({
     where: { id: reviewId, userId },
   });
 };
+
+type DeleteReview = {
+  reviewId: string;
+  userId: string;
+};
+
+export const deleteReview = ({ reviewId, userId }: DeleteReview) => {
+  return prisma.review.deleteMany({
+    where: { id: reviewId, userId },
+  });
+};

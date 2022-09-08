@@ -32,7 +32,7 @@ export const getUser = async (req: Request) => {
   return { session: refresh.data, user: refresh.data.user };
 };
 
-export const getSessionHeaders = (session?: Session | null): string[][] => {
+export const getSessionHeaders = (session?: Session | null): HeadersInit => {
   if (!session) {
     return [];
   }
@@ -57,7 +57,8 @@ export const updateSessionHeaders = (
     return;
   }
 
-  getSessionHeaders(session).forEach(([key, value]) => {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  (getSessionHeaders(session) as any).forEach(([key, value]: string[]) => {
     if (!key || !value) {
       return;
     }

@@ -96,3 +96,31 @@ export const findAlbums = async ({ skip, take, query }: FindAlbums) => {
 
   return { albums, count };
 };
+
+type UpdateAlbum = {
+  year?: number | undefined;
+  title?: string | undefined;
+  albumId: string;
+  userId: string;
+};
+
+export const updateAlbum = ({ albumId, title, userId, year }: UpdateAlbum) => {
+  return prisma.album.updateMany({
+    data: {
+      ...(title ? { title } : {}),
+      ...(year || year === 0 ? { year } : {}),
+    },
+    where: { id: albumId, userId },
+  });
+};
+
+type DeleteAlbum = {
+  albumId: string;
+  userId: string;
+};
+
+export const deleteAlbum = ({ albumId, userId }: DeleteAlbum) => {
+  return prisma.album.deleteMany({
+    where: { id: albumId, userId },
+  });
+};
