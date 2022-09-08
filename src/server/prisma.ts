@@ -11,6 +11,6 @@ export const prisma =
     log: [],
   });
 
-if (process.env.NODE_ENV !== "production") {
+if (import.meta.env.NODE_ENV !== "production") {
   global.prisma = prisma;
 }
