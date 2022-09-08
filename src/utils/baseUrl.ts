@@ -4,6 +4,8 @@ export const getBaseUrl = (): string => {
     return `https://${import.meta.env.VERCEL_URL}`;
   }
 
+  console.log({ v: import.meta.env.PUBLIC_VERCEL_URL, u: import.meta.url });
+
   if (import.meta.env.PUBLIC_VERCEL_URL) {
     return `https://${import.meta.env.PUBLIC_VERCEL_URL}`;
   }
