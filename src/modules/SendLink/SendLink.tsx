@@ -1,4 +1,5 @@
 import { supabase } from "@server/supabase";
+import { getBaseUrl } from "@utils/baseUrl";
 import clsx from "clsx";
 import { createSignal, JSX, Show } from "solid-js";
 
@@ -14,9 +15,11 @@ export const SendLink = (): JSX.Element => {
   const handleSendLink = async () => {
     setStatus({ error: "", isLoading: true, isSuccess: false });
 
+    const redirectTo = `${getBaseUrl()}/magic-link`;
+
     const result = await supabase.auth.signIn(
       { email: email() },
-      { redirectTo: import.meta.env.PUBLIC_REDIRECT_URL }
+      { redirectTo }
     );
 
     setStatus(
