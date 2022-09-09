@@ -42,10 +42,10 @@ export const getSessionHeaders = (session?: Session | null): HeadersInit => {
       "Set-Cookie",
       cookie.serialize("sbat", session.access_token, { path: "/" }),
     ],
-    [
-      "Set-Cookie",
-      cookie.serialize("sret", session.refresh_token || "", { path: "/" }),
-    ],
+    // [
+    //   "Set-Cookie",
+    //   cookie.serialize("sret", session.refresh_token || "", { path: "/" }),
+    // ],
   ];
 };
 
