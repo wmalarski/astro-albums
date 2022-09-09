@@ -37,21 +37,27 @@ export const getSessionHeaders = (session?: Session | null): HeadersInit => {
     return [];
   }
 
-  console.log({ session });
+  const refreshCookie = cookie.serialize("sret", session.refresh_token || "", {
+    expires: session.expires_at ? new Date(session.expires_at) : undefined,
+    httpOnly: true,
+    maxAge: 86400,
+    path: "/",
+    sameSite: "lax",
+    secure: true,
+  });
+
+  const accessTokenCookie = cookie.serialize("sbat", session.access_token, {
+    expires: session.expires_at ? new Date(session.expires_at) : undefined,
+    httpOnly: true,
+    maxAge: 86400,
+    path: "/",
+    sameSite: "lax",
+    secure: true,
+  });
 
   return [
-    [
-      "Set-Cookie",
-      cookie.serialize("sbat", session.access_token, {
-        expires: session.expires_at ? new Date(session.expires_at) : undefined,
-        path: "/",
-        sameSite: "lax",
-      }),
-    ],
-    // [
-    //   "Set-Cookie",
-    //   cookie.serialize("sret", session.refresh_token || "", { path: "/", sameSite: "lax" }),
-    // ],
+    ["Set-Cookie", refreshCookie],
+    ["Set-Cookie", accessTokenCookie],
   ];
 };
 

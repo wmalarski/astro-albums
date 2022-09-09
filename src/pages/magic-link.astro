@@ -10,8 +10,6 @@
 
     const hashParameters = new Map(vals);
 
-    console.log({ vals });
-
     const data = await fetch("/api/login", {
       method: "POST",
       headers: new Headers({ "Content-Type": "application/json" }),
@@ -22,8 +20,6 @@
         refresh_token: hashParameters.get("refresh_token"),
       }),
     });
-
-    console.log({ data });
 
     if (data.ok) {
       window.location.replace("/");
