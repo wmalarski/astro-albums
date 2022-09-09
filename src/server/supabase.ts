@@ -37,14 +37,20 @@ export const getSessionHeaders = (session?: Session | null): HeadersInit => {
     return [];
   }
 
+  console.log({ session });
+
   return [
     [
       "Set-Cookie",
-      cookie.serialize("sbat", session.access_token, { path: "/" }),
+      cookie.serialize("sbat", session.access_token, {
+        expires: session.expires_at ? new Date(session.expires_at) : undefined,
+        path: "/",
+        sameSite: "lax",
+      }),
     ],
     // [
     //   "Set-Cookie",
-    //   cookie.serialize("sret", session.refresh_token || "", { path: "/" }),
+    //   cookie.serialize("sret", session.refresh_token || "", { path: "/", sameSite: "lax" }),
     // ],
   ];
 };
