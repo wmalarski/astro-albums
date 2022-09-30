@@ -49,7 +49,7 @@ export const getSessionHeaders = (session?: Session | null): HeadersInit => {
   const accessTokenCookie = cookie.serialize("sbat", session.access_token, {
     expires: session.expires_at ? new Date(session.expires_at) : undefined,
     httpOnly: true,
-    maxAge: 86400,
+    maxAge: 604800,
     path: "/",
     sameSite: "lax",
     secure: true,
