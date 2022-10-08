@@ -1,7 +1,9 @@
 ---
+import { changeLanguage } from "i18next";
 import { updateSessionHeaders } from "@server/supabase";
 
-const body = await Astro.request.json();
+changeLanguage("en");
 
+const body = await Astro.request.json();
 updateSessionHeaders(Astro.response.headers, body);
 ---

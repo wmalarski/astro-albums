@@ -1,11 +1,13 @@
 ---
+import { changeLanguage } from "i18next";
 import { getUser } from "@server/supabase";
 import Layout from "../layouts/Layout.astro";
 import { SendLink } from "@modules/SendLink/SendLink";
 import { paths } from "@utils/paths";
 
-const { user } = await getUser(Astro.request);
+changeLanguage("en");
 
+const { user } = await getUser(Astro.request);
 if (user) {
   return Astro.redirect(paths.index());
 }

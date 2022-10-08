@@ -1,4 +1,5 @@
 ---
+import { changeLanguage } from "i18next";
 import Layout from "@layouts/Layout.astro";
 import { getUser, updateSessionHeaders } from "@server/supabase";
 import { findAlbums, findRandomAlbums } from "@server/albums";
@@ -10,14 +11,13 @@ import { z } from "zod";
 import CardGrid from "@components/CardGrid/CardGrid.astro";
 import EmptyPlaceholder from "@components/EmptyPlaceholder/EmptyPlaceholder.astro";
 
-const { user, session } = await getUser(Astro.request);
+changeLanguage("en");
 
+const { user, session } = await getUser(Astro.request);
 if (!user) {
   return Astro.redirect(paths.login);
 }
-
 updateSessionHeaders(Astro.response.headers, session);
-
 const parseResult = z
   .object({
     page: z.number().min(0).int().nullable(),
@@ -27,7 +27,6 @@ const parseResult = z
     page: Astro.url.searchParams.get("page"),
     query: Astro.url.searchParams.get("query"),
   });
-
 if (!parseResult.success) {
   return Astro.redirect(paths.error);
 }
@@ -35,7 +34,6 @@ if (!parseResult.success) {
 const take = 20;
 const page = parseResult.data.page || 0;
 const query = parseResult.data.query || "";
-
 const findContent = async () => {
   if (query) {
     const { albums, count } = await findAlbums({
@@ -52,10 +50,8 @@ const findContent = async () => {
   });
   return { albums, kind: "random" };
 };
-
 const data = await findContent();
 const { albums } = data;
-
 const maxPage = Math.ceil((data.count || 0) / take);
 ---
 

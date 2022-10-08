@@ -6,14 +6,14 @@ import { createSignal, JSX, Show } from "solid-js";
 export const SendLink = (): JSX.Element => {
   const [email, setEmail] = createSignal("");
 
-  const [status, setStatus] = createSignal({
-    error: "",
-    isLoading: false,
-    isSuccess: false,
-  });
+  const [isLoading, setIsLoading] = createSignal(false);
+  const [isSuccess, setIsSuccess] = createSignal(false);
+  const [error, setError] = createSignal("");
 
   const handleSendLink = async () => {
-    setStatus({ error: "", isLoading: true, isSuccess: false });
+    setError("");
+    setIsLoading(true);
+    setIsSuccess(false);
 
     const redirectTo = `${getBaseUrl()}/magic-link`;
 
@@ -22,11 +22,9 @@ export const SendLink = (): JSX.Element => {
       { redirectTo }
     );
 
-    setStatus(
-      result?.error?.message
-        ? { error: result.error?.message, isLoading: false, isSuccess: false }
-        : { error: "", isLoading: false, isSuccess: true }
-    );
+    setError(result?.error?.message || "");
+    setIsLoading(false);
+    setIsSuccess(!result?.error?.message);
   };
 
   return (
@@ -40,17 +38,17 @@ export const SendLink = (): JSX.Element => {
         <div class="w-full">
           <input
             class="input w-full"
-            disabled={status().isLoading}
+            disabled={isLoading()}
             id="email"
             onChange={(event) => setEmail(event.currentTarget.value)}
             placeholder="Email"
             type="text"
             value={email()}
           />
-          <Show when={status().error} keyed>
+          <Show when={error()} keyed>
             {(error) => <div class="text-sm text-red-400">{error}</div>}
           </Show>
-          <Show when={status().isSuccess}>
+          <Show when={isSuccess()}>
             <div class="text-sm text-green-600">
               An email should arrive in your inbox shortly
             </div>
@@ -58,9 +56,9 @@ export const SendLink = (): JSX.Element => {
         </div>
         <div class="card-actions pt-3 relative">
           <button
-            disabled={status().isLoading}
+            disabled={isLoading()}
             class={clsx("btn btn-primary w-full", {
-              loading: status().isLoading,
+              loading: isLoading(),
             })}
             type="button"
             onClick={handleSendLink}

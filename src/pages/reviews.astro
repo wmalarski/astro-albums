@@ -1,4 +1,5 @@
 ---
+import { changeLanguage } from "i18next";
 import Pagination from "@components/Pagination/Pagination.astro";
 import ReviewCard from "@modules/ReviewCard/ReviewCard.astro";
 import Layout from "@layouts/Layout.astro";
@@ -11,14 +12,13 @@ import CardGrid from "@components/CardGrid/CardGrid.astro";
 import EmptyPlaceholder from "@components/EmptyPlaceholder/EmptyPlaceholder.astro";
 import ReviewActivity from "@modules/ReviewActivity/ReviewActivity.astro";
 
-const { user, session } = await getUser(Astro.request);
+changeLanguage("en");
 
+const { user, session } = await getUser(Astro.request);
 if (!user) {
   return Astro.redirect(paths.login);
 }
-
 updateSessionHeaders(Astro.response.headers, session);
-
 const parseResult = z
   .object({
     lower: z.number().min(0).max(10).nullable(),
@@ -34,18 +34,15 @@ const parseResult = z
     upper: Astro.url.searchParams.get("page"),
     order: Astro.url.searchParams.get("order"),
   });
-
 if (!parseResult.success) {
   return Astro.redirect(paths.error);
 }
-
 const take = 20;
 const page = parseResult.data.page || 0;
 const lower = parseResult.data.lower || 0;
 const query = parseResult.data.query || "";
 const upper = parseResult.data.upper || 10;
 const order = parseResult.data.order || "createdAt";
-
 const [{ count, reviews }, { groups }] = await Promise.all([
   findReviews({
     skip: take * page,
@@ -56,7 +53,6 @@ const [{ count, reviews }, { groups }] = await Promise.all([
     userId: user.id,
   }),
 ]);
-
 const maxPage = Math.ceil(count / take);
 ---
 

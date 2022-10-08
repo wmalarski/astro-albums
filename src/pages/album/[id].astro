@@ -1,4 +1,5 @@
 ---
+import { changeLanguage } from "i18next";
 import Layout from "@layouts/Layout.astro";
 import { findAlbum } from "@server/albums";
 import { findReviewsByArtist } from "@server/reviews";
@@ -14,14 +15,13 @@ import CardGrid from "@components/CardGrid/CardGrid.astro";
 import EmptyPlaceholder from "@components/EmptyPlaceholder/EmptyPlaceholder.astro";
 import CoversCarousel from "@components/CoversCarousel/CoversCarousel.astro";
 
-const { user, session } = await getUser(Astro.request);
+changeLanguage("en");
 
+const { user, session } = await getUser(Astro.request);
 if (!user) {
   return Astro.redirect(paths.login);
 }
-
 updateSessionHeaders(Astro.response.headers, session);
-
 const parseResult = z
   .object({
     id: z.string().min(1),
@@ -29,15 +29,11 @@ const parseResult = z
   .safeParse({
     id: Astro.params.id,
   });
-
 if (!parseResult.success) {
   return Astro.redirect(paths.error);
 }
-
 const id = parseResult.data.id;
-
 const { album, albums } = await findAlbum({ id, userId: user.id });
-
 if (!album) {
   return Astro.redirect(paths.notFound);
 }
@@ -47,9 +43,7 @@ const { reviews } = await findReviewsByArtist({
   take: 20,
   userId: user.id,
 });
-
 const header = formatAlbum({ album, artist: album.artist });
-
 const covers = jsonToCoversField(album.covers);
 ---
 
