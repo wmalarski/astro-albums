@@ -17,10 +17,10 @@ export const SendLink = (): JSX.Element => {
 
     const redirectTo = `${getBaseUrl()}/magic-link`;
 
-    const result = await supabase.auth.signIn(
-      { email: email() },
-      { redirectTo }
-    );
+    const result = await supabase.auth.signInWithOtp({
+      email: email(),
+      options: { emailRedirectTo: redirectTo },
+    });
 
     setError(result?.error?.message || "");
     setIsLoading(false);

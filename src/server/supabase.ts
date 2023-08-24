@@ -3,7 +3,7 @@ import cookie from "cookie";
 
 export const supabase = createClient(
   import.meta.env.PUBLIC_SUPABASE_URL,
-  import.meta.env.PUBLIC_SUPABASE_KEY
+  import.meta.env.PUBLIC_SUPABASE_KEY,
 );
 
 export const getUser = async (req: Request) => {
@@ -13,17 +13,19 @@ export const getUser = async (req: Request) => {
     return {};
   }
 
-  const result = await supabase.auth.api.getUser(parsedCookie.sbat);
+  const result = await supabase.auth.getUser(parsedCookie.sbat);
 
-  if (result.user && result.user.role === "authenticated") {
-    return { user: result.user };
+  if (result.data.user && result.data.user?.role === "authenticated") {
+    return { user: result.data.user };
   }
 
   if (!parsedCookie.sret) {
     return {};
   }
 
-  const refresh = await supabase.auth.api.refreshAccessToken(parsedCookie.sret);
+  const refresh = await supabase.auth.refreshSession({
+    refresh_token: parsedCookie.sret,
+  });
 
   if (!refresh.data || !refresh.data.user) {
     return {};
@@ -63,7 +65,7 @@ export const getSessionHeaders = (session?: Session | null): HeadersInit => {
 
 export const updateSessionHeaders = (
   headers: Headers,
-  session?: Session | null
+  session?: Session | null,
 ) => {
   if (!session) {
     return;
