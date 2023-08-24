@@ -4,5 +4,24 @@
   },
   "EmptyPlaceholder": {
     "title": "Nothing here..."
+  },
+  "Navbar": {
+    "name": "Albums",
+    "reviews": "Reviews",
+    "logout": "Logout",
+    "login": "Login"
+  },
+  "AlbumActions": {
+    "AddReviewButton": {
+      "button": "Review"
+    },
+    "DeleteAlbumButton": {
+      "button": "Delete",
+      "cancel": "Cancel",
+      "confirm": "Confirm"
+    },
+    "AlbumForm": {
+      "title": "Title"
+    }
   }
 }

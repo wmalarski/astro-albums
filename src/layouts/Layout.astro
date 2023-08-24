@@ -1,4 +1,5 @@
 ---
+import i18next from "i18next";
 import Navbar from "@components/Navbar/Navbar.astro";
 import type { User } from "@supabase/supabase-js";
 
@@ -11,7 +12,7 @@ const { title, user } = Astro.props;
 ---
 
 <!DOCTYPE html>
-<html lang="en">
+<html lang={i18next.language}>
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width" />

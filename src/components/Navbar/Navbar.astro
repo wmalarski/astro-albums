@@ -1,6 +1,7 @@
 ---
 import type { User } from "@supabase/supabase-js";
 import { paths } from "@utils/paths";
+import { t } from "i18next";
 
 export interface Props {
   user: User | null;
@@ -13,7 +14,7 @@ const isLoggedIn = user !== null;
 <nav class="navbar bg-base-300">
   <div class="flex-1">
     <a href={paths.index()} class="btn btn-ghost normal-case text-xl"
-      >🎵 Albums</a
+      >🎵 {t("Navbar.name")}</a
     >
   </div>
   <div class="flex-none">
@@ -21,16 +22,16 @@ const isLoggedIn = user !== null;
       isLoggedIn ? (
         <ul class="menu menu-horizontal p-0">
           <li>
-            <a href={paths.reviews()}>Reviews</a>
+            <a href={paths.reviews()}>{t("Navbar.reviews")}</a>
           </li>
           <li>
-            <a href={paths.logout}>Log out</a>
+            <a href={paths.logout}>{t("Navbar.logout")}</a>
           </li>
         </ul>
       ) : (
         <ul class="menu menu-horizontal p-0">
           <li>
-            <a href={paths.login}>Log in</a>
+            <a href={paths.login}>{t("Navbar.login")}</a>
           </li>
         </ul>
       )

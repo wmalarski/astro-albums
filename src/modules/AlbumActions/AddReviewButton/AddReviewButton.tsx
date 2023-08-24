@@ -1,4 +1,5 @@
 import { ReviewForm, ReviewFormData } from "@modules/ReviewForm/ReviewForm";
+import { t } from "i18next";
 import { createSignal, JSX, Show } from "solid-js";
 
 type Props = {
@@ -30,7 +31,7 @@ export const AddReviewButton = (props: Props): JSX.Element => {
   return (
     <>
       <button class="btn btn-xs" onClick={() => setIsOpen(true)}>
-        Review
+        {t("AlbumActions.AddReviewButton.button")?.toString()}
       </button>
       <Show when={isOpen()}>
         <div class="absolute inset-0 bg-base-300 p-8 flex flex-col gap-4">

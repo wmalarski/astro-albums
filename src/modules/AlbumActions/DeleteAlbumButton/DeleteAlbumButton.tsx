@@ -1,4 +1,5 @@
 import clsx from "clsx";
+import { t } from "i18next";
 import { createSignal, JSX, Show } from "solid-js";
 
 type Props = {
@@ -35,7 +36,7 @@ export const DeleteAlbumButton = (props: Props): JSX.Element => {
   return (
     <>
       <button class="btn btn-xs" onClick={() => setIsOpen(true)}>
-        Delete
+        {t("AlbumActions.DeleteAlbumButton.button")?.toString()}
       </button>
       <Show when={isOpen()}>
         <div class="absolute inset-0 bg-base-300 p-8 flex flex-col gap-4">
@@ -50,7 +51,7 @@ export const DeleteAlbumButton = (props: Props): JSX.Element => {
               type="button"
               onClick={() => setIsOpen(false)}
             >
-              Cancel
+              {t("AlbumActions.DeleteAlbumButton.cancel")?.toString()}
             </button>
             <button
               disabled={isLoading()}
@@ -58,7 +59,7 @@ export const DeleteAlbumButton = (props: Props): JSX.Element => {
               type="button"
               onClick={handleSubmit}
             >
-              Confirm
+              {t("AlbumActions.DeleteAlbumButton.confirm")?.toString()}
             </button>
           </div>
         </div>
