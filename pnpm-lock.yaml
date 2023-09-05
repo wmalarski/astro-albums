@@ -37,9 +37,6 @@ devDependencies:
   '@astrojs/vercel':
     specifier: 4.0.3
     version: 4.0.3(astro@3.0.8)
-  '@tailwindcss/line-clamp':
-    specifier: 0.4.4
-    version: 0.4.4(tailwindcss@3.3.3)
   '@types/cookie':
     specifier: 0.5.2
     version: 0.5.2
@@ -1220,14 +1217,6 @@ packages:
       - encoding
       - supports-color
     dev: false
-
-  /@tailwindcss/line-clamp@0.4.4(tailwindcss@3.3.3):
-    resolution: {integrity: sha512-5U6SY5z8N42VtrCrKlsTAA35gy2VSyYtHWCsg1H87NU1SXnEfekTVlrga9fzUDrrHcGi2Lb5KenUWb4lRQT5/g==}
-    peerDependencies:
-      tailwindcss: '>=2.0.0 || >=3.0.0 || >=3.0.0-alpha.1'
-    dependencies:
-      tailwindcss: 3.3.3
-    dev: true
 
   /@types/babel__core@7.20.1:
     resolution: {integrity: sha512-aACu/U/omhdk15O4Nfb+fHgH/z3QsfQzpnvRZhYhThms83ZnAOZz7zZAWO7mn2yyNQaA4xTO8GLK3uqFU4bYYw==}

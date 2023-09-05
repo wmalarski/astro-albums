@@ -20,7 +20,6 @@
     "@astrojs/solid-js": "3.0.0",
     "@astrojs/tailwind": "5.0.0",
     "@astrojs/vercel": "4.0.3",
-    "@tailwindcss/line-clamp": "0.4.4",
     "@types/cookie": "0.5.2",
     "@typescript-eslint/eslint-plugin": "6.6.0",
     "@typescript-eslint/parser": "6.6.0",
