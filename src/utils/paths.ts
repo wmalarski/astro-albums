@@ -1,3 +1,5 @@
+import { buildSearchParams } from "./searchParams";
+
 export const paths = {
   album: ({ id }: { id: string }): string => {
     return `/album/${id}`;
@@ -7,13 +9,10 @@ export const paths = {
   },
   error: "/error",
   index: ({ page, query }: { page?: number; query?: string } = {}): string => {
-    const pageParam = page ? { page: `${page}` } : {};
-    const queryParam = query ? { query } : {};
-    const params = { ...pageParam, ...queryParam };
-    return `/?${new URLSearchParams(params)}`;
+    return `/?${buildSearchParams({ page, query })}`;
   },
   login: "/login",
-  logout: "/logout",
+  logout: "/api/logout",
   notFound: "/notFound",
   reviews: ({
     lower,
@@ -26,12 +25,6 @@ export const paths = {
     lower?: number;
     upper?: number;
   } = {}): string => {
-    const params = {
-      ...(page ? { page: `${page}` } : {}),
-      ...(query ? { query } : {}),
-      ...(lower ? { lower: `${lower}` } : {}),
-      ...(upper ? { upper: `${upper}` } : {}),
-    };
-    return `/reviews?${new URLSearchParams(params)}`;
+    return `/reviews?${buildSearchParams({ lower, page, query, upper })}`;
   },
 };

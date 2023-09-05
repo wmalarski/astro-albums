@@ -1,5 +1,6 @@
 import { invalidRequestError } from "@server/errors";
 import { getSessionSchema, updateAuthCookies } from "@server/session";
+import { paths } from "@utils/paths";
 import type { APIRoute } from "astro";
 
 export const GET: APIRoute = async (context): Promise<Response> => {
@@ -13,5 +14,5 @@ export const GET: APIRoute = async (context): Promise<Response> => {
 
   updateAuthCookies(context, parsed.data);
 
-  return new Response(JSON.stringify({}), { status: 200 });
+  return context.redirect(paths.index());
 };
