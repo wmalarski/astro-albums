@@ -21,7 +21,9 @@ export const updateAuthCookies = (
 };
 
 export const removeAuthCookies = (context: APIContext) => {
-  context.cookies.delete(cookieName);
+  context.cookies.delete(cookieName, {
+    path: "/",
+  });
 };
 
 const getSession = async (context: APIContext) => {
