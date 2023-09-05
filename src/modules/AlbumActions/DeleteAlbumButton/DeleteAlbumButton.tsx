@@ -1,6 +1,6 @@
 import clsx from "clsx";
 import { t } from "i18next";
-import { createSignal, JSX, Show } from "solid-js";
+import { Show, createSignal, type JSX } from "solid-js";
 
 type Props = {
   albumId: string;

@@ -1,5 +1,5 @@
 import clsx from "clsx";
-import { createSignal, JSX, Show } from "solid-js";
+import { Show, createSignal, type JSX } from "solid-js";
 
 type Props = {
   reviewId: string;

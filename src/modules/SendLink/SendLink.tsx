@@ -1,5 +1,5 @@
-import { supabase } from "@server/supabase";
 import { getBaseUrl } from "@utils/baseUrl";
+import { getClientSupabase } from "@utils/clientSupabase";
 import clsx from "clsx";
 import { Show, createSignal, type JSX } from "solid-js";
 
@@ -17,6 +17,8 @@ export const SendLink = (): JSX.Element => {
 
     const redirectTo = `${getBaseUrl()}/magic-link`;
 
+    const supabase = await getClientSupabase();
+
     const result = await supabase.auth.signInWithOtp({
       email: email(),
       options: { emailRedirectTo: redirectTo },
@@ -29,12 +31,13 @@ export const SendLink = (): JSX.Element => {
 
   return (
     <div class="card bg-base-300 w-fit">
-      <div class="card-body">
+      <form class="card-body">
         <h3 class="card-title">Login</h3>
-        <div class="pb-2">
+        {/* eslint-disable-next-line jsx-a11y/label-has-associated-control */}
+        <label class="pb-2" for="email">
           To log in, or register. Use the form below to get a magic link to your
           email.
-        </div>
+        </label>
         <div class="w-full">
           <input
             class="input w-full"
@@ -42,11 +45,15 @@ export const SendLink = (): JSX.Element => {
             id="email"
             onChange={(event) => setEmail(event.currentTarget.value)}
             placeholder="Email"
-            type="text"
+            type="email"
             value={email()}
           />
           <Show when={error()} keyed>
-            {(error) => <div class="text-sm text-red-400">{error}</div>}
+            {(error) => (
+              <span role="alert" class="text-sm text-red-400">
+                {error}
+              </span>
+            )}
           </Show>
           <Show when={isSuccess()}>
             <div class="text-sm text-green-600">
@@ -66,7 +73,7 @@ export const SendLink = (): JSX.Element => {
             Send magic link to your email!
           </button>
         </div>
-      </div>
+      </form>
     </div>
   );
 };

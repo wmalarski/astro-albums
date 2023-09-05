@@ -1,5 +1,8 @@
-import { ReviewForm, ReviewFormData } from "@modules/ReviewForm/ReviewForm";
-import { createSignal, JSX, Show } from "solid-js";
+import {
+  ReviewForm,
+  type ReviewFormData,
+} from "@modules/ReviewForm/ReviewForm";
+import { Show, createSignal, type JSX } from "solid-js";
 
 type Props = {
   reviewId: string;

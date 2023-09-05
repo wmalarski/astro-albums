@@ -1,5 +1,5 @@
-import { createSignal, JSX, Show } from "solid-js";
-import { AlbumForm, AlbumFormData } from "./AlbumForm/AlbumForm";
+import { Show, createSignal, type JSX } from "solid-js";
+import { AlbumForm, type AlbumFormData } from "./AlbumForm/AlbumForm";
 
 type Props = {
   albumId: string;

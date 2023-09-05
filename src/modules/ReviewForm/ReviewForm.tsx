@@ -1,6 +1,6 @@
 /* eslint-disable jsx-a11y/label-has-associated-control */
 import clsx from "clsx";
-import { createEffect, createSignal, JSX, Show } from "solid-js";
+import { Show, createEffect, createSignal, type JSX } from "solid-js";
 
 export type ReviewFormData = {
   text: string;

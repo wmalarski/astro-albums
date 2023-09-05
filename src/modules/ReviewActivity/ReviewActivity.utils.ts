@@ -8,7 +8,7 @@ export const getCountItems = (groups: CountReviewsByDatesResult[]) => {
 
   const maxCount = groups.reduce(
     (prev, curr) => Math.max(prev, Number(curr.count)),
-    0
+    0,
   );
 
   const weekStart = new Date();
@@ -30,7 +30,7 @@ export const getCountItems = (groups: CountReviewsByDatesResult[]) => {
         const suffix = Math.floor((count / maxCount) * 10);
         return { count, date: copy, suffix };
       })
-      .reverse()
+      .reverse(),
   );
 
   const reduced = rows[0]?.reduce<
