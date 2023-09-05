@@ -28,7 +28,7 @@ export const findRandomAlbums = async ({ take, userId }: FindRandomAlbums) => {
 
 const addReviewCounts = async <T extends { id: string }>(
   albums: T[],
-  userId: string
+  userId: string,
 ) => {
   const albumIds = albums.map((album) => album.id);
 

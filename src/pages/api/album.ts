@@ -1,17 +1,17 @@
 import { deleteAlbum, updateAlbum } from "@server/albums";
 import { invalidRequestError, unauthorizedError } from "@server/errors";
-import { getSessionHeaders, getUser } from "@server/supabase";
-import type { AstroApiRequest } from "@server/types";
+import { getSessionHeaders, getUser } from "@server/session";
+import type { APIRoute } from "astro";
 import { z } from "zod";
 
-export const post = async ({ request }: AstroApiRequest): Promise<Response> => {
-  const { user, session } = await getUser(request);
+export const POST: APIRoute = async (event): Promise<Response> => {
+  const { user, session } = await getUser(event.request);
 
   if (!user) {
     return unauthorizedError();
   }
 
-  const body = await request.json();
+  const body = await event.request.json();
 
   const parsed = z
     .object({
@@ -37,14 +37,14 @@ export const post = async ({ request }: AstroApiRequest): Promise<Response> => {
   });
 };
 
-export const del = async ({ request }: AstroApiRequest): Promise<Response> => {
-  const { user, session } = await getUser(request);
+export const DELETE: APIRoute = async (event): Promise<Response> => {
+  const { user, session } = await getUser(event.request);
 
   if (!user) {
     return unauthorizedError();
   }
 
-  const body = await request.json();
+  const body = await event.request.json();
 
   const parsed = z.object({ albumId: z.string() }).safeParse(body);
 
