@@ -12,9 +12,7 @@
     "lint": "eslint src --fix --ext .tsx,.ts",
     "prettier": "prettier 'src/**/*.(ts|tsx|astro)' --write",
     "tsc": "tsc --noEmit",
-    "code-check": "yarn lint --max-warnings=0 && yarn tsc",
-    "=== CODEGEN ===": "",
-    "i18next": "astro-i18next generate"
+    "code-check": "yarn lint --max-warnings=0 && yarn tsc"
   },
   "devDependencies": {
     "@astrojs/solid-js": "3.0.0",
@@ -23,7 +21,6 @@
     "@typescript-eslint/eslint-plugin": "6.6.0",
     "@typescript-eslint/parser": "6.6.0",
     "astro": "3.0.8",
-    "astro-i18next": "1.0.0-beta.21",
     "eslint": "8.48.0",
     "eslint-config-prettier": "9.0.0",
     "eslint-import-resolver-node": "0.3.9",
@@ -34,7 +31,6 @@
     "eslint-plugin-promise": "6.1.1",
     "eslint-plugin-solid": "0.13.0",
     "eslint-plugin-sort-keys-fix": "1.1.2",
-    "i18next-fs-backend": "2.1.5",
     "plop": "4.0.0",
     "prettier": "3.0.3",
     "prettier-plugin-astro": "0.12.0",

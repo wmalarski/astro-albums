@@ -1,5 +1,4 @@
 ---
-import { changeLanguage } from "i18next";
 import Pagination from "@components/Pagination/Pagination.astro";
 import ReviewCard from "@modules/ReviewCard/ReviewCard.astro";
 import Layout from "@layouts/Layout.astro";
@@ -21,8 +20,6 @@ import {
   string,
   union,
 } from "valibot";
-
-changeLanguage("en");
 
 const session = Astro.locals.session;
 

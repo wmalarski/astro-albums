@@ -2,15 +2,18 @@ import {
   ReviewForm,
   type ReviewFormData,
 } from "@modules/ReviewForm/ReviewForm";
-import { t } from "i18next";
+import { useClientTranslations, type Language } from "@utils/i18n";
 import { Show, createSignal, type JSX } from "solid-js";
 
 type Props = {
   albumId: string;
   header: string;
+  lang: Language;
 };
 
 export const AddReviewButton = (props: Props): JSX.Element => {
+  const t = useClientTranslations(() => props.lang);
+
   const [isOpen, setIsOpen] = createSignal(false);
 
   const [isLoading, setIsLoading] = createSignal(false);

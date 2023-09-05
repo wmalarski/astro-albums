@@ -1,7 +1,7 @@
 ---
 import type { User } from "@supabase/supabase-js";
+import { getLangFromUrl, useTranslations } from "@utils/i18n";
 import { paths } from "@utils/paths";
-import { t } from "i18next";
 
 export interface Props {
   user: User | null;
@@ -9,6 +9,9 @@ export interface Props {
 
 const { user } = Astro.props;
 const isLoggedIn = user !== null;
+
+const lang = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
 ---
 
 <nav class="navbar bg-base-300">

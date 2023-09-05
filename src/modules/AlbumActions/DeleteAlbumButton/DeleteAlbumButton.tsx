@@ -1,19 +1,21 @@
+import { useClientTranslations, type Language } from "@utils/i18n";
 import clsx from "clsx";
-import { t } from "i18next";
 import { Show, createSignal, type JSX } from "solid-js";
 
 type Props = {
   albumId: string;
   header: string;
+  lang: Language;
   redirect?: string | undefined;
 };
 
 export const DeleteAlbumButton = (props: Props): JSX.Element => {
+  const t = useClientTranslations(() => props.lang);
+
   const [isOpen, setIsOpen] = createSignal(false);
 
   const [isLoading, setIsLoading] = createSignal(false);
   const [error, setError] = createSignal("");
-
   const handleSubmit = async () => {
     setError("");
     setIsLoading(true);

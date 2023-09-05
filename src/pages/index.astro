@@ -1,5 +1,4 @@
 ---
-import { changeLanguage } from "i18next";
 import Layout from "@layouts/Layout.astro";
 import { findAlbums, findRandomAlbums } from "@server/albums";
 import AlbumCard from "@modules/AlbumCard/AlbumCard.astro";
@@ -17,8 +16,6 @@ import {
   safeParseAsync,
   string,
 } from "valibot";
-
-changeLanguage("en");
 
 const session = Astro.locals.session;
 

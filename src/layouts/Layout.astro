@@ -1,7 +1,7 @@
 ---
-import i18next from "i18next";
 import Navbar from "@components/Navbar/Navbar.astro";
 import type { User } from "@supabase/supabase-js";
+import { getLangFromUrl } from "@utils/i18n";
 
 export interface Props {
   title: string;
@@ -9,10 +9,12 @@ export interface Props {
 }
 
 const { title, user } = Astro.props;
+
+const lang = getLangFromUrl(Astro.url);
 ---
 
-<!DOCTYPE html>
-<html lang={i18next.language}>
+<!doctype html>
+<html lang={lang}>
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width" />

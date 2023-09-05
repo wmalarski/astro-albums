@@ -1,5 +1,4 @@
 ---
-import { changeLanguage } from "i18next";
 import Layout from "@layouts/Layout.astro";
 import { findAlbum } from "@server/albums";
 import { findReviewsByArtist } from "@server/reviews";
@@ -13,8 +12,6 @@ import CardGrid from "@components/CardGrid/CardGrid.astro";
 import EmptyPlaceholder from "@components/EmptyPlaceholder/EmptyPlaceholder.astro";
 import CoversCarousel from "@components/CoversCarousel/CoversCarousel.astro";
 import { minLength, object, safeParseAsync, string } from "valibot";
-
-changeLanguage("en");
 
 const session = Astro.locals.session;
 
