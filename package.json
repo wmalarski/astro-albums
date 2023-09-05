@@ -8,6 +8,7 @@
     "build": "astro build",
     "preview": "astro preview",
     "astro": "astro",
+    "postinstall": "prisma generate",
     "=== LINTERS ===": "",
     "lint": "eslint src --fix --ext .tsx,.ts",
     "prettier": "prettier 'src/**/*.(ts|tsx|astro)' --write",
