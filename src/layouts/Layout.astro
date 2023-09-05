@@ -2,6 +2,7 @@
 import Navbar from "@components/Navbar/Navbar.astro";
 import type { User } from "@supabase/supabase-js";
 import { getLangFromUrl } from "@utils/i18n";
+import { ViewTransitions } from "astro:transitions";
 
 export interface Props {
   title: string;
@@ -21,6 +22,7 @@ const lang = getLangFromUrl(Astro.url);
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="generator" content={Astro.generator} />
     <title>{title}</title>
+    <ViewTransitions />
   </head>
   <body>
     <Navbar user={user} />

@@ -12,7 +12,7 @@ const showCover = (covers || []).length > 0;
 {
   showCover && (
     <div class="carousel rounded-box">
-      {covers?.map((cover) => (
+      {covers?.slice(1)?.map((cover) => (
         <div class="carousel-item">
           <img src={cover} alt={header} />
         </div>
