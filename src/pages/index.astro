@@ -1,7 +1,6 @@
 ---
 import { changeLanguage } from "i18next";
 import Layout from "@layouts/Layout.astro";
-import { getUser, updateSessionHeaders } from "@server/supabase";
 import { findAlbums, findRandomAlbums } from "@server/albums";
 import AlbumCard from "@modules/AlbumCard/AlbumCard.astro";
 import { AlbumSearch } from "@modules/AlbumSearch/AlbumSearch";
@@ -13,11 +12,12 @@ import EmptyPlaceholder from "@components/EmptyPlaceholder/EmptyPlaceholder.astr
 
 changeLanguage("en");
 
-const { user, session } = await getUser(Astro.request);
-if (!user) {
+const session = Astro.locals.session;
+
+if (!session) {
   return Astro.redirect(paths.login);
 }
-updateSessionHeaders(Astro.response.headers, session);
+
 const parseResult = z
   .object({
     page: z.number().min(0).int().nullable(),
@@ -34,28 +34,32 @@ if (!parseResult.success) {
 const take = 20;
 const page = parseResult.data.page || 0;
 const query = parseResult.data.query || "";
+
 const findContent = async () => {
   if (query) {
     const { albums, count } = await findAlbums({
       query,
       skip: take * page,
       take,
-      userId: user.id,
+      userId: session.user.id,
     });
     return { albums, count, kind: "query" };
   }
   const { albums } = await findRandomAlbums({
     take: take,
-    userId: user.id,
+    userId: session.user.id,
   });
   return { albums, kind: "random" };
 };
+
 const data = await findContent();
+
 const { albums } = data;
+
 const maxPage = Math.ceil((data.count || 0) / take);
 ---
 
-<Layout title="Welcome to Astro." user={user}>
+<Layout title="Welcome to Astro." user={session.user}>
   <main class="p-4 flex flex-col gap-4">
     <div class="card bg-base-300 card-compact">
       <div class="card-body flex gap-2">
@@ -69,7 +73,7 @@ const maxPage = Math.ceil((data.count || 0) / take);
             album={album}
             artist={album.artist}
             reviews={album.reviews}
-            userId={user.id}
+            userId={session.user.id}
           />
         ))
       }

@@ -3,7 +3,6 @@ import { changeLanguage } from "i18next";
 import Layout from "@layouts/Layout.astro";
 import { findAlbum } from "@server/albums";
 import { findReviewsByArtist } from "@server/reviews";
-import { getUser, updateSessionHeaders } from "@server/supabase";
 import { jsonToCoversField } from "@server/coverArt";
 import { formatAlbum } from "@utils/format";
 import { z } from "zod";
@@ -17,37 +16,39 @@ import CoversCarousel from "@components/CoversCarousel/CoversCarousel.astro";
 
 changeLanguage("en");
 
-const { user, session } = await getUser(Astro.request);
-if (!user) {
+const session = Astro.locals.session;
+
+if (!session) {
   return Astro.redirect(paths.login);
 }
-updateSessionHeaders(Astro.response.headers, session);
+
 const parseResult = z
-  .object({
-    id: z.string().min(1),
-  })
-  .safeParse({
-    id: Astro.params.id,
-  });
+  .object({ id: z.string().min(1) })
+  .safeParse({ id: Astro.params.id });
+
 if (!parseResult.success) {
   return Astro.redirect(paths.error);
 }
+
 const id = parseResult.data.id;
-const { album, albums } = await findAlbum({ id, userId: user.id });
+const { album, albums } = await findAlbum({ id, userId: session.user.id });
+
 if (!album) {
   return Astro.redirect(paths.notFound);
 }
+
 const { reviews } = await findReviewsByArtist({
   artistId: album.artistId,
   skip: 0,
   take: 20,
-  userId: user.id,
+  userId: session.user.id,
 });
+
 const header = formatAlbum({ album, artist: album.artist });
 const covers = jsonToCoversField(album.covers);
 ---
 
-<Layout title={`${header} - Astro Albums`} user={user}>
+<Layout title={`${header} - Astro Albums`} user={session.user}>
   <main class="p-4 flex flex-col gap-4">
     <h2 class="text-xl font-bold">Album</h2>
     <article class="card card-side bg-base-300 w-full min-h-[250px]">
@@ -60,7 +61,7 @@ const covers = jsonToCoversField(album.covers);
           album={album}
           artist={album.artist}
           deleteRedirect={paths.index()}
-          userId={user.id}
+          userId={session.user.id}
         />
       </div>
     </article>
@@ -72,7 +73,7 @@ const covers = jsonToCoversField(album.covers);
             album={entry}
             artist={album.artist}
             reviews={entry.reviews}
-            userId={user.id}
+            userId={session.user.id}
           />
         ))
       }
@@ -86,7 +87,7 @@ const covers = jsonToCoversField(album.covers);
             review={entry}
             album={entry.album}
             artist={album.artist}
-            userId={user.id}
+            userId={session.user.id}
           />
         ))
       }

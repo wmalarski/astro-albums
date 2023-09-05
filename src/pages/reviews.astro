@@ -5,7 +5,6 @@ import ReviewCard from "@modules/ReviewCard/ReviewCard.astro";
 import Layout from "@layouts/Layout.astro";
 import { countReviewsByDates, findReviews } from "@server/reviews";
 import { paths } from "@utils/paths";
-import { getUser, updateSessionHeaders } from "@server/supabase";
 import { z } from "zod";
 import { ReviewSearch } from "@modules/ReviewSearch/ReviewSearch";
 import CardGrid from "@components/CardGrid/CardGrid.astro";
@@ -14,11 +13,12 @@ import ReviewActivity from "@modules/ReviewActivity/ReviewActivity.astro";
 
 changeLanguage("en");
 
-const { user, session } = await getUser(Astro.request);
-if (!user) {
+const session = Astro.locals.session;
+
+if (!session) {
   return Astro.redirect(paths.login);
 }
-updateSessionHeaders(Astro.response.headers, session);
+
 const parseResult = z
   .object({
     lower: z.number().min(0).max(10).nullable(),
@@ -34,29 +34,33 @@ const parseResult = z
     upper: Astro.url.searchParams.get("page"),
     order: Astro.url.searchParams.get("order"),
   });
+
 if (!parseResult.success) {
   return Astro.redirect(paths.error);
 }
+
 const take = 20;
 const page = parseResult.data.page || 0;
 const lower = parseResult.data.lower || 0;
 const query = parseResult.data.query || "";
 const upper = parseResult.data.upper || 10;
 const order = parseResult.data.order || "createdAt";
+
 const [{ count, reviews }, { groups }] = await Promise.all([
   findReviews({
     skip: take * page,
     take,
-    userId: user.id,
+    userId: session.user.id,
   }),
   countReviewsByDates({
-    userId: user.id,
+    userId: session.user.id,
   }),
 ]);
+
 const maxPage = Math.ceil(count / take);
 ---
 
-<Layout title="Reviews" user={user}>
+<Layout title="Reviews" user={session.user}>
   <main class="p-4 flex flex-col gap-4">
     <div class="card bg-base-300 card-compact">
       <div class="card-body">
@@ -81,7 +85,7 @@ const maxPage = Math.ceil(count / take);
             album={review.album}
             artist={review.album.artist}
             review={review}
-            userId={user.id}
+            userId={session.user.id}
           />
         ))
       }

@@ -1,7 +1,7 @@
 import { supabase } from "@server/supabase";
 import { getBaseUrl } from "@utils/baseUrl";
 import clsx from "clsx";
-import { createSignal, JSX, Show } from "solid-js";
+import { Show, createSignal, type JSX } from "solid-js";
 
 export const SendLink = (): JSX.Element => {
   const [email, setEmail] = createSignal("");

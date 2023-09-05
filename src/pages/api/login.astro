@@ -1,8 +1,0 @@
----
-import { updateSessionHeaders } from "@server/session";
-
-// changeLanguage("en");
-
-const body = await Astro.request.json();
-updateSessionHeaders(Astro.response.headers, body);
----
