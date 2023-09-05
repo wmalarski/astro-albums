@@ -1,7 +1,7 @@
 import { deleteAlbum, updateAlbum } from "@server/albums";
 import { invalidRequestError, unauthorizedError } from "@server/errors";
 import type { APIRoute } from "astro";
-import { z } from "zod";
+import { number, object, optional, safeParseAsync, string } from "valibot";
 
 export const POST: APIRoute = async (context): Promise<Response> => {
   const session = context.locals.session;
@@ -12,13 +12,14 @@ export const POST: APIRoute = async (context): Promise<Response> => {
 
   const body = await context.request.json();
 
-  const parsed = z
-    .object({
-      albumId: z.string(),
-      title: z.string().optional(),
-      year: z.number().optional(),
-    })
-    .safeParse(body);
+  const parsed = await safeParseAsync(
+    object({
+      albumId: string(),
+      title: optional(string()),
+      year: optional(number()),
+    }),
+    body,
+  );
 
   if (!parsed.success) {
     return invalidRequestError({ text: parsed.error.message });
@@ -44,7 +45,7 @@ export const DELETE: APIRoute = async (context): Promise<Response> => {
 
   const body = await context.request.json();
 
-  const parsed = z.object({ albumId: z.string() }).safeParse(body);
+  const parsed = await safeParseAsync(object({ albumId: string() }), body);
 
   if (!parsed.success) {
     return invalidRequestError({ text: parsed.error.message });

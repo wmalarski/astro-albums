@@ -6,9 +6,17 @@ import AlbumCard from "@modules/AlbumCard/AlbumCard.astro";
 import { AlbumSearch } from "@modules/AlbumSearch/AlbumSearch";
 import Pagination from "@components/Pagination/Pagination.astro";
 import { paths } from "@utils/paths";
-import { z } from "zod";
 import CardGrid from "@components/CardGrid/CardGrid.astro";
 import EmptyPlaceholder from "@components/EmptyPlaceholder/EmptyPlaceholder.astro";
+import {
+  integer,
+  minValue,
+  number,
+  object,
+  optional,
+  safeParseAsync,
+  string,
+} from "valibot";
 
 changeLanguage("en");
 
@@ -18,22 +26,21 @@ if (!session) {
   return Astro.redirect(paths.login);
 }
 
-const parseResult = z
-  .object({
-    page: z.number().min(0).int().nullable(),
-    query: z.string().nullable(),
-  })
-  .safeParse({
-    page: Astro.url.searchParams.get("page"),
-    query: Astro.url.searchParams.get("query"),
-  });
+const parseResult = await safeParseAsync(
+  object({
+    page: optional(number([minValue(0), integer()])),
+    query: optional(string()),
+  }),
+  Object.fromEntries(Astro.url.searchParams.entries()),
+);
+
 if (!parseResult.success) {
   return Astro.redirect(paths.error);
 }
 
 const take = 20;
-const page = parseResult.data.page || 0;
-const query = parseResult.data.query || "";
+const page = parseResult.output.page || 0;
+const query = parseResult.output.query || "";
 
 const findContent = async () => {
   if (query) {
@@ -45,10 +52,12 @@ const findContent = async () => {
     });
     return { albums, count, kind: "query" };
   }
+
   const { albums } = await findRandomAlbums({
     take: take,
     userId: session.user.id,
   });
+
   return { albums, kind: "random" };
 };
 

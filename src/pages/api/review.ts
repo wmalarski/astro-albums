@@ -1,7 +1,15 @@
 import { invalidRequestError, unauthorizedError } from "@server/errors";
 import { createReview, deleteReview, updateReview } from "@server/reviews";
 import type { APIRoute } from "astro";
-import { z } from "zod";
+import {
+  maxValue,
+  minValue,
+  number,
+  object,
+  optional,
+  safeParseAsync,
+  string,
+} from "valibot";
 
 export const PUT: APIRoute = async (context): Promise<Response> => {
   const session = context.locals.session;
@@ -12,20 +20,21 @@ export const PUT: APIRoute = async (context): Promise<Response> => {
 
   const body = await context.request.json();
 
-  const parsed = z
-    .object({
-      albumId: z.string(),
-      rate: z.number().min(0).max(10),
-      text: z.string(),
-    })
-    .safeParse(body);
+  const parsed = await safeParseAsync(
+    object({
+      albumId: string(),
+      rate: number([minValue(0), maxValue(10)]),
+      text: string(),
+    }),
+    body,
+  );
 
   if (!parsed.success) {
-    return invalidRequestError({ text: parsed.error.message });
+    return invalidRequestError({ text: parsed.issues[0].message });
   }
 
   const review = await createReview({
-    ...parsed.data,
+    ...parsed.output,
     userId: session.user.id,
   });
 
@@ -43,20 +52,21 @@ export const POST: APIRoute = async (context): Promise<Response> => {
 
   const body = await context.request.json();
 
-  const parsed = z
-    .object({
-      rate: z.number().min(0).max(10).optional(),
-      reviewId: z.string(),
-      text: z.string().optional(),
-    })
-    .safeParse(body);
+  const parsed = await safeParseAsync(
+    object({
+      rate: optional(number([minValue(0), maxValue(10)])),
+      reviewId: string(),
+      text: optional(string()),
+    }),
+    body,
+  );
 
   if (!parsed.success) {
-    return invalidRequestError({ text: parsed.error.message });
+    return invalidRequestError({ text: parsed.issues[0].message });
   }
 
   const result = await updateReview({
-    ...parsed.data,
+    ...parsed.output,
     userId: session.user.id,
   });
 
@@ -78,14 +88,14 @@ export const DELETE: APIRoute = async (context): Promise<Response> => {
 
   const body = await context.request.json();
 
-  const parsed = z.object({ reviewId: z.string() }).safeParse(body);
+  const parsed = await safeParseAsync(object({ reviewId: string() }), body);
 
   if (!parsed.success) {
-    return invalidRequestError({ text: parsed.error.message });
+    return invalidRequestError({ text: parsed.issues[0].message });
   }
 
   const result = await deleteReview({
-    ...parsed.data,
+    ...parsed.output,
     userId: session.user.id,
   });
 

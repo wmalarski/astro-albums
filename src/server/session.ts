@@ -1,11 +1,11 @@
 import type { Session, SupabaseClient } from "@supabase/supabase-js";
 import type { APIContext } from "astro";
-import { z } from "zod";
+import { object, safeParseAsync, string } from "valibot";
 
 const cookieName = "_session";
 
 export const getSessionSchema = () => {
-  return z.object({ access_token: z.string(), refresh_token: z.string() });
+  return object({ access_token: string(), refresh_token: string() });
 };
 
 export const updateAuthCookies = (
@@ -27,21 +27,21 @@ export const removeAuthCookies = (context: APIContext) => {
 const getSession = async (context: APIContext) => {
   const cookieHeader = context.cookies.get(cookieName)?.json();
 
-  const parsed = await getSessionSchema().safeParseAsync(cookieHeader);
+  const parsed = await safeParseAsync(getSessionSchema(), cookieHeader);
 
   if (!parsed.success) {
     return null;
   }
 
   const supabase: SupabaseClient = context.locals.supabase;
-  const sessionResponse = await supabase.auth.setSession(parsed.data);
+  const sessionResponse = await supabase.auth.setSession(parsed.output);
 
   if (sessionResponse.data.session) {
     return sessionResponse.data.session;
   }
 
   const refreshResponse = await supabase.auth.refreshSession({
-    refresh_token: parsed.data.refresh_token,
+    refresh_token: parsed.output.refresh_token,
   });
 
   if (!refreshResponse.data.session) {

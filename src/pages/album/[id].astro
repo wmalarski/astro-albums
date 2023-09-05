@@ -5,7 +5,6 @@ import { findAlbum } from "@server/albums";
 import { findReviewsByArtist } from "@server/reviews";
 import { jsonToCoversField } from "@server/coverArt";
 import { formatAlbum } from "@utils/format";
-import { z } from "zod";
 import { paths } from "@utils/paths";
 import AlbumActions from "@modules/AlbumActions/AlbumActions.astro";
 import AlbumCard from "@modules/AlbumCard/AlbumCard.astro";
@@ -13,6 +12,7 @@ import ReviewCard from "@modules/ReviewCard/ReviewCard.astro";
 import CardGrid from "@components/CardGrid/CardGrid.astro";
 import EmptyPlaceholder from "@components/EmptyPlaceholder/EmptyPlaceholder.astro";
 import CoversCarousel from "@components/CoversCarousel/CoversCarousel.astro";
+import { minLength, object, safeParseAsync, string } from "valibot";
 
 changeLanguage("en");
 
@@ -22,15 +22,16 @@ if (!session) {
   return Astro.redirect(paths.login);
 }
 
-const parseResult = z
-  .object({ id: z.string().min(1) })
-  .safeParse({ id: Astro.params.id });
+const parseResult = await safeParseAsync(
+  object({ id: string([minLength(1)]) }),
+  Astro.params,
+);
 
 if (!parseResult.success) {
   return Astro.redirect(paths.error);
 }
 
-const id = parseResult.data.id;
+const id = parseResult.output.id;
 const { album, albums } = await findAlbum({ id, userId: session.user.id });
 
 if (!album) {

@@ -7,6 +7,7 @@
     "sbat",
     "sret",
     "supabase",
-    "tsconfigs"
+    "tsconfigs",
+    "valibot"
   ]
 }

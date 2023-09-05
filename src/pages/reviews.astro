@@ -5,11 +5,22 @@ import ReviewCard from "@modules/ReviewCard/ReviewCard.astro";
 import Layout from "@layouts/Layout.astro";
 import { countReviewsByDates, findReviews } from "@server/reviews";
 import { paths } from "@utils/paths";
-import { z } from "zod";
 import { ReviewSearch } from "@modules/ReviewSearch/ReviewSearch";
 import CardGrid from "@components/CardGrid/CardGrid.astro";
 import EmptyPlaceholder from "@components/EmptyPlaceholder/EmptyPlaceholder.astro";
 import ReviewActivity from "@modules/ReviewActivity/ReviewActivity.astro";
+import {
+  integer,
+  literal,
+  maxValue,
+  minValue,
+  number,
+  object,
+  optional,
+  safeParseAsync,
+  string,
+  union,
+} from "valibot";
 
 changeLanguage("en");
 
@@ -19,32 +30,27 @@ if (!session) {
   return Astro.redirect(paths.login);
 }
 
-const parseResult = z
-  .object({
-    lower: z.number().min(0).max(10).nullable(),
-    page: z.number().min(0).int().nullable(),
-    query: z.string().nullable(),
-    upper: z.number().min(0).max(10).nullable(),
-    order: z.union([z.literal("createdAt"), z.literal("rate")]).nullable(),
-  })
-  .safeParse({
-    lower: Astro.url.searchParams.get("page"),
-    page: Astro.url.searchParams.get("page"),
-    query: Astro.url.searchParams.get("query"),
-    upper: Astro.url.searchParams.get("page"),
-    order: Astro.url.searchParams.get("order"),
-  });
+const parseResult = await safeParseAsync(
+  object({
+    lower: optional(number([minValue(0), maxValue(10)])),
+    page: optional(number([minValue(0), integer()])),
+    query: optional(string()),
+    upper: optional(number([minValue(0), maxValue(10)])),
+    order: optional(union([literal("createdAt"), literal("rate")])),
+  }),
+  Object.fromEntries(Astro.url.searchParams.entries()),
+);
 
 if (!parseResult.success) {
   return Astro.redirect(paths.error);
 }
 
 const take = 20;
-const page = parseResult.data.page || 0;
-const lower = parseResult.data.lower || 0;
-const query = parseResult.data.query || "";
-const upper = parseResult.data.upper || 10;
-const order = parseResult.data.order || "createdAt";
+const page = parseResult.output.page || 0;
+const lower = parseResult.output.lower || 0;
+const query = parseResult.output.query || "";
+const upper = parseResult.output.upper || 10;
+const order = parseResult.output.order || "createdAt";
 
 const [{ count, reviews }, { groups }] = await Promise.all([
   findReviews({
