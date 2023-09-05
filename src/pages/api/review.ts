@@ -4,14 +4,14 @@ import { getSessionHeaders, getUser } from "@server/session";
 import type { APIRoute } from "astro";
 import { z } from "zod";
 
-export const PUT: APIRoute = async (event): Promise<Response> => {
-  const { user, session } = await getUser(event.request);
+export const PUT: APIRoute = async (context): Promise<Response> => {
+  const { user, session } = await getUser(context.request);
 
   if (!user) {
     return unauthorizedError();
   }
 
-  const body = await event.request.json();
+  const body = await context.request.json();
 
   const parsed = z
     .object({
@@ -36,14 +36,14 @@ export const PUT: APIRoute = async (event): Promise<Response> => {
   });
 };
 
-export const POST: APIRoute = async (event): Promise<Response> => {
-  const { user, session } = await getUser(event.request);
+export const POST: APIRoute = async (context): Promise<Response> => {
+  const { user, session } = await getUser(context.request);
 
   if (!user) {
     return unauthorizedError();
   }
 
-  const body = await event.request.json();
+  const body = await context.request.json();
 
   const parsed = z
     .object({
@@ -69,14 +69,14 @@ export const POST: APIRoute = async (event): Promise<Response> => {
   });
 };
 
-export const DELETE: APIRoute = async (event): Promise<Response> => {
-  const { user, session } = await getUser(event.request);
+export const DELETE: APIRoute = async (context): Promise<Response> => {
+  const { user, session } = await getUser(context.request);
 
   if (!user) {
     return unauthorizedError();
   }
 
-  const body = await event.request.json();
+  const body = await context.request.json();
 
   const parsed = z.object({ reviewId: z.string() }).safeParse(body);
 
