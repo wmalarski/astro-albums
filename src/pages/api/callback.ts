@@ -3,7 +3,7 @@ import { getSessionSchema, updateAuthCookies } from "@server/session";
 import { paths } from "@utils/paths";
 import type { APIRoute } from "astro";
 
-export const GET: APIRoute = async (context): Promise<Response> => {
+export const POST: APIRoute = async (context): Promise<Response> => {
   const body = await context.request.json();
 
   const parsed = await getSessionSchema().safeParseAsync(body);

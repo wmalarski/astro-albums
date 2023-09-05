@@ -1,6 +1,5 @@
 import type { Session, SupabaseClient } from "@supabase/supabase-js";
 import type { APIContext } from "astro";
-import cookie from "cookie";
 import { z } from "zod";
 
 const cookieName = "_session";
@@ -26,15 +25,9 @@ export const removeAuthCookies = (context: APIContext) => {
 };
 
 const getSession = async (context: APIContext) => {
-  const cookieHeader = context.request.headers.get("cookie");
+  const cookieHeader = context.cookies.get(cookieName)?.json();
 
-  if (!cookieHeader) {
-    return null;
-  }
-
-  const parsed = await getSessionSchema().safeParseAsync(
-    cookie.parse(cookieHeader),
-  );
+  const parsed = await getSessionSchema().safeParseAsync(cookieHeader);
 
   if (!parsed.success) {
     return null;

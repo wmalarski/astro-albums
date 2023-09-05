@@ -14,9 +14,6 @@ dependencies:
   clsx:
     specifier: 2.0.0
     version: 2.0.0
-  cookie:
-    specifier: 0.5.0
-    version: 0.5.0
   daisyui:
     specifier: 3.6.5
     version: 3.6.5
@@ -37,9 +34,6 @@ devDependencies:
   '@astrojs/vercel':
     specifier: 4.0.3
     version: 4.0.3(astro@3.0.8)
-  '@types/cookie':
-    specifier: 0.5.2
-    version: 0.5.2
   '@typescript-eslint/eslint-plugin':
     specifier: 6.6.0
     version: 6.6.0(@typescript-eslint/parser@6.6.0)(eslint@8.48.0)(typescript@5.2.2)
@@ -1247,10 +1241,6 @@ packages:
       '@babel/types': 7.22.15
     dev: true
 
-  /@types/cookie@0.5.2:
-    resolution: {integrity: sha512-DBpRoJGKJZn7RY92dPrgoMew8xCWc2P71beqsjyhEI/Ds9mOyVmBwtekyfhpwFIVt1WrxTonFifiOZ62V8CnNA==}
-    dev: true
-
   /@types/debug@4.1.8:
     resolution: {integrity: sha512-/vPO1EPOs306Cvhwv7KfVfYvOJqA/S/AXjaHQiJboCZzcNDb+TIJFN9/2C9DZ//ijSKWioNyUxD792QmDJ+HKQ==}
     dependencies:
@@ -2260,6 +2250,7 @@ packages:
   /cookie@0.5.0:
     resolution: {integrity: sha512-YZ3GUyn/o8gfKJlnlX7g7xq4gyO6OSuhGPKaaGssGB2qgDUS0gPgtTvoyZLTt9Ab6dC4hfc9dV5arkvc/OCmrw==}
     engines: {node: '>= 0.6'}
+    dev: true
 
   /cross-fetch@3.1.6:
     resolution: {integrity: sha512-riRvo06crlE8HiqOwIpQhxwdOk4fOeR7FVM/wXoxchFEqMNUjvbs3bfo4OTgMEMHzppd4DxFBDbyySj8Cv781g==}

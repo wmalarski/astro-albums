@@ -1,8 +1,16 @@
 ---
+import Layout from "@layouts/Layout.astro";
+import { paths } from "@utils/paths";
 import { changeLanguage } from "i18next";
 
 changeLanguage("en");
 ---
+
+<Layout title="Magic Link" user={null}>
+  <span class="relative hidden" aria-hidden="true">
+    {paths.index()}
+  </span>
+</Layout>
 
 <script is:inline>
 const parseMagicLink = async (req) => {
