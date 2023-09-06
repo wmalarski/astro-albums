@@ -1,5 +1,6 @@
 import { getBaseUrl } from "@utils/baseUrl";
 import { getClientSupabase } from "@utils/clientSupabase";
+import { paths } from "@utils/paths";
 import clsx from "clsx";
 import { Show, createSignal, type JSX } from "solid-js";
 
@@ -15,7 +16,7 @@ export const SendLink = (): JSX.Element => {
     setIsLoading(true);
     setIsSuccess(false);
 
-    const redirectTo = `${getBaseUrl()}/magic-link`;
+    const redirectTo = `${getBaseUrl()}/${paths.callback}`;
 
     const supabase = await getClientSupabase();
 

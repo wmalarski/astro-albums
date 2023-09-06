@@ -7,6 +7,7 @@ export const paths = {
   albumRelease: ({ sid }: { sid: string }): string => {
     return `http://coverartarchive.org/release/${sid}`;
   },
+  callback: "/api/callback",
   error: "/error",
   index: ({ page, query }: { page?: number; query?: string } = {}): string => {
     return `/?${buildSearchParams({ page, query })}`;

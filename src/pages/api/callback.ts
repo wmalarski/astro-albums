@@ -1,19 +1,19 @@
 import { invalidRequestError } from "@server/errors";
-import { getSessionSchema, updateAuthCookies } from "@server/session";
 import { paths } from "@utils/paths";
 import type { APIRoute } from "astro";
-import { safeParseAsync } from "valibot";
+import { object, safeParseAsync, string } from "valibot";
 
-export const POST: APIRoute = async (context): Promise<Response> => {
-  const body = await context.request.json();
-
-  const parsed = await safeParseAsync(getSessionSchema(), body);
+export const GET: APIRoute = async (context): Promise<Response> => {
+  const parsed = await safeParseAsync(
+    object({ code: string() }),
+    Object.fromEntries(context.url.searchParams.entries()),
+  );
 
   if (!parsed.success) {
-    return invalidRequestError({ text: parsed.error.message });
+    return invalidRequestError({ text: parsed.issues[0].message });
   }
 
-  updateAuthCookies(context, parsed.output);
+  await context.locals.supabase.auth.exchangeCodeForSession(parsed.output.code);
 
   return context.redirect(paths.index());
 };

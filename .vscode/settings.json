@@ -4,6 +4,7 @@
     "astrojs",
     "clsx",
     "daisyui",
+    "pkce",
     "sbat",
     "sret",
     "supabase",
