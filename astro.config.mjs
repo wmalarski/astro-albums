@@ -7,5 +7,6 @@ import db from "@astrojs/db";
 // https://astro.build/config
 export default defineConfig({
   integrations: [tailwind(), solidJs(), db()],
-  output: "server"
+  output: "server",
+  optimizeDeps: { exclude: ["astro:db"] },
 });

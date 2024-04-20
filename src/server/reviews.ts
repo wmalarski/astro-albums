@@ -1,3 +1,4 @@
+import { db, Review } from "astro:db";
 import { prisma } from "./prisma";
 
 type FindReviews = {
@@ -8,13 +9,16 @@ type FindReviews = {
 
 export const findReviews = async ({ skip, take, userId }: FindReviews) => {
   const [reviews, count] = await Promise.all([
-    prisma.review.findMany({
-      include: { album: { include: { artist: true } } },
-      orderBy: { createdAt: "desc" },
-      skip,
-      take,
-      where: { userId },
-    }),
+    db
+      .select()
+      .from(Review)
+      .review.findMany({
+        include: { album: { include: { artist: true } } },
+        orderBy: { createdAt: "desc" },
+        skip,
+        take,
+        where: { userId },
+      }),
     prisma.review.count({
       where: { userId },
     }),

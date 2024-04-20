@@ -37,6 +37,7 @@
     "@astrojs/db": "^0.10.5",
     "clsx": "2.1.0",
     "daisyui": "4.10.2",
+    "lucia-adapter-astrodb": "^0.0.8",
     "solid-js": "1.8.16",
     "valibot": "^0.30.0"
   }
