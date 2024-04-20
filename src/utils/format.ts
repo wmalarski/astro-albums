@@ -1,8 +1,8 @@
-import type { Album, Artist } from "@prisma/client";
+import { Album, Artist } from "astro:db";
 
 type FormatAlbum = {
-  album: Album;
-  artist: Artist;
+  album: typeof Album.$inferSelect;
+  artist: typeof Artist.$inferSelect;
 };
 
 export const formatAlbum = ({ album, artist }: FormatAlbum) => {

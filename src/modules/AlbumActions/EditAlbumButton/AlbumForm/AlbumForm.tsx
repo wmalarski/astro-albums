@@ -4,7 +4,7 @@ import { Show, createEffect, createSignal, type JSX } from "solid-js";
 
 export type AlbumFormData = {
   title: string;
-  year: number;
+  year: number | null;
 };
 
 type Props = {
@@ -28,7 +28,7 @@ export const AlbumForm = (props: Props): JSX.Element => {
       return;
     }
     setTitle(props.initial.title);
-    setYear(props.initial.year);
+    setYear(current => props.initial?.year ?? current);
   });
 
   return (

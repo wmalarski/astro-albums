@@ -1,5 +1,4 @@
 import { db, Review } from "astro:db";
-import { prisma } from "./prisma";
 
 type FindReviews = {
   take: number;

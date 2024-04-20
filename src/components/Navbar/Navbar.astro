@@ -1,10 +1,10 @@
 ---
-import type { User } from "@supabase/supabase-js";
 import { getLangFromUrl, useTranslations } from "@utils/i18n";
 import { paths } from "@utils/paths";
+import type { User } from "astro:db";
 
 export interface Props {
-  user: User | null;
+  user: typeof User.$inferInsert | null;
 }
 
 const { user } = Astro.props;

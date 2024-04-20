@@ -5,7 +5,7 @@ type Props = {
   albumId: string;
   header: string;
   title: string;
-  year: number;
+  year: number | null;
 };
 
 export const EditAlbumButton = (props: Props): JSX.Element => {

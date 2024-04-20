@@ -1,5 +1,4 @@
 ---
-import type { Album, Artist, Review } from "@prisma/client";
 import { formatAlbum } from "@utils/format";
 import { jsonToCoversField } from "@server/coverArt";
 import { paths } from "@utils/paths";
@@ -8,11 +7,12 @@ import { DeleteReviewButton } from "./DeleteReviewButton/DeleteReviewButton";
 import CoversCarousel from "@components/CoversCarousel/CoversCarousel.astro";
 import { YtButton } from "@modules/YtButton/YtButton";
 import { GoogleButton } from "@modules/GoogleButton/GoogleButton";
+import type { Album, Artist, Review } from "astro:db";
 
 export interface Props {
-  review: Review;
-  album: Album;
-  artist: Artist;
+  review: typeof Review.$inferSelect;
+  album: typeof Album.$inferSelect;
+  artist: typeof Artist.$inferSelect;
   userId: string;
 }
 

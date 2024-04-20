@@ -1,6 +1,6 @@
 /* eslint-disable jsx-a11y/label-has-associated-control */
 import { paths } from "@utils/paths";
-import { createEffect, createSignal, JSX } from "solid-js";
+import { createEffect, createSignal, type JSX } from "solid-js";
 
 type Props = {
   lower?: number;

@@ -13,7 +13,7 @@ import EmptyPlaceholder from "@components/EmptyPlaceholder/EmptyPlaceholder.astr
 import CoversCarousel from "@components/CoversCarousel/CoversCarousel.astro";
 import { minLength, object, safeParseAsync, string } from "valibot";
 
-const session = Astro.locals.session;
+const session = null;
 
 if (!session) {
   return Astro.redirect(paths.login);
@@ -21,7 +21,7 @@ if (!session) {
 
 const parseResult = await safeParseAsync(
   object({ id: string([minLength(1)]) }),
-  Astro.params,
+  Astro.params
 );
 
 if (!parseResult.success) {
