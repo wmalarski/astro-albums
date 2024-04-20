@@ -1,5 +1,4 @@
 import { getBaseUrl } from "@utils/baseUrl";
-import { getClientSupabase } from "@utils/clientSupabase";
 import { paths } from "@utils/paths";
 import clsx from "clsx";
 import { Show, createSignal, type JSX } from "solid-js";
@@ -18,16 +17,16 @@ export const SendLink = (): JSX.Element => {
 
     const redirectTo = `${getBaseUrl()}/${paths.callback}`;
 
-    const supabase = await getClientSupabase();
+    // const supabase = await getClientSupabase();
 
-    const result = await supabase.auth.signInWithOtp({
-      email: email(),
-      options: { emailRedirectTo: redirectTo },
-    });
+    // const result = await supabase.auth.signInWithOtp({
+    //   email: email(),
+    //   options: { emailRedirectTo: redirectTo },
+    // });
 
-    setError(result?.error?.message || "");
+    // setError(result?.error?.message || "");
     setIsLoading(false);
-    setIsSuccess(!result?.error?.message);
+    // setIsSuccess(!result?.error?.message);
   };
 
   return (

@@ -1,12 +1,8 @@
 ---
 import Layout from "@layouts/Layout.astro";
-import { findAlbums, findRandomAlbums } from "@server/albums";
-import AlbumCard from "@modules/AlbumCard/AlbumCard.astro";
 import { AlbumSearch } from "@modules/AlbumSearch/AlbumSearch";
-import Pagination from "@components/Pagination/Pagination.astro";
 import { paths } from "@utils/paths";
 import CardGrid from "@components/CardGrid/CardGrid.astro";
-import EmptyPlaceholder from "@components/EmptyPlaceholder/EmptyPlaceholder.astro";
 import {
   integer,
   minValue,
@@ -28,41 +24,41 @@ const parseResult = await safeParseAsync(
     page: optional(number([minValue(0), integer()])),
     query: optional(string()),
   }),
-  Object.fromEntries(Astro.url.searchParams.entries()),
+  Object.fromEntries(Astro.url.searchParams.entries())
 );
 
 if (!parseResult.success) {
   return Astro.redirect(paths.error);
 }
 
-const take = 20;
-const page = parseResult.output.page || 0;
+// const take = 20;
+// const page = parseResult.output.page || 0;
 const query = parseResult.output.query || "";
 
-const findContent = async () => {
-  if (query) {
-    const { albums, count } = await findAlbums({
-      query,
-      skip: take * page,
-      take,
-      userId: session.user.id,
-    });
-    return { albums, count, kind: "query" };
-  }
+// const findContent = async () => {
+//   if (query) {
+//     const { albums, count } = await findAlbums({
+//       query,
+//       skip: take * page,
+//       take,
+//       userId: session.user.id,
+//     });
+//     return { albums, count, kind: "query" };
+//   }
 
-  const { albums } = await findRandomAlbums({
-    take: take,
-    userId: session.user.id,
-  });
+//   const { albums } = await findRandomAlbums({
+//     take: take,
+//     userId: session.user.id,
+//   });
 
-  return { albums, kind: "random" };
-};
+//   return { albums, kind: "random" };
+// };
 
-const data = await findContent();
+// const data = await findContent();
 
-const { albums } = data;
+// const { albums } = data;
 
-const maxPage = Math.ceil((data.count || 0) / take);
+// const maxPage = Math.ceil((data.count || 0) / take);
 ---
 
 <Layout title="Welcome to Astro." user={session.user}>
@@ -73,7 +69,7 @@ const maxPage = Math.ceil((data.count || 0) / take);
       </div>
     </div>
     <CardGrid>
-      {
+      <!-- {
         albums.map((album) => (
           <AlbumCard
             album={album}
@@ -82,9 +78,9 @@ const maxPage = Math.ceil((data.count || 0) / take);
             userId={session.user.id}
           />
         ))
-      }
+      } -->
     </CardGrid>
-    {albums.length === 0 && <EmptyPlaceholder />}
+    <!-- {albums.length === 0 && <EmptyPlaceholder />}
     {
       data.kind === "query" ? (
         <Pagination
@@ -94,6 +90,6 @@ const maxPage = Math.ceil((data.count || 0) / take);
           prevHref={paths.index({ page: page - 1 })}
         />
       ) : null
-    }
+    } -->
   </main>
 </Layout>

@@ -34,6 +34,7 @@
     "prettier-plugin-astro": "0.13.0"
   },
   "dependencies": {
+    "@astrojs/db": "^0.10.5",
     "clsx": "2.1.0",
     "daisyui": "4.10.2",
     "solid-js": "1.8.16",
