@@ -1,10 +1,23 @@
+import {
+  Album,
+  and,
+  count,
+  db,
+  eq,
+  or,
+  like,
+  Artist,
+  Review,
+  inArray,
+} from "astro:db";
+
 type FindRandomAlbums = {
   take: number;
   userId: string;
 };
 
 export const findRandomAlbums = async ({ take, userId }: FindRandomAlbums) => {
-  const result = await prisma.$queryRaw<{ id: string }[]>`
+  const result = await db.get<{ id: string }[]>`
     select "Album".id from "Album" 
     left join "Review" on "Album".id = "Review"."albumId" 
     where "Review".id is NULL or "Review"."userId" != ${userId}
@@ -14,10 +27,11 @@ export const findRandomAlbums = async ({ take, userId }: FindRandomAlbums) => {
 
   const ids = result.map((entry) => entry.id);
 
-  const albums = await prisma.album.findMany({
-    include: { artist: true },
-    where: { id: { in: ids } },
-  });
+  const albums = await db
+    .select()
+    .from(Album)
+    .where(inArray(Album.id, ids))
+    .innerJoin(Artist, eq(Album.artistId, Artist.id));
 
   const withReviews = albums.map((album) => ({ ...album, reviews: 0 }));
 
@@ -30,19 +44,23 @@ const addReviewCounts = async <T extends { id: string }>(
 ) => {
   const albumIds = albums.map((album) => album.id);
 
-  const groups = await prisma.review.groupBy({
-    _count: { albumId: true },
-    by: ["albumId"],
-    having: { albumId: { in: albumIds } },
-    where: { userId },
+  const groups = await db
+    .select({ count: count(), albumId: Review.albumId })
+    .from(Review)
+    .groupBy(Review.albumId)
+    .having(inArray(Review.albumId, albumIds))
+    .where(eq(Review.userId, userId));
+
+  const reviewsCount = new Map<string, number>();
+
+  groups.forEach((group) => {
+    reviewsCount.set(group.albumId, group.count);
   });
 
-  const counts = groups.reduce<Record<string, number>>((prev, curr) => {
-    prev[curr.albumId] = curr._count.albumId;
-    return prev;
-  }, {});
-
-  return albums.map((album) => ({ ...album, reviews: counts[album.id] || 0 }));
+  return albums.map((album) => ({
+    ...album,
+    reviews: reviewsCount.get(album.id) ?? 0,
+  }));
 };
 
 type FindAlbum = {
@@ -51,19 +69,21 @@ type FindAlbum = {
 };
 
 export const findAlbum = async ({ id, userId }: FindAlbum) => {
-  const album = await prisma.album.findFirst({
-    include: { artist: true, reviews: true },
-    where: { id },
-  });
+  const album = await db
+    .select()
+    .from(Review)
+    .limit(1)
+    .where(eq(Review.albumId, id))
+    .innerJoin(Album, eq(Review.albumId, Album.id))
+    .innerJoin(Artist, eq(Album.id, Artist.id))
+    .then((result) => result.at(0));
 
   if (!album) {
     return { album: null, albums: [], reviews: [] };
   }
 
   const [albums, reviews] = await Promise.all([
-    prisma.album.findMany({
-      where: { artistId: album.artistId },
-    }),
+    db.select().from(Album).where(eq(Album.artistId, album.Artist.id)),
     prisma.review.findMany({
       where: { album: { artistId: album.artistId }, userId },
     }),
@@ -91,32 +111,24 @@ type FindAlbums = {
 };
 
 export const findAlbums = async ({ skip, take, query, userId }: FindAlbums) => {
-  const [albums, count] = await Promise.all([
-    prisma.album.findMany({
-      include: { artist: true },
-      orderBy: { createdAt: "desc" },
-      skip: skip || 0,
-      take,
-      where: {
-        OR: [
-          { title: { contains: query } },
-          { artist: { name: { contains: query } } },
-        ],
-      },
-    }),
-    prisma.album.count({
-      where: {
-        OR: [
-          { title: { contains: query } },
-          { artist: { name: { contains: query } } },
-        ],
-      },
-    }),
+  const [albums, counts] = await Promise.all([
+    db
+      .select()
+      .from(Album)
+      .innerJoin(Artist, eq(Album.artistId, Artist.id))
+      .where(or(like(Album.title, query)))
+      .limit(take)
+      .offset(skip ?? 0)
+      .orderBy(Album.createdAt),
+    db
+      .select({ count: count() })
+      .from(Album)
+      .where(or(like(Album.title, query))),
   ]);
 
   const albumsWithCounts = await addReviewCounts(albums, userId);
 
-  return { albums: albumsWithCounts, count };
+  return { albums: albumsWithCounts, count: counts };
 };
 
 type UpdateAlbum = {
@@ -127,13 +139,14 @@ type UpdateAlbum = {
 };
 
 export const updateAlbum = ({ albumId, title, userId, year }: UpdateAlbum) => {
-  return prisma.album.updateMany({
-    data: {
+  return db
+    .update(Album)
+    .set({
       ...(title ? { title } : {}),
       ...(year || year === 0 ? { year } : {}),
-    },
-    where: { id: albumId, userId },
-  });
+    })
+    .where(and(eq(Album.id, albumId), eq(Album.userId, userId)))
+    .run();
 };
 
 type DeleteAlbum = {
@@ -142,7 +155,8 @@ type DeleteAlbum = {
 };
 
 export const deleteAlbum = ({ albumId, userId }: DeleteAlbum) => {
-  return prisma.album.deleteMany({
-    where: { id: albumId, userId },
-  });
+  return db
+    .delete(Album)
+    .where(and(eq(Album.id, albumId), eq(Album.userId, userId)))
+    .run();
 };

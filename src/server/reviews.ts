@@ -1,4 +1,4 @@
-import { db, Review } from "astro:db";
+import { Album, and, Artist, count, db, eq, Review, User } from "astro:db";
 
 type FindReviews = {
   take: number;
@@ -7,23 +7,20 @@ type FindReviews = {
 };
 
 export const findReviews = async ({ skip, take, userId }: FindReviews) => {
-  const [reviews, count] = await Promise.all([
+  const [reviews, countResult] = await Promise.all([
     db
       .select()
       .from(Review)
-      .review.findMany({
-        include: { album: { include: { artist: true } } },
-        orderBy: { createdAt: "desc" },
-        skip,
-        take,
-        where: { userId },
-      }),
-    prisma.review.count({
-      where: { userId },
-    }),
+      .where(eq(Review.userId, userId))
+      .innerJoin(Album, eq(Review.albumId, Album.id))
+      .innerJoin(Artist, eq(Album.artistId, Artist.id))
+      .limit(take)
+      .offset(skip)
+      .orderBy(Review.createdAt),
+    db.select().from(Review).where(eq(Review.userId, userId)),
   ]);
 
-  return { count, reviews };
+  return { count: countResult, reviews };
 };
 
 type FindReviewsByArtist = {
@@ -39,20 +36,23 @@ export const findReviewsByArtist = async ({
   take,
   userId,
 }: FindReviewsByArtist) => {
-  const [reviews, count] = await Promise.all([
-    prisma.review.findMany({
-      include: { album: true },
-      orderBy: { createdAt: "desc" },
-      skip,
-      take,
-      where: { album: { artistId }, userId },
-    }),
-    prisma.review.count({
-      where: { album: { artistId }, userId },
-    }),
+  const [reviews, countResult] = await Promise.all([
+    db
+      .select()
+      .from(Review)
+      .innerJoin(Album, eq(Review.albumId, Album.id))
+      .where(and(eq(Album.artistId, artistId), eq(Review.userId, userId)))
+      .limit(take)
+      .offset(skip)
+      .orderBy(Review.createdAt),
+    db
+      .select({ count: count() })
+      .from(Review)
+      .innerJoin(Album, eq(Review.albumId, Album.id))
+      .where(and(eq(Album.artistId, artistId), eq(Review.userId, userId))),
   ]);
 
-  return { count, reviews };
+  return { count: countResult, reviews };
 };
 
 type CountReviewsByDates = {
@@ -65,7 +65,7 @@ export type CountReviewsByDatesResult = {
 };
 
 export const countReviewsByDates = async ({ userId }: CountReviewsByDates) => {
-  const groups = await prisma.$queryRaw<CountReviewsByDatesResult[]>`
+  const groups = await db.get<CountReviewsByDatesResult[]>`
     SELECT DATE_TRUNC('day', "createdAt") as date, count(id) FROM "public"."Review" WHERE "createdAt" > CURRENT_DATE - INTERVAL '1 year' AND "userId" = ${userId} GROUP BY DATE_TRUNC('day', "createdAt") ORDER BY DATE_TRUNC('day', "createdAt") DESC
   `;
 
@@ -80,9 +80,7 @@ type CreateReview = {
 };
 
 export const createReview = ({ rate, text, albumId, userId }: CreateReview) => {
-  return prisma.review.create({
-    data: { albumId, rate, text, userId },
-  });
+  return db.insert(Review).values({ albumId, rate, text, userId }).run();
 };
 
 type UpdateReview = {
@@ -98,13 +96,11 @@ export const updateReview = ({
   reviewId,
   userId,
 }: UpdateReview) => {
-  return prisma.review.updateMany({
-    data: {
-      ...(rate || rate === 0 ? { rate } : {}),
-      ...(text ? { text } : {}),
-    },
-    where: { id: reviewId, userId },
-  });
+  return db
+    .update(Review)
+    .set({ ...(rate || rate === 0 ? { rate } : {}), ...(text ? { text } : {}) })
+    .where(and(eq(Review.id, reviewId), eq(Review.userId, userId)))
+    .run();
 };
 
 type DeleteReview = {
@@ -113,7 +109,8 @@ type DeleteReview = {
 };
 
 export const deleteReview = ({ reviewId, userId }: DeleteReview) => {
-  return prisma.review.deleteMany({
-    where: { id: reviewId, userId },
-  });
+  return db
+    .delete(Review)
+    .where(and(eq(Review.id, reviewId), eq(Review.userId, userId)))
+    .run();
 };

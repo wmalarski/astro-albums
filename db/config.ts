@@ -47,7 +47,7 @@ const Review = defineTable({
   columns: {
     id: column.text({ primaryKey: true }),
     albumId: column.text({
-      name: "albumId",
+      name: "album_id",
       references: () => Album.columns.id,
     }),
     createdAt: column.date({ default: NOW, name: "created_at" }),
