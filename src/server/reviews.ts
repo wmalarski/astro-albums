@@ -1,4 +1,4 @@
-import { Album, and, Artist, count, db, eq, Review, User } from "astro:db";
+import { Album, and, Artist, count, db, eq, Review, sql, User } from "astro:db";
 
 type FindReviews = {
   take: number;
@@ -65,9 +65,13 @@ export type CountReviewsByDatesResult = {
 };
 
 export const countReviewsByDates = async ({ userId }: CountReviewsByDates) => {
-  const groups = await db.get<CountReviewsByDatesResult[]>`
-    SELECT DATE_TRUNC('day', "createdAt") as date, count(id) FROM "public"."Review" WHERE "createdAt" > CURRENT_DATE - INTERVAL '1 year' AND "userId" = ${userId} GROUP BY DATE_TRUNC('day', "createdAt") ORDER BY DATE_TRUNC('day', "createdAt") DESC
-  `;
+  const groups = await db.get<CountReviewsByDatesResult[]>(sql`
+    SELECT DATE_TRUNC('day', "created_at") as date, count(id) 
+    FROM "public"."Review" 
+    WHERE "created_at" > CURRENT_DATE - INTERVAL '1 year' AND "user_id" = ${userId} 
+    GROUP BY DATE_TRUNC('day', "created_at") 
+    ORDER BY DATE_TRUNC('day', "created_at") DESC
+  `);
 
   return { groups };
 };

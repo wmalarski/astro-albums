@@ -9,6 +9,7 @@ import {
   Artist,
   Review,
   inArray,
+  sql,
 } from "astro:db";
 
 type FindRandomAlbums = {
@@ -17,13 +18,13 @@ type FindRandomAlbums = {
 };
 
 export const findRandomAlbums = async ({ take, userId }: FindRandomAlbums) => {
-  const result = await db.get<{ id: string }[]>`
+  const result = await db.get<{ id: string }[]>(sql`
     select "Album".id from "Album" 
     left join "Review" on "Album".id = "Review"."albumId" 
     where "Review".id is NULL or "Review"."userId" != ${userId}
     order by random()
     LIMIT ${take};
-  `;
+  `);
 
   const ids = result.map((entry) => entry.id);
 
@@ -82,25 +83,26 @@ export const findAlbum = async ({ id, userId }: FindAlbum) => {
     return { album: null, albums: [], reviews: [] };
   }
 
-  const [albums, reviews] = await Promise.all([
-    db.select().from(Album).where(eq(Album.artistId, album.Artist.id)),
-    prisma.review.findMany({
-      where: { album: { artistId: album.artistId }, userId },
-    }),
-  ]);
+  // const [albums, reviews] = await Promise.all([
+  //   db.select().from(Album).where(eq(Album.artistId, album.Artist.id)),
+  //   db.select().from(Review).where()
+  //   prisma.review.findMany({
+  //     where: { album: { artistId: album.artistId }, userId },
+  //   }),
+  // ]);
 
-  const counts = reviews.reduce<Record<string, number>>((prev, curr) => {
-    const count = prev[curr.albumId] || 0;
-    prev[curr.albumId] = count + 1;
-    return prev;
-  }, {});
+  // const counts = reviews.reduce<Record<string, number>>((prev, curr) => {
+  //   const count = prev[curr.albumId] || 0;
+  //   prev[curr.albumId] = count + 1;
+  //   return prev;
+  // }, {});
 
-  const withCounts = albums.map((album) => ({
-    ...album,
-    reviews: counts[album.id] || 0,
-  }));
+  // const withCounts = albums.map((album) => ({
+  //   ...album,
+  //   reviews: counts[album.id] || 0,
+  // }));
 
-  return { album, albums: withCounts, reviews };
+  return { album, albums: [], reviews: [] };
 };
 
 type FindAlbums = {
@@ -126,7 +128,7 @@ export const findAlbums = async ({ skip, take, query, userId }: FindAlbums) => {
       .where(or(like(Album.title, query))),
   ]);
 
-  const albumsWithCounts = await addReviewCounts(albums, userId);
+  const albumsWithCounts = await addReviewCounts([], userId);
 
   return { albums: albumsWithCounts, count: counts };
 };
