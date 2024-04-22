@@ -21,7 +21,7 @@
     "@typescript-eslint/eslint-plugin": "7.7.0",
     "@typescript-eslint/parser": "7.7.0",
     "astro": "4.6.3",
-    "eslint": "9.1.0",
+    "eslint": "8.57.0",
     "eslint-config-prettier": "9.1.0",
     "eslint-import-resolver-node": "0.3.9",
     "eslint-import-resolver-typescript": "3.6.1",
@@ -36,9 +36,12 @@
   },
   "dependencies": {
     "@astrojs/db": "^0.10.5",
+    "arctic": "^1.5.0",
     "clsx": "2.1.0",
     "daisyui": "4.10.2",
+    "lucia": "^3.1.1",
     "lucia-adapter-astrodb": "^0.0.8",
+    "oslo": "^1.2.0",
     "solid-js": "1.8.16",
     "valibot": "^0.30.0"
   }

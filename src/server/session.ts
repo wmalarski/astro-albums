@@ -1,12 +1,40 @@
-import type { APIContext } from "astro";
-import { object, string } from "valibot";
+import { Lucia } from "lucia";
+import { AstroDBAdapter } from "lucia-adapter-astrodb";
+import { db, Session, User } from "astro:db";
+import { Google } from "arctic";
 
-export const getSessionSchema = () => {
-  return object({ access_token: string(), refresh_token: string() });
+const adapter = new AstroDBAdapter(db, Session, User);
+
+export const lucia = new Lucia(adapter, {
+  getUserAttributes: (attributes) => {
+    return {
+      // attributes has the type of DatabaseUserAttributes
+      googleId: attributes.google_id,
+      username: attributes.username,
+    };
+  },
+  sessionCookie: {
+    attributes: {
+      secure: import.meta.env.PROD,
+    },
+  },
+});
+
+export const google = new Google(
+  import.meta.env.GOOGLE_ID,
+  import.meta.env.GOOGLE_SECRET,
+  import.meta.env.GOOGLE_REDIRECT,
+);
+
+type DatabaseUserAttributes = {
+  google_id: number;
+  username: string;
 };
 
-export const initSession = async (context: APIContext) => {
-  const result = await context.locals.supabase.auth.getSession();
-
-  context.locals.session = result.data.session;
-};
+declare module "lucia" {
+  // eslint-disable-next-line @typescript-eslint/consistent-type-definitions
+  interface Register {
+    Lucia: typeof lucia;
+    DatabaseUserAttributes: DatabaseUserAttributes;
+  }
+}
