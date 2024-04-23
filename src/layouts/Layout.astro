@@ -1,15 +1,14 @@
 ---
 import Navbar from "@components/Navbar/Navbar.astro";
 import { getLangFromUrl } from "@utils/i18n";
-import type { User } from "astro:db";
 import { ViewTransitions } from "astro:transitions";
 
 export interface Props {
   title: string;
-  user: typeof User.$inferSelect | null;
+  userId: string | null;
 }
 
-const { title, user } = Astro.props;
+const { title, userId } = Astro.props;
 
 const lang = getLangFromUrl(Astro.url);
 ---
@@ -25,7 +24,7 @@ const lang = getLangFromUrl(Astro.url);
     <ViewTransitions />
   </head>
   <body>
-    <Navbar user={user} />
+    <Navbar userId={userId} />
     <slot />
   </body>
 </html>

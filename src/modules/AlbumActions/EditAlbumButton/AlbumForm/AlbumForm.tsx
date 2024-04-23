@@ -28,7 +28,7 @@ export const AlbumForm = (props: Props): JSX.Element => {
       return;
     }
     setTitle(props.initial.title);
-    setYear(current => props.initial?.year ?? current);
+    setYear((current) => props.initial?.year ?? current);
   });
 
   return (

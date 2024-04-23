@@ -41,12 +41,12 @@ export const findRandomAlbums = async ({ take, userId }: FindRandomAlbums) => {
 
 const addReviewCounts = async <T extends { id: string }>(
   albums: T[],
-  userId: string
+  userId: string,
 ) => {
   const albumIds = albums.map((album) => album.id);
 
   const groups = await db
-    .select({ count: count(), albumId: Review.albumId })
+    .select({ albumId: Review.albumId, count: count() })
     .from(Review)
     .groupBy(Review.albumId)
     .having(inArray(Review.albumId, albumIds))
@@ -69,7 +69,7 @@ type FindAlbum = {
   userId: string;
 };
 
-export const findAlbum = async ({ id, userId }: FindAlbum) => {
+export const findAlbum = async ({ id }: FindAlbum) => {
   const album = await db
     .select()
     .from(Review)
@@ -113,7 +113,7 @@ type FindAlbums = {
 };
 
 export const findAlbums = async ({ skip, take, query, userId }: FindAlbums) => {
-  const [albums, counts] = await Promise.all([
+  const [, counts] = await Promise.all([
     db
       .select()
       .from(Album)

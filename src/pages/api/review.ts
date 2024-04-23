@@ -35,7 +35,7 @@ export const PUT: APIRoute = async (context): Promise<Response> => {
 
   const review = await createReview({
     ...parsed.output,
-    userId: session.user.id,
+    userId: session.userId,
   });
 
   return new Response(JSON.stringify({ data: review }), {
@@ -67,12 +67,12 @@ export const POST: APIRoute = async (context): Promise<Response> => {
 
   const result = await updateReview({
     ...parsed.output,
-    userId: session.user.id,
+    userId: session.userId,
   });
 
-  if (result.count === 0) {
-    return invalidRequestError({});
-  }
+  // if (result.count === 0) {
+  //   return invalidRequestError({});
+  // }
 
   return new Response(JSON.stringify({ data: result }), {
     status: 200,
@@ -96,12 +96,12 @@ export const DELETE: APIRoute = async (context): Promise<Response> => {
 
   const result = await deleteReview({
     ...parsed.output,
-    userId: session.user.id,
+    userId: session.userId,
   });
 
-  if (result.count === 0) {
-    return invalidRequestError({});
-  }
+  // if (result.count === 0) {
+  //   return invalidRequestError({});
+  // }
 
   return new Response(JSON.stringify({ data: result }), {
     status: 200,

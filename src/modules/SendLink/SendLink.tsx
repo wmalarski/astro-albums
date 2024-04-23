@@ -1,5 +1,3 @@
-import { getBaseUrl } from "@utils/baseUrl";
-import { paths } from "@utils/paths";
 import clsx from "clsx";
 import { Show, createSignal, type JSX } from "solid-js";
 
@@ -10,12 +8,12 @@ export const SendLink = (): JSX.Element => {
   const [isSuccess, setIsSuccess] = createSignal(false);
   const [error, setError] = createSignal("");
 
-  const handleSendLink = async () => {
+  const handleSendLink = () => {
     setError("");
     setIsLoading(true);
     setIsSuccess(false);
 
-    const redirectTo = `${getBaseUrl()}/${paths.callback}`;
+    // const redirectTo = `${getBaseUrl()}/${paths.callback}`;
 
     // const supabase = await getClientSupabase();
 

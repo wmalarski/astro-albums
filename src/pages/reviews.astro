@@ -1,11 +1,9 @@
 ---
 import Pagination from "@components/Pagination/Pagination.astro";
-import ReviewCard from "@modules/ReviewCard/ReviewCard.astro";
 import Layout from "@layouts/Layout.astro";
 import { countReviewsByDates, findReviews } from "@server/reviews";
 import { paths } from "@utils/paths";
 import { ReviewSearch } from "@modules/ReviewSearch/ReviewSearch";
-import CardGrid from "@components/CardGrid/CardGrid.astro";
 import EmptyPlaceholder from "@components/EmptyPlaceholder/EmptyPlaceholder.astro";
 import ReviewActivity from "@modules/ReviewActivity/ReviewActivity.astro";
 import {
@@ -53,17 +51,17 @@ const [{ count, reviews }, { groups }] = await Promise.all([
   findReviews({
     skip: take * page,
     take,
-    userId: session.user.id,
+    userId: session.userId,
   }),
   countReviewsByDates({
-    userId: session.user.id,
+    userId: session.userId,
   }),
 ]);
 
 const maxPage = Math.ceil(count / take);
 ---
 
-<Layout title="Reviews" user={session.user}>
+<Layout title="Reviews" userId={session.userId}>
   <main class="p-4 flex flex-col gap-4">
     <div class="card bg-base-300 card-compact">
       <div class="card-body">
@@ -81,18 +79,18 @@ const maxPage = Math.ceil(count / take);
         />
       </div>
     </div>
-    <CardGrid>
+    <!-- <CardGrid>
       {
         reviews.map((review) => (
           <ReviewCard
             album={review.album}
             artist={review.album.artist}
             review={review}
-            userId={session.user.id}
+            userId={session.userId}
           />
         ))
       }
-    </CardGrid>
+    </CardGrid> -->
     {reviews.length === 0 && <EmptyPlaceholder />}
     <Pagination
       current={page}

@@ -22,14 +22,17 @@ export const POST: APIRoute = async (context): Promise<Response> => {
   );
 
   if (!parsed.success) {
-    return invalidRequestError({ text: parsed.error.message });
+    return invalidRequestError({ text: parsed.issues[0].message });
   }
 
-  const result = await updateAlbum({ ...parsed.data, userId: session.user.id });
+  const result = await updateAlbum({
+    ...parsed.output,
+    userId: session.userId,
+  });
 
-  if (result.count === 0) {
-    return invalidRequestError({});
-  }
+  // if (result.count === 0) {
+  //   return invalidRequestError({});
+  // }
 
   return new Response(JSON.stringify({ data: result }), {
     status: 200,
@@ -48,14 +51,17 @@ export const DELETE: APIRoute = async (context): Promise<Response> => {
   const parsed = await safeParseAsync(object({ albumId: string() }), body);
 
   if (!parsed.success) {
-    return invalidRequestError({ text: parsed.error.message });
+    return invalidRequestError({ text: parsed.issues[0].message });
   }
 
-  const result = await deleteAlbum({ ...parsed.data, userId: session.user.id });
+  const result = await deleteAlbum({
+    ...parsed.output,
+    userId: session.userId,
+  });
 
-  if (result.count === 0) {
-    return invalidRequestError({});
-  }
+  // if (result.count === 0) {
+  //   return invalidRequestError({});
+  // }
 
   return new Response(JSON.stringify({ data: result }), {
     status: 200,

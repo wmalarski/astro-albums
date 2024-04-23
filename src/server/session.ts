@@ -8,7 +8,6 @@ const adapter = new AstroDBAdapter(db, Session, User);
 export const lucia = new Lucia(adapter, {
   getUserAttributes: (attributes) => {
     return {
-      // attributes has the type of DatabaseUserAttributes
       googleId: attributes.google_id,
       username: attributes.username,
     };

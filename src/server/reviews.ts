@@ -1,4 +1,4 @@
-import { Album, and, Artist, count, db, eq, Review, sql, User } from "astro:db";
+import { Album, and, Artist, count, db, eq, Review, sql } from "astro:db";
 
 type FindReviews = {
   take: number;

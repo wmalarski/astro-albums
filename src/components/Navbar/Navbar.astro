@@ -1,14 +1,13 @@
 ---
 import { getLangFromUrl, useTranslations } from "@utils/i18n";
 import { paths } from "@utils/paths";
-import type { User } from "astro:db";
 
 export interface Props {
-  user: typeof User.$inferInsert | null;
+  userId: string | null;
 }
 
-const { user } = Astro.props;
-const isLoggedIn = user !== null;
+const { userId } = Astro.props;
+const isLoggedIn = userId !== null;
 
 const lang = getLangFromUrl(Astro.url);
 const t = useTranslations(lang);

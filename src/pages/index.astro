@@ -24,7 +24,7 @@ const parseResult = await safeParseAsync(
     page: optional(number([minValue(0), integer()])),
     query: optional(string()),
   }),
-  Object.fromEntries(Astro.url.searchParams.entries())
+  Object.fromEntries(Astro.url.searchParams.entries()),
 );
 
 if (!parseResult.success) {
@@ -61,7 +61,7 @@ const query = parseResult.output.query || "";
 // const maxPage = Math.ceil((data.count || 0) / take);
 ---
 
-<Layout title="Welcome to Astro." user={session.user}>
+<Layout title="Welcome to Astro." userId={session.userId}>
   <main class="p-4 flex flex-col gap-4">
     <div class="card bg-base-300 card-compact">
       <div class="card-body flex gap-2">
