@@ -1,3 +1,4 @@
+import { Button } from "@components/Button/Button";
 import {
   ReviewForm,
   type ReviewFormData,
@@ -41,9 +42,9 @@ export const EditReviewButton = (props: Props): JSX.Element => {
 
   return (
     <>
-      <button class="btn btn-xs" onClick={() => setIsOpen(true)}>
+      <Button size="xs" onClick={() => setIsOpen(true)}>
         Edit
-      </button>
+      </Button>
       <Show when={isOpen()}>
         <div class="absolute inset-0 bg-base-300 p-8 flex flex-col gap-4">
           <h3 class="text-xl font-semibold truncate">{`Edit review: ${props.header}`}</h3>

@@ -11,8 +11,9 @@ const {
   color,
   shape,
   size,
-  variant = "link",
+  variant,
   width,
+  disabled,
   ...props
 } = Astro.props;
 ---
@@ -22,6 +23,7 @@ const {
     className,
     isLoading,
     color,
+    disabled,
     shape,
     size,
     variant,

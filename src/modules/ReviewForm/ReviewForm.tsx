@@ -1,5 +1,5 @@
 /* eslint-disable jsx-a11y/label-has-associated-control */
-import clsx from "clsx";
+import { Button } from "@components/Button/Button";
 import { Show, createEffect, createSignal, type JSX } from "solid-js";
 
 export type ReviewFormData = {
@@ -68,22 +68,24 @@ export const ReviewForm = (props: Props): JSX.Element => {
         {(error) => <div class="text-sm text-red-400">{error}</div>}
       </Show>
       <div class="flex justify-end w-full gap-2">
-        <button
+        <Button
+          variant="ghost"
+          isLoading={props.isLoading}
           disabled={props.isLoading}
-          class={clsx("btn btn-ghost", { loading: props.isLoading })}
           type="button"
           onClick={() => props.onCancel()}
         >
           Cancel
-        </button>
-        <button
+        </Button>
+        <Button
+          color="primary"
+          isLoading={props.isLoading}
           disabled={props.isLoading}
-          class={clsx("btn btn-primary", { loading: props.isLoading })}
           type="button"
           onClick={handleSubmit}
         >
           Save
-        </button>
+        </Button>
       </div>
     </div>
   );

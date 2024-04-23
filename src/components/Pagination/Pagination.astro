@@ -1,4 +1,5 @@
 ---
+import Link from "@components/Link/Link.astro";
 import clsx from "clsx";
 
 export interface Props {
@@ -13,18 +14,20 @@ const { current, maxPage, nextHref, prevHref } = Astro.props;
 
 <div class="card card-compact bg-base-300">
   <div class="card-body flex flex-row justify-end gap-2 items-center">
-    <a
+    <Link
+      variant="ghost"
       class={clsx("btn btn-ghost", { "btn-disabled": current <= 0 })}
       href={current > 0 ? prevHref : undefined}
     >
       {`<`}
-    </a>
+    </Link>
     <span>{`${current + 1} from ${maxPage}`}</span>
-    <a
+    <Link
+      variant="ghost"
       class={clsx("btn btn-ghost", { "btn-disabled": current + 1 >= maxPage })}
       href={current + 1 < maxPage ? nextHref : undefined}
     >
       {`>`}
-    </a>
+    </Link>
   </div>
 </div>

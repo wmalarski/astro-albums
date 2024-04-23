@@ -1,4 +1,6 @@
 /* eslint-disable jsx-a11y/label-has-associated-control */
+import { Button } from "@components/Button/Button";
+import { Link } from "@components/Link/Link";
 import { paths } from "@utils/paths";
 import { createEffect, createSignal, type JSX } from "solid-js";
 
@@ -32,12 +34,12 @@ export const AlbumSearch = (props: Props): JSX.Element => {
           value={input()}
         />
       </div>
-      <button class="btn btn-primary" type="button" onClick={handleSubmit}>
+      <Button color="primary" type="button" onClick={handleSubmit}>
         Search
-      </button>
-      <a class="btn btn-ghost" href={paths.index()}>
+      </Button>
+      <Link variant="ghost" href={paths.index()}>
         Random
-      </a>
+      </Link>
     </div>
   );
 };

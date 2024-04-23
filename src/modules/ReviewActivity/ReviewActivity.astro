@@ -2,6 +2,7 @@
 import type { CountReviewsByDatesResult } from "@server/reviews";
 import { paths } from "@utils/paths";
 import { getCountItems } from "./ReviewActivity.utils";
+import Link from "@components/Link/Link.astro";
 
 export interface Props {
   groups: CountReviewsByDatesResult[];
@@ -19,25 +20,27 @@ const { items, months } = getCountItems(groups);
         month: "long",
       }).format(new Date(0, item.month));
       return (
-        <a
-          class="btn btn-xs truncate"
+        <Link
+          size="xs"
+          class="truncate"
           style={`grid-column: ${item.position} / span ${item.span};`}
           title={content}
         >
           {content}
-        </a>
+        </Link>
       );
     })
   }
   {
     items.map((item) => (
-      <a
+      <Link
+        size="xs"
         href={paths.reviews({})}
-        class={`btn btn-xs item-${item.suffix}`}
+        class={`item-${item.suffix}`}
         title={new Intl.DateTimeFormat().format(item.date)}
       >
         {item.count}
-      </a>
+      </Link>
     ))
   }
 </div>

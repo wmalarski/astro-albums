@@ -1,4 +1,5 @@
 /* eslint-disable jsx-a11y/label-has-associated-control */
+import { Button } from "@components/Button/Button";
 import { paths } from "@utils/paths";
 import { createEffect, createSignal, type JSX } from "solid-js";
 
@@ -97,9 +98,9 @@ export const ReviewSearch = (props: Props): JSX.Element => {
           </select>
         </div>
       </div>
-      <button class="btn btn-primary" type="button" onClick={handleSubmit}>
+      <Button color="primary" type="button" onClick={handleSubmit}>
         Search
-      </button>
+      </Button>
     </div>
   );
 };

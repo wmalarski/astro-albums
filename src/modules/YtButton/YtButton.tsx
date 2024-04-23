@@ -1,3 +1,4 @@
+import { Button } from "@components/Button/Button";
 import { redirectToYt } from "@utils/redirects";
 import type { JSX } from "solid-js";
 
@@ -8,11 +9,8 @@ type Props = {
 
 export const YtButton = (props: Props): JSX.Element => {
   return (
-    <button
-      class="btn btn-xs"
-      onClick={() => redirectToYt(props.title, props.name)}
-    >
+    <Button size="xs" onClick={() => redirectToYt(props.title, props.name)}>
       YT
-    </button>
+    </Button>
   );
 };

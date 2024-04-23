@@ -1,5 +1,6 @@
 import { Show, createSignal, type JSX } from "solid-js";
 import { AlbumForm, type AlbumFormData } from "./AlbumForm/AlbumForm";
+import { Button } from "@components/Button/Button";
 
 type Props = {
   albumId: string;
@@ -38,9 +39,9 @@ export const EditAlbumButton = (props: Props): JSX.Element => {
 
   return (
     <>
-      <button class="btn btn-xs" onClick={() => setIsOpen(true)}>
+      <Button size="xs" onClick={() => setIsOpen(true)}>
         Edit
-      </button>
+      </Button>
       <Show when={isOpen()}>
         <div class="absolute inset-0 bg-base-300 p-8 flex flex-col gap-4">
           <h3 class="text-xl font-semibold truncate">{`Edit ${props.header}`}</h3>

@@ -1,4 +1,5 @@
 ---
+import { Link } from "@components/Link/Link";
 import { getLangFromUrl, useTranslations } from "@utils/i18n";
 import { paths } from "@utils/paths";
 
@@ -16,9 +17,9 @@ const t = useTranslations(lang);
 <nav class="navbar bg-base-300">
   <div class="flex-1">
     <h1>
-      <a href={paths.index()} class="btn btn-ghost normal-case text-xl">
+      <Link href={paths.index()} class="btn btn-ghost normal-case text-xl">
         🎵 {t("Navbar.name")}
-      </a>
+      </Link>
     </h1>
   </div>
   <div class="flex-none">
@@ -26,16 +27,16 @@ const t = useTranslations(lang);
       isLoggedIn ? (
         <ul class="menu menu-horizontal p-0">
           <li>
-            <a href={paths.reviews()}>{t("Navbar.reviews")}</a>
+            <Link href={paths.reviews()}>{t("Navbar.reviews")}</Link>
           </li>
           <li>
-            <a href={paths.logout}>{t("Navbar.logout")}</a>
+            <Link href={paths.logout}>{t("Navbar.logout")}</Link>
           </li>
         </ul>
       ) : (
         <ul class="menu menu-horizontal p-0">
           <li>
-            <a href={paths.login}>{t("Navbar.login")}</a>
+            <Link href={paths.login}>{t("Navbar.login")}</Link>
           </li>
         </ul>
       )

@@ -3,7 +3,7 @@ import { twCva } from "@components/utils/twCva";
 export const buttonClass = twCva("btn no-animation flex items-center gap-1", {
   defaultVariants: {
     color: null,
-    isLoading: false,
+    isLoading: null,
     shape: null,
     size: "md",
     variant: null,
@@ -19,8 +19,10 @@ export const buttonClass = twCva("btn no-animation flex items-center gap-1", {
       success: "btn-success",
       warning: "btn-warning",
     },
+    disabled: {
+      true: "btn-disabled",
+    },
     isLoading: {
-      false: "",
       true: "after:loading after:loading-spinner pointer-events-none",
     },
     shape: {

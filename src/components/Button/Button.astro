@@ -8,6 +8,7 @@ type Props = HTMLAttributes<"button"> & VariantProps<typeof buttonClass>;
 const {
   class: className,
   isLoading,
+  disabled,
   color,
   shape,
   size,
@@ -20,6 +21,7 @@ const {
 <button
   class={buttonClass({
     className,
+    disabled,
     isLoading,
     color,
     shape,
@@ -27,6 +29,7 @@ const {
     variant,
     width,
   })}
+  disabled={disabled}
   {...props}
 >
   <slot />

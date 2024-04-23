@@ -8,11 +8,6 @@ export type LinkProps = ComponentProps<"a"> & VariantProps<typeof buttonClass>;
 export const Link: Component<LinkProps> = (props) => {
   const [split, rest] = splitProps(props, buttonSplitProps);
 
-  return (
-    // eslint-disable-next-line jsx-a11y/anchor-has-content
-    <a
-      {...rest}
-      class={buttonClass({ class: props.class, variant: "link", ...split })}
-    />
-  );
+  // eslint-disable-next-line jsx-a11y/anchor-has-content
+  return <a {...rest} class={buttonClass({ class: props.class, ...split })} />;
 };

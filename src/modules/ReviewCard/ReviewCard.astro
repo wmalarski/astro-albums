@@ -8,6 +8,7 @@ import CoversCarousel from "@components/CoversCarousel/CoversCarousel.astro";
 import { YtButton } from "@modules/YtButton/YtButton";
 import { GoogleButton } from "@modules/GoogleButton/GoogleButton";
 import type { Album, Artist, Review } from "astro:db";
+import Link from "@components/Link/Link.astro";
 
 export interface Props {
   review: typeof Review.$inferSelect;
@@ -43,12 +44,12 @@ const covers = jsonToCoversField(album.covers);
     <div class="card-actions gap-1">
       <YtButton client:load title={album.title} name={artist.name} />
       <GoogleButton client:load title={album.title} name={artist.name} />
-      <a class="btn btn-xs" href={paths.album({ id: album.id })}> Show more</a>
+      <Link size="xs" href={paths.album({ id: album.id })}>Show more</Link>
       {
         details && (
-          <a class="btn btn-xs" href={details}>
+          <Link size="xs" href={details}>
             Details
-          </a>
+          </Link>
         )
       }
       {

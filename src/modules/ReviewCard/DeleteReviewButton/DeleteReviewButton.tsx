@@ -1,4 +1,4 @@
-import clsx from "clsx";
+import { Button } from "@components/Button/Button";
 import { Show, createSignal, type JSX } from "solid-js";
 
 type Props = {
@@ -29,9 +29,9 @@ export const DeleteReviewButton = (props: Props): JSX.Element => {
 
   return (
     <>
-      <button class="btn btn-xs" onClick={() => setIsOpen(true)}>
+      <Button size="xs" onClick={() => setIsOpen(true)}>
         Delete
-      </button>
+      </Button>
       <Show when={isOpen()}>
         <div class="absolute inset-0 bg-base-300 p-8 flex flex-col gap-4">
           <h3 class="text-xl font-semibold truncate">{`Delete ${props.header}`}</h3>
@@ -39,22 +39,24 @@ export const DeleteReviewButton = (props: Props): JSX.Element => {
             {(error) => <div class="text-sm text-red-400">{error}</div>}
           </Show>
           <div class="flex justify-end w-full gap-2">
-            <button
+            <Button
+              variant="ghost"
+              isLoading={isLoading()}
               disabled={isLoading()}
-              class={clsx("btn btn-ghost", { loading: isLoading() })}
               type="button"
               onClick={() => setIsOpen(false)}
             >
               Cancel
-            </button>
-            <button
+            </Button>
+            <Button
+              color="warning"
               disabled={isLoading()}
-              class={clsx("btn btn-warning", { loading: isLoading() })}
+              isLoading={isLoading()}
               type="button"
               onClick={handleSubmit}
             >
               Confirm
-            </button>
+            </Button>
           </div>
         </div>
       </Show>

@@ -1,5 +1,5 @@
+import { Button } from "@components/Button/Button";
 import { useClientTranslations, type Language } from "@utils/i18n";
-import clsx from "clsx";
 import { Show, createSignal, type JSX } from "solid-js";
 
 type Props = {
@@ -37,9 +37,9 @@ export const DeleteAlbumButton = (props: Props): JSX.Element => {
 
   return (
     <>
-      <button class="btn btn-xs" onClick={() => setIsOpen(true)}>
+      <Button size="xs" onClick={() => setIsOpen(true)}>
         {t("AlbumActions.DeleteAlbumButton.button")?.toString()}
-      </button>
+      </Button>
       <Show when={isOpen()}>
         <div class="absolute inset-0 bg-base-300 p-8 flex flex-col gap-4">
           <h3 class="text-xl font-semibold truncate">{`Delete ${props.header}`}</h3>
@@ -47,22 +47,24 @@ export const DeleteAlbumButton = (props: Props): JSX.Element => {
             {(error) => <div class="text-sm text-red-400">{error}</div>}
           </Show>
           <div class="flex justify-end w-full gap-2">
-            <button
+            <Button
               disabled={isLoading()}
-              class={clsx("btn btn-ghost", { loading: isLoading() })}
+              variant="ghost"
+              isLoading={isLoading()}
               type="button"
               onClick={() => setIsOpen(false)}
             >
               {t("AlbumActions.DeleteAlbumButton.cancel")?.toString()}
-            </button>
-            <button
+            </Button>
+            <Button
               disabled={isLoading()}
-              class={clsx("btn btn-warning", { loading: isLoading() })}
+              color="warning"
+              isLoading={isLoading()}
               type="button"
               onClick={handleSubmit}
             >
               {t("AlbumActions.DeleteAlbumButton.confirm")?.toString()}
-            </button>
+            </Button>
           </div>
         </div>
       </Show>

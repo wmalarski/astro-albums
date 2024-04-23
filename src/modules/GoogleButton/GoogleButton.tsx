@@ -1,3 +1,4 @@
+import { Button } from "@components/Button/Button";
 import { redirectToGoogle } from "@utils/redirects";
 import type { JSX } from "solid-js";
 
@@ -8,11 +9,8 @@ type Props = {
 
 export const GoogleButton = (props: Props): JSX.Element => {
   return (
-    <button
-      class="btn btn-xs"
-      onClick={() => redirectToGoogle(props.title, props.name)}
-    >
+    <Button size="xs" onClick={() => redirectToGoogle(props.title, props.name)}>
       Google
-    </button>
+    </Button>
   );
 };

@@ -10,6 +10,7 @@ export const buttonSplitProps = [
   "size",
   "variant",
   "width",
+  "disabled",
 ] as const;
 
 export type ButtonProps = ComponentProps<"button"> &
@@ -19,6 +20,10 @@ export const Button: Component<ButtonProps> = (props) => {
   const [split, rest] = splitProps(props, buttonSplitProps);
 
   return (
-    <button {...rest} class={buttonClass({ class: props.class, ...split })} />
+    <button
+      {...rest}
+      class={buttonClass({ class: props.class, ...split })}
+      disabled={props.disabled}
+    />
   );
 };
