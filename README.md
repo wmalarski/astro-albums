@@ -1,8 +1,8 @@
-# Astro + Solid.js + Supabase + Tailwind + DaisyUI
+# Astro + Solid.js + Lucia + Tailwind + DaisyUI
 
 ## 🔗 Reference
 
-* Using [astro-supabase-vercel](https://github.com/magnuswahlstrand/astro-supabase-vercel) as base
+- Using [astro-supabase-vercel](https://github.com/magnuswahlstrand/astro-supabase-vercel) as base
 
 ## 🚀 Project Structure
 
