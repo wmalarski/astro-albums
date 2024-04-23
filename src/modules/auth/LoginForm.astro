@@ -1,14 +1,20 @@
 ---
-
+import Link from "@components/Link/Link.astro";
 ---
 
 <div class="card bg-base-300 w-fit">
   <form class="card-body">
     <h2 class="card-title">Login</h2>
     <div class="card-actions pt-3 relative">
-      <a class="btn btn-primary w-full" href="/api/login">
+      <Link
+        color="primary"
+        variant="default"
+        size="lg"
+        width="full"
+        href="/api/login"
+      >
         Sign In using Google!
-      </a>
+      </Link>
     </div>
   </form>
 </div>

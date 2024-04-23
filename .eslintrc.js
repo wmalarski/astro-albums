@@ -62,6 +62,6 @@ module.exports = {
       "error",
       { enforceForJSX: true },
     ],
-    "prettier/prettier": "error",
+    "prettier/prettier": ["error", { endOfLine: "auto" }],
   },
 };
