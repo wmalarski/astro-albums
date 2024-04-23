@@ -1,6 +1,6 @@
 ---
 import Layout from "../layouts/Layout.astro";
-import { SendLink } from "@modules/SendLink/SendLink";
+import LoginForm from "@modules/auth/LoginForm.astro";
 import { paths } from "@utils/paths";
 
 const session = Astro.locals.session;
@@ -11,10 +11,7 @@ if (session) {
 ---
 
 <Layout title="Login" userId={null}>
-  <span class="relative hidden" aria-hidden="true">
-    {paths.index()}
-  </span>
   <main class="flex w-full justify-center pt-4 items-center">
-    <SendLink client:load />
+    <LoginForm />
   </main>
 </Layout>
