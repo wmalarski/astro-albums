@@ -18,6 +18,7 @@ pnpm-debug.log*
 
 # local database
 dev.db
+.astro/content.db
 
 # macOS-specific files
 .DS_Store
