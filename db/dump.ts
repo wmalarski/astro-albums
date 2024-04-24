@@ -1,7 +1,7 @@
 import fs from "node:fs/promises";
 
-const execute = async () => {
-  const file = await fs.readFile("scripts/dump.sql", { encoding: "utf8" });
+export const loadDumpData = async () => {
+  const file = await fs.readFile("db/dump.sql", { encoding: "utf8" });
   const lines = file.split("\n");
 
   const startRegex = /^COPY public\."([a-zA-Z]+)"/g;
@@ -35,37 +35,51 @@ const execute = async () => {
     }
   });
 
+  console.log(tables.get("User"));
+
+  const users = tables.get("User")?.map((entry) => {
+    const [id, name] = entry;
+    return { google_id: id!, id: id!, username: name! };
+  });
+
   const albums = tables.get("Album")?.map((entry) => {
     const [id, artistId, createdAt, sid, title, userId, year, release, covers] =
       entry;
     return {
-      artistId,
+      artistId: artistId!,
       covers: covers === "\\N" ? null : covers,
-      createdAt,
-      id,
-      release: release === "\\N" ? null : release,
-      sid: sid === "\\N" ? null : sid,
-      title,
-      userId,
-      year,
+      createdAt: new Date(createdAt!),
+      id: id!,
+      release: release === "\\N" ? null : release ?? null,
+      sid: sid === "\\N" ? null : sid ?? null,
+      title: title!,
+      userId: userId!,
+      year: (year === "\\N" ? null : Number(year)) ?? null,
     };
   });
 
   const artists = tables.get("Artist")?.map((entry) => {
     const [id, createdAt, name, sid, userId] = entry;
-    return { createdAt, id, name, sid: sid === "\\N" ? null : sid, userId };
+    return {
+      createdAt: new Date(createdAt!),
+      id: id!,
+      name: name!,
+      sid: sid === "\\N" ? null : sid ?? null,
+      userId: userId!,
+    };
   });
 
   const reviews = tables.get("Review")?.map((entry) => {
     const [id, albumId, createdAt, rate, text, userId] = entry;
-    return { albumId, createdAt, id, rate, text, userId };
+    return {
+      albumId: albumId!,
+      createdAt: new Date(createdAt!),
+      id: id!,
+      rate: Number(rate!),
+      text: text!,
+      userId: userId!,
+    };
   });
 
-  console.log(albums, artists, reviews);
-
-  //   Array.from(file.matchAll(/COPY public/g)).forEach((regexResult) => {
-  //     console.log(regexResult.index);
-  //   });
+  return { albums, artists, reviews, users };
 };
-
-execute();
