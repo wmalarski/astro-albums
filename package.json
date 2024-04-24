@@ -13,7 +13,9 @@
     "lint": "eslint src --fix --ext .tsx,.ts",
     "prettier": "prettier 'src/**/*.(ts|tsx|astro)' --write",
     "tsc": "tsc --noEmit",
-    "code-check": "yarn lint --max-warnings=0 && yarn tsc"
+    "code-check": "yarn lint --max-warnings=0 && yarn tsc",
+    "=== DB ===": "",
+    "dump": "npx tsx scripts/dump.ts"
   },
   "devDependencies": {
     "@astrojs/solid-js": "4.1.0",
