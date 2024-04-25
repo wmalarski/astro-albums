@@ -35,16 +35,26 @@ export const loadDumpData = async () => {
     }
   });
 
-  console.log(tables.get("User"));
-
   const users = tables.get("User")?.map((entry) => {
     const [id, name] = entry;
     return { google_id: id!, id: id!, username: name! };
   });
 
+  const userId = users?.[0]?.id ?? crypto.randomUUID();
+
   const albums = tables.get("Album")?.map((entry) => {
-    const [id, artistId, createdAt, sid, title, userId, year, release, covers] =
-      entry;
+    const [
+      id,
+      artistId,
+      createdAt,
+      sid,
+      title,
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      _userId,
+      year,
+      release,
+      covers,
+    ] = entry;
     return {
       artistId: artistId!,
       covers: covers === "\\N" ? null : covers,
@@ -53,31 +63,31 @@ export const loadDumpData = async () => {
       release: release === "\\N" ? null : release ?? null,
       sid: sid === "\\N" ? null : sid ?? null,
       title: title!,
-      userId: userId!,
+      userId,
       year: (year === "\\N" ? null : Number(year)) ?? null,
     };
   });
 
   const artists = tables.get("Artist")?.map((entry) => {
-    const [id, createdAt, name, sid, userId] = entry;
+    const [id, createdAt, name, sid] = entry;
     return {
       createdAt: new Date(createdAt!),
       id: id!,
       name: name!,
       sid: sid === "\\N" ? null : sid ?? null,
-      userId: userId!,
+      userId,
     };
   });
 
   const reviews = tables.get("Review")?.map((entry) => {
-    const [id, albumId, createdAt, rate, text, userId] = entry;
+    const [id, albumId, createdAt, rate, text] = entry;
     return {
       albumId: albumId!,
       createdAt: new Date(createdAt!),
       id: id!,
       rate: Number(rate!),
       text: text!,
-      userId: userId!,
+      userId,
     };
   });
 

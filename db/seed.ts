@@ -17,7 +17,12 @@ export default async function seed() {
 
   await db
     .insert(Album)
-    .values(albums ?? [])
+    .values(albums?.slice(0, 3500) ?? [])
+    .execute();
+
+  await db
+    .insert(Album)
+    .values(albums?.slice(3500, 7000) ?? [])
     .execute();
 
   await db
