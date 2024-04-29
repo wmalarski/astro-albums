@@ -1,5 +1,11 @@
 /* eslint-disable jsx-a11y/label-has-associated-control */
 import { Button } from "@components/Button/Button";
+import {
+  TextFieldInput,
+  TextFieldLabel,
+  TextFieldLabelText,
+  TextFieldRoot,
+} from "@components/TextField/TextField";
 import { Show, createEffect, createSignal, type JSX } from "solid-js";
 
 export type ReviewFormData = {
@@ -33,11 +39,11 @@ export const ReviewForm = (props: Props): JSX.Element => {
 
   return (
     <div class="w-full flex flex-col gap-2">
-      <div class="flex gap-2 w-full">
-        <label for="review" class="label label-text font-semibold">
-          Review:
-        </label>
-        <input
+      <TextFieldRoot class="flex gap-2 w-full">
+        <TextFieldLabel for="review" class="label label-text font-semibold">
+          <TextFieldLabelText>Review:</TextFieldLabelText>
+        </TextFieldLabel>
+        <TextFieldInput
           class="input input-sm flex-grow"
           disabled={props.isLoading}
           id="review"
@@ -46,12 +52,12 @@ export const ReviewForm = (props: Props): JSX.Element => {
           type="text"
           value={text()}
         />
-      </div>
-      <div class="flex gap-2  w-full">
-        <label for="rate" class="label label-text font-semibold">
-          Rate:
-        </label>
-        <input
+      </TextFieldRoot>
+      <TextFieldRoot class="flex gap-2  w-full">
+        <TextFieldLabel for="rate" class="label label-text font-semibold">
+          <TextFieldLabelText>Rate:</TextFieldLabelText>
+        </TextFieldLabel>
+        <TextFieldInput
           class="input input-sm flex-grow"
           disabled={props.isLoading}
           id="rate"
@@ -63,7 +69,7 @@ export const ReviewForm = (props: Props): JSX.Element => {
           type="number"
           value={rate()}
         />
-      </div>
+      </TextFieldRoot>
       <Show when={props.error} keyed>
         {(error) => <div class="text-sm text-red-400">{error}</div>}
       </Show>

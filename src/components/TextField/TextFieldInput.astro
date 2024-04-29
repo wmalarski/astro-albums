@@ -1,0 +1,19 @@
+---
+import { textFieldInputClass } from "./TextField.recipes";
+import type { ComponentVariantAttributes } from "@components/utils/twCva";
+
+type Props = ComponentVariantAttributes<"input", typeof textFieldInputClass>;
+
+const { class: className, color, size, variant, width, ...props } = Astro.props;
+---
+
+<input
+  class={textFieldInputClass({
+    className,
+    color,
+    size,
+    variant,
+    width,
+  })}
+  {...props}
+/>

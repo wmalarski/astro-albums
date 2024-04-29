@@ -1,5 +1,11 @@
 /* eslint-disable jsx-a11y/label-has-associated-control */
 import { Button } from "@components/Button/Button";
+import {
+  TextFieldInput,
+  TextFieldLabel,
+  TextFieldLabelText,
+  TextFieldRoot,
+} from "@components/TextField/TextField";
 import { Show, createEffect, createSignal, type JSX } from "solid-js";
 
 export type AlbumFormData = {
@@ -33,12 +39,12 @@ export const AlbumForm = (props: Props): JSX.Element => {
 
   return (
     <div class="w-full flex flex-col gap-2">
-      <div class="flex gap-2 w-full">
-        <label for="title" class="label label-text font-semibold">
-          Title:
-        </label>
-        <input
-          class="input input-sm flex-grow"
+      <TextFieldRoot class="flex gap-2 w-full">
+        <TextFieldLabel for="title" class="font-semibold">
+          <TextFieldLabelText>Title:</TextFieldLabelText>
+        </TextFieldLabel>
+        <TextFieldInput
+          class="flex-grow"
           disabled={props.isLoading}
           id="title"
           onChange={(event) => setTitle(event.currentTarget.value)}
@@ -46,13 +52,13 @@ export const AlbumForm = (props: Props): JSX.Element => {
           type="text"
           value={title()}
         />
-      </div>
-      <div class="flex gap-2  w-full">
-        <label for="year" class="label label-text font-semibold">
-          Year:
-        </label>
-        <input
-          class="input input-sm flex-grow"
+      </TextFieldRoot>
+      <TextFieldRoot class="flex gap-2 w-full">
+        <TextFieldLabel for="year" class="label label-text font-semibold">
+          <TextFieldLabelText>Year:</TextFieldLabelText>
+        </TextFieldLabel>
+        <TextFieldInput
+          class="flex-grow"
           disabled={props.isLoading}
           id="year"
           max={2100}
@@ -63,7 +69,7 @@ export const AlbumForm = (props: Props): JSX.Element => {
           type="number"
           value={year()}
         />
-      </div>
+      </TextFieldRoot>
       <Show when={props.error} keyed>
         {(error) => <div class="text-sm text-red-400">{error}</div>}
       </Show>

@@ -1,5 +1,11 @@
 /* eslint-disable jsx-a11y/label-has-associated-control */
 import { Button } from "@components/Button/Button";
+import {
+  TextFieldInput,
+  TextFieldLabel,
+  TextFieldLabelText,
+  TextFieldRoot,
+} from "@components/TextField/TextField";
 import { paths } from "@utils/paths";
 import { createEffect, createSignal, type JSX } from "solid-js";
 
@@ -38,11 +44,11 @@ export const ReviewSearch = (props: Props): JSX.Element => {
   return (
     <div class="w-full flex flex-row gap-2">
       <div class="flex flex-col gap-2 w-full">
-        <div class="flex gap-2 w-full grow items-center">
-          <label for="input" class="label label-text">
-            Search
-          </label>
-          <input
+        <TextFieldRoot class="flex gap-2 w-full grow items-center">
+          <TextFieldLabel for="input">
+            <TextFieldLabelText>Search</TextFieldLabelText>
+          </TextFieldLabel>
+          <TextFieldInput
             class="input flex-grow"
             id="input"
             onChange={(event) => setInput(event.currentTarget.value)}
@@ -50,13 +56,13 @@ export const ReviewSearch = (props: Props): JSX.Element => {
             type="text"
             value={input()}
           />
-        </div>
-        <div class="flex gap-2 w-full grow items-center">
-          <label for="lower" class="label label-text">
-            Lower rate
-          </label>
-          <input
-            class="input flex-grow"
+        </TextFieldRoot>
+        <TextFieldRoot class="flex gap-2 w-full grow items-center">
+          <TextFieldLabel for="lower">
+            <TextFieldLabelText>Lower rate</TextFieldLabelText>
+          </TextFieldLabel>
+          <TextFieldInput
+            class="flex-grow"
             id="lower"
             max={10}
             min={0}
@@ -66,12 +72,12 @@ export const ReviewSearch = (props: Props): JSX.Element => {
             type="number"
             value={lower()}
           />
-        </div>
-        <div class="flex gap-2 w-full grow items-center">
-          <label for="upper" class="label label-text">
-            Upper rate
-          </label>
-          <input
+        </TextFieldRoot>
+        <TextFieldRoot class="flex gap-2 w-full grow items-center">
+          <TextFieldLabel for="upper">
+            <TextFieldLabelText>Upper rate</TextFieldLabelText>
+          </TextFieldLabel>
+          <TextFieldInput
             class="input flex-grow"
             id="upper"
             max={10}
@@ -82,11 +88,11 @@ export const ReviewSearch = (props: Props): JSX.Element => {
             type="number"
             value={upper()}
           />
-        </div>
-        <div class="flex gap-2 w-full grow items-center">
-          <label for="order" class="label label-text">
-            Order by
-          </label>
+        </TextFieldRoot>
+        <TextFieldRoot class="flex gap-2 w-full grow items-center">
+          <TextFieldLabel for="order">
+            <TextFieldLabelText>Order by</TextFieldLabelText>
+          </TextFieldLabel>
           <select
             class="select"
             id="order"
@@ -96,7 +102,7 @@ export const ReviewSearch = (props: Props): JSX.Element => {
             <option value="rate">Rate</option>
             <option value="createdAt">Created At</option>
           </select>
-        </div>
+        </TextFieldRoot>
       </div>
       <Button color="primary" type="button" onClick={handleSubmit}>
         Search

@@ -1,6 +1,12 @@
 /* eslint-disable jsx-a11y/label-has-associated-control */
 import { Button } from "@components/Button/Button";
 import { Link } from "@components/Link/Link";
+import {
+  TextFieldInput,
+  TextFieldLabel,
+  TextFieldLabelText,
+  TextFieldRoot,
+} from "@components/TextField/TextField";
 import { paths } from "@utils/paths";
 import { createEffect, createSignal, type JSX } from "solid-js";
 
@@ -21,11 +27,11 @@ export const AlbumSearch = (props: Props): JSX.Element => {
 
   return (
     <div class="w-full flex flex-row gap-2">
-      <div class="flex gap-2 w-full grow items-center">
-        <label for="input" class="label label-text">
-          Search
-        </label>
-        <input
+      <TextFieldRoot class="flex gap-2 w-full grow items-center">
+        <TextFieldLabel for="input" class="label label-text">
+          <TextFieldLabelText>Search</TextFieldLabelText>
+        </TextFieldLabel>
+        <TextFieldInput
           class="input flex-grow"
           id="input"
           onChange={(event) => setInput(event.currentTarget.value)}
@@ -33,7 +39,7 @@ export const AlbumSearch = (props: Props): JSX.Element => {
           type="text"
           value={input()}
         />
-      </div>
+      </TextFieldRoot>
       <Button color="primary" type="button" onClick={handleSubmit}>
         Search
       </Button>

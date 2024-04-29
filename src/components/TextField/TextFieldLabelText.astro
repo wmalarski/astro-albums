@@ -1,0 +1,12 @@
+---
+import { textFieldLabelText } from "./TextField.recipes";
+import type { ComponentVariantAttributes } from "@components/utils/twCva";
+
+type Props = ComponentVariantAttributes<"span", typeof textFieldLabelText>;
+
+const { class: className, ...props } = Astro.props;
+---
+
+<span class={textFieldLabelText({ className })} {...props}>
+  <slot />
+</span>

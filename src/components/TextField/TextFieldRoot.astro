@@ -1,0 +1,12 @@
+---
+import { textFieldRootClass } from "./TextField.recipes";
+import type { ComponentVariantAttributes } from "@components/utils/twCva";
+
+type Props = ComponentVariantAttributes<"fieldset", typeof textFieldRootClass>;
+
+const { class: className, ...props } = Astro.props;
+---
+
+<fieldset class={textFieldRootClass({ className })} {...props}>
+  <slot />
+</fieldset>

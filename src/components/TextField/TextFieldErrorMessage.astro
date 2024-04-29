@@ -1,0 +1,10 @@
+---
+import { textFieldErrorMessage } from "./TextField.recipes";
+import type { ComponentVariantAttributes } from "@components/utils/twCva";
+
+type Props = ComponentVariantAttributes<"span", typeof textFieldErrorMessage>;
+
+const { class: className, ...props } = Astro.props;
+---
+
+<span class={textFieldErrorMessage({ className })} {...props}></span>
