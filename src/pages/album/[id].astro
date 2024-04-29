@@ -6,8 +6,8 @@ import { jsonToCoversField } from "@server/coverArt";
 import { formatAlbum } from "@utils/format";
 import { paths } from "@utils/paths";
 import AlbumActions from "@modules/AlbumActions/AlbumActions.astro";
-import EmptyPlaceholder from "@components/EmptyPlaceholder/EmptyPlaceholder.astro";
-import CoversCarousel from "@components/CoversCarousel/CoversCarousel.astro";
+import EmptyPlaceholder from "@modules/common/EmptyPlaceholder/EmptyPlaceholder.astro";
+import CoversCarousel from "@modules/common/CoversCarousel/CoversCarousel.astro";
 import { minLength, object, safeParseAsync, string } from "valibot";
 
 const session = Astro.locals.session;
