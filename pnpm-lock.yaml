@@ -17,9 +17,6 @@ importers:
       class-variance-authority:
         specifier: 0.7.0
         version: 0.7.0
-      clsx:
-        specifier: 2.1.1
-        version: 2.1.1
       daisyui:
         specifier: 4.10.2
         version: 4.10.2(postcss@8.4.29)
