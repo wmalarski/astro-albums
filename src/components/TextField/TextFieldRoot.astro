@@ -4,9 +4,9 @@ import type { ComponentVariantAttributes } from "@components/utils/twCva";
 
 type Props = ComponentVariantAttributes<"fieldset", typeof textFieldRootClass>;
 
-const { class: className, ...props } = Astro.props;
+const props = Astro.props;
 ---
 
-<fieldset class={textFieldRootClass({ className })} {...props}>
+<fieldset class={textFieldRootClass()} {...props}>
   <slot />
 </fieldset>

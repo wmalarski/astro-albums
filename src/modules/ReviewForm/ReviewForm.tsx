@@ -39,12 +39,12 @@ export const ReviewForm = (props: Props): JSX.Element => {
 
   return (
     <div class="w-full flex flex-col gap-2">
-      <TextFieldRoot class="flex gap-2 w-full">
-        <TextFieldLabel for="review" class="label label-text font-semibold">
+      <TextFieldRoot>
+        <TextFieldLabel for="review">
           <TextFieldLabelText>Review:</TextFieldLabelText>
         </TextFieldLabel>
         <TextFieldInput
-          class="input input-sm flex-grow"
+          size="sm"
           disabled={props.isLoading}
           id="review"
           onChange={(event) => setText(event.currentTarget.value)}
@@ -53,12 +53,12 @@ export const ReviewForm = (props: Props): JSX.Element => {
           value={text()}
         />
       </TextFieldRoot>
-      <TextFieldRoot class="flex gap-2  w-full">
-        <TextFieldLabel for="rate" class="label label-text font-semibold">
+      <TextFieldRoot>
+        <TextFieldLabel for="rate">
           <TextFieldLabelText>Rate:</TextFieldLabelText>
         </TextFieldLabel>
         <TextFieldInput
-          class="input input-sm flex-grow"
+          size="sm"
           disabled={props.isLoading}
           id="rate"
           max={10}

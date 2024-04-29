@@ -4,9 +4,9 @@ import type { ComponentVariantAttributes } from "@components/utils/twCva";
 
 type Props = ComponentVariantAttributes<"label", typeof textFieldLabelClass>;
 
-const { class: className, ...props } = Astro.props;
+const props = Astro.props;
 ---
 
-<label class={textFieldLabelClass({ className })} {...props}>
+<label class={textFieldLabelClass()} {...props}>
   <slot />
 </label>

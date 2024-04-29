@@ -16,9 +16,7 @@ export type TextFieldRootProps = ComponentVariantProps<
 >;
 
 export const TextFieldRoot: Component<TextFieldRootProps> = (props) => {
-  return (
-    <fieldset {...props} class={textFieldRootClass({ class: props.class })} />
-  );
+  return <fieldset {...props} class={textFieldRootClass()} />;
 };
 
 export type TextFieldLabelProps = ComponentVariantProps<
@@ -27,10 +25,8 @@ export type TextFieldLabelProps = ComponentVariantProps<
 >;
 
 export const TextFieldLabel: Component<TextFieldLabelProps> = (props) => {
-  return (
-    // eslint-disable-next-line jsx-a11y/label-has-associated-control
-    <label {...props} class={textFieldLabelClass({ class: props.class })} />
-  );
+  // eslint-disable-next-line jsx-a11y/label-has-associated-control
+  return <label {...props} class={textFieldLabelClass()} />;
 };
 
 export type TextFieldLabelTextProps = ComponentVariantProps<
@@ -41,10 +37,8 @@ export type TextFieldLabelTextProps = ComponentVariantProps<
 export const TextFieldLabelText: Component<TextFieldLabelTextProps> = (
   props,
 ) => {
-  return (
-    // eslint-disable-next-line jsx-a11y/label-has-associated-control
-    <span {...props} class={textFieldLabelText({ class: props.class })} />
-  );
+  // eslint-disable-next-line jsx-a11y/label-has-associated-control
+  return <span {...props} class={textFieldLabelText()} />;
 };
 
 export type TextFieldDescriptionProps = ComponentVariantProps<
@@ -55,9 +49,7 @@ export type TextFieldDescriptionProps = ComponentVariantProps<
 export const TextFieldDescription: Component<TextFieldDescriptionProps> = (
   props,
 ) => {
-  return (
-    <span {...props} class={textFieldDescription({ class: props.class })} />
-  );
+  return <span {...props} class={textFieldDescription()} />;
 };
 
 export type TextFieldErrorMessageProps = ComponentVariantProps<
@@ -68,9 +60,7 @@ export type TextFieldErrorMessageProps = ComponentVariantProps<
 export const TextFieldErrorMessage: Component<TextFieldErrorMessageProps> = (
   props,
 ) => {
-  return (
-    <span {...props} class={textFieldErrorMessage({ class: props.class })} />
-  );
+  return <span {...props} class={textFieldErrorMessage()} />;
 };
 
 const variantPropsList = ["color", "size", "variant", "width"] as const;
@@ -83,12 +73,7 @@ export type TextFieldInputProps = ComponentVariantProps<
 export const TextFieldInput: Component<TextFieldInputProps> = (props) => {
   const [split, rest] = splitProps(props, variantPropsList);
 
-  return (
-    <input
-      {...rest}
-      class={textFieldInputClass({ class: props.class, ...split })}
-    />
-  );
+  return <input {...rest} class={textFieldInputClass(split)} />;
 };
 
 export type TextFieldTextAreaProps = ComponentVariantProps<
@@ -99,10 +84,5 @@ export type TextFieldTextAreaProps = ComponentVariantProps<
 export const TextFieldTextArea: Component<TextFieldTextAreaProps> = (props) => {
   const [split, rest] = splitProps(props, variantPropsList);
 
-  return (
-    <textarea
-      {...rest}
-      class={textFieldInputClass({ class: props.class, ...split })}
-    />
-  );
+  return <textarea {...rest} class={textFieldInputClass(split)} />;
 };

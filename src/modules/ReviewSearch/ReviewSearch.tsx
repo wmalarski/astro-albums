@@ -44,12 +44,11 @@ export const ReviewSearch = (props: Props): JSX.Element => {
   return (
     <div class="w-full flex flex-row gap-2">
       <div class="flex flex-col gap-2 w-full">
-        <TextFieldRoot class="flex gap-2 w-full grow items-center">
+        <TextFieldRoot>
           <TextFieldLabel for="input">
             <TextFieldLabelText>Search</TextFieldLabelText>
           </TextFieldLabel>
           <TextFieldInput
-            class="input flex-grow"
             id="input"
             onChange={(event) => setInput(event.currentTarget.value)}
             placeholder="Search"
@@ -57,12 +56,11 @@ export const ReviewSearch = (props: Props): JSX.Element => {
             value={input()}
           />
         </TextFieldRoot>
-        <TextFieldRoot class="flex gap-2 w-full grow items-center">
+        <TextFieldRoot>
           <TextFieldLabel for="lower">
             <TextFieldLabelText>Lower rate</TextFieldLabelText>
           </TextFieldLabel>
           <TextFieldInput
-            class="flex-grow"
             id="lower"
             max={10}
             min={0}
@@ -73,12 +71,11 @@ export const ReviewSearch = (props: Props): JSX.Element => {
             value={lower()}
           />
         </TextFieldRoot>
-        <TextFieldRoot class="flex gap-2 w-full grow items-center">
+        <TextFieldRoot>
           <TextFieldLabel for="upper">
             <TextFieldLabelText>Upper rate</TextFieldLabelText>
           </TextFieldLabel>
           <TextFieldInput
-            class="input flex-grow"
             id="upper"
             max={10}
             min={0}
@@ -89,7 +86,7 @@ export const ReviewSearch = (props: Props): JSX.Element => {
             value={upper()}
           />
         </TextFieldRoot>
-        <TextFieldRoot class="flex gap-2 w-full grow items-center">
+        <TextFieldRoot>
           <TextFieldLabel for="order">
             <TextFieldLabelText>Order by</TextFieldLabelText>
           </TextFieldLabel>

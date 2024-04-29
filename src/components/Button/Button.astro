@@ -4,22 +4,12 @@ import type { ComponentVariantAttributes } from "@components/utils/twCva";
 
 type Props = ComponentVariantAttributes<"button", typeof buttonClass>;
 
-const {
-  class: className,
-  isLoading,
-  disabled,
-  color,
-  shape,
-  size,
-  variant,
-  width,
-  ...props
-} = Astro.props;
+const { isLoading, disabled, color, shape, size, variant, width, ...props } =
+  Astro.props;
 ---
 
 <button
   class={buttonClass({
-    className,
     disabled,
     isLoading,
     color,

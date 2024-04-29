@@ -3,7 +3,6 @@ import { buttonClass } from "./Button.recipes";
 import type { ComponentVariantProps } from "@components/utils/twCva";
 
 export const buttonSplitProps = [
-  "class",
   "color",
   "isLoading",
   "shape",
@@ -19,10 +18,6 @@ export const Button: Component<ButtonProps> = (props) => {
   const [split, rest] = splitProps(props, buttonSplitProps);
 
   return (
-    <button
-      {...rest}
-      class={buttonClass({ class: props.class, ...split })}
-      disabled={props.disabled}
-    />
+    <button {...rest} class={buttonClass(split)} disabled={props.disabled} />
   );
 };

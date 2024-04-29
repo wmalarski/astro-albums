@@ -27,12 +27,11 @@ export const AlbumSearch = (props: Props): JSX.Element => {
 
   return (
     <div class="w-full flex flex-row gap-2">
-      <TextFieldRoot class="flex gap-2 w-full grow items-center">
-        <TextFieldLabel for="input" class="label label-text">
+      <TextFieldRoot>
+        <TextFieldLabel for="input">
           <TextFieldLabelText>Search</TextFieldLabelText>
         </TextFieldLabel>
         <TextFieldInput
-          class="input flex-grow"
           id="input"
           onChange={(event) => setInput(event.currentTarget.value)}
           placeholder="Search"

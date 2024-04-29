@@ -39,12 +39,11 @@ export const AlbumForm = (props: Props): JSX.Element => {
 
   return (
     <div class="w-full flex flex-col gap-2">
-      <TextFieldRoot class="flex gap-2 w-full">
-        <TextFieldLabel for="title" class="font-semibold">
+      <TextFieldRoot>
+        <TextFieldLabel for="title">
           <TextFieldLabelText>Title:</TextFieldLabelText>
         </TextFieldLabel>
         <TextFieldInput
-          class="flex-grow"
           disabled={props.isLoading}
           id="title"
           onChange={(event) => setTitle(event.currentTarget.value)}
@@ -53,12 +52,11 @@ export const AlbumForm = (props: Props): JSX.Element => {
           value={title()}
         />
       </TextFieldRoot>
-      <TextFieldRoot class="flex gap-2 w-full">
-        <TextFieldLabel for="year" class="label label-text font-semibold">
+      <TextFieldRoot>
+        <TextFieldLabel for="year">
           <TextFieldLabelText>Year:</TextFieldLabelText>
         </TextFieldLabel>
         <TextFieldInput
-          class="flex-grow"
           disabled={props.isLoading}
           id="year"
           max={2100}

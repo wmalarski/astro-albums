@@ -2,7 +2,7 @@
 import type { CountReviewsByDatesResult } from "@server/reviews";
 import { paths } from "@utils/paths";
 import { getCountItems } from "./ReviewActivity.utils";
-import Link from "@components/Link/Link.astro";
+import { buttonClass } from "@components/Button/Button.recipes";
 
 export interface Props {
   groups: CountReviewsByDatesResult[];
@@ -20,27 +20,25 @@ const { items, months } = getCountItems(groups);
         month: "long",
       }).format(new Date(0, item.month));
       return (
-        <Link
-          size="xs"
-          class="truncate"
+        <a
+          class={buttonClass({ size: "xs", class: "truncate" })}
           style={`grid-column: ${item.position} / span ${item.span};`}
           title={content}
         >
           {content}
-        </Link>
+        </a>
       );
     })
   }
   {
     items.map((item) => (
-      <Link
-        size="xs"
+      <a
         href={paths.reviews({})}
-        class={`item-${item.suffix}`}
+        class={buttonClass({ size: "xs", class: `item-${item.suffix}` })}
         title={new Intl.DateTimeFormat().format(item.date)}
       >
         {item.count}
-      </Link>
+      </a>
     ))
   }
 </div>
