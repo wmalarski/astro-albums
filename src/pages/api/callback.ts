@@ -15,12 +15,16 @@ export const GET = async (context: APIContext): Promise<Response> => {
   const storedState = context.cookies.get("state")?.value;
   const storedCodeVerifier = context.cookies.get("code_verifier")?.value;
 
+  console.log({ code, state, storedState, storedCodeVerifier });
+
   if (!code || !storedState || !storedCodeVerifier || state !== storedState) {
     return new Response(null, { status: 400 });
   }
 
   try {
     const tokens = await google.validateAuthorizationCode(code, storedState);
+
+    console.log({ tokens });
 
     const response = await fetch(GOOGLE_USERINFO_URL, {
       headers: { Authorization: `Bearer ${tokens.accessToken}` },
@@ -65,8 +69,10 @@ export const GET = async (context: APIContext): Promise<Response> => {
     );
 
     return context.redirect(paths.index());
-  } catch (e) {
-    if (e instanceof OAuth2RequestError) {
+  } catch (error) {
+    if (error instanceof OAuth2RequestError) {
+      console.log({ error });
+
       return new Response(null, { status: 400 });
     }
     return new Response(null, { status: 500 });

@@ -1,17 +1,13 @@
 import { Button } from "@components/Button/Button";
-import { useClientTranslations, type Language } from "@utils/i18n";
 import { Show, createSignal, type JSX } from "solid-js";
 
 type Props = {
   albumId: string;
   header: string;
-  lang: Language;
   redirect?: string | undefined;
 };
 
 export const DeleteAlbumButton = (props: Props): JSX.Element => {
-  const t = useClientTranslations(() => props.lang);
-
   const [isOpen, setIsOpen] = createSignal(false);
 
   const [isLoading, setIsLoading] = createSignal(false);
@@ -38,7 +34,7 @@ export const DeleteAlbumButton = (props: Props): JSX.Element => {
   return (
     <>
       <Button size="xs" onClick={() => setIsOpen(true)}>
-        {t("AlbumActions.DeleteAlbumButton.button")?.toString()}
+        Delete
       </Button>
       <Show when={isOpen()}>
         <div class="absolute inset-0 bg-base-300 p-8 flex flex-col gap-4">
@@ -54,7 +50,7 @@ export const DeleteAlbumButton = (props: Props): JSX.Element => {
               type="button"
               onClick={() => setIsOpen(false)}
             >
-              {t("AlbumActions.DeleteAlbumButton.cancel")?.toString()}
+              Cancel
             </Button>
             <Button
               disabled={isLoading()}
@@ -63,7 +59,7 @@ export const DeleteAlbumButton = (props: Props): JSX.Element => {
               type="button"
               onClick={handleSubmit}
             >
-              {t("AlbumActions.DeleteAlbumButton.confirm")?.toString()}
+              Confirm
             </Button>
           </div>
         </div>

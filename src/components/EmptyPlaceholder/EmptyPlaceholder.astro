@@ -1,10 +1,7 @@
 ---
-import { getLangFromUrl, useTranslations } from "@utils/i18n";
 
-const lang = getLangFromUrl(Astro.url);
-const t = useTranslations(lang);
 ---
 
 <div class="flex w-full items-center justify-start">
-  <span>{t("EmptyPlaceholder.title")}</span>
+  <span>Nothing here...</span>
 </div>

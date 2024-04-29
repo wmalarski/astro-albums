@@ -6,7 +6,6 @@ import { EditAlbumButton } from "./EditAlbumButton/EditAlbumButton";
 import { DeleteAlbumButton } from "./DeleteAlbumButton/DeleteAlbumButton";
 import { YtButton } from "@modules/YtButton/YtButton";
 import { GoogleButton } from "@modules/GoogleButton/GoogleButton";
-import { getLangFromUrl } from "@utils/i18n";
 import type { Album, Artist } from "astro:db";
 import Link from "@components/Link/Link.astro";
 
@@ -23,8 +22,6 @@ const details =
   album.release || (album.sid && paths.albumRelease({ sid: album.sid }));
 
 const header = formatAlbum({ album, artist });
-
-const lang = getLangFromUrl(Astro.url);
 ---
 
 <div class="card-actions gap-1">
@@ -38,7 +35,7 @@ const lang = getLangFromUrl(Astro.url);
       </Link>
     )
   }
-  <AddReviewButton lang={lang} client:load albumId={album.id} header={header} />
+  <AddReviewButton client:load albumId={album.id} header={header} />
   {
     album.userId === userId ? (
       <>
@@ -54,7 +51,6 @@ const lang = getLangFromUrl(Astro.url);
           albumId={album.id}
           header={header}
           redirect={deleteRedirect}
-          lang={lang}
         />
       </>
     ) : null

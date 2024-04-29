@@ -1,6 +1,5 @@
 ---
 import { Link } from "@components/Link/Link";
-import { getLangFromUrl, useTranslations } from "@utils/i18n";
 import { paths } from "@utils/paths";
 
 export interface Props {
@@ -9,16 +8,13 @@ export interface Props {
 
 const { userId } = Astro.props;
 const isLoggedIn = userId !== null;
-
-const lang = getLangFromUrl(Astro.url);
-const t = useTranslations(lang);
 ---
 
 <nav class="navbar bg-base-300">
   <div class="flex-1">
     <h1>
       <Link href={paths.index()} class="btn btn-ghost normal-case text-xl">
-        🎵 {t("Navbar.name")}
+        🎵 Albums
       </Link>
     </h1>
   </div>
@@ -27,16 +23,16 @@ const t = useTranslations(lang);
       isLoggedIn ? (
         <ul class="menu menu-horizontal p-0">
           <li>
-            <Link href={paths.reviews()}>{t("Navbar.reviews")}</Link>
+            <Link href={paths.reviews()}>Reviews</Link>
           </li>
           <li>
-            <Link href={paths.logout}>{t("Navbar.logout")}</Link>
+            <Link href={paths.logout}>Logout</Link>
           </li>
         </ul>
       ) : (
         <ul class="menu menu-horizontal p-0">
           <li>
-            <Link href={paths.login}>{t("Navbar.login")}</Link>
+            <Link href={paths.login}>Login</Link>
           </li>
         </ul>
       )

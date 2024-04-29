@@ -1,6 +1,5 @@
 ---
 import Navbar from "@components/Navbar/Navbar.astro";
-import { getLangFromUrl } from "@utils/i18n";
 import { ViewTransitions } from "astro:transitions";
 
 export interface Props {
@@ -9,12 +8,10 @@ export interface Props {
 }
 
 const { title, userId } = Astro.props;
-
-const lang = getLangFromUrl(Astro.url);
 ---
 
 <!doctype html>
-<html lang={lang}>
+<html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width" />

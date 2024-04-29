@@ -7,9 +7,7 @@ export const GET = async (context: APIContext): Promise<Response> => {
   const state = generateState();
   const codeVerifier = generateCodeVerifier();
 
-  const url = await google.createAuthorizationURL(state, codeVerifier, {
-    scopes: ["profile"],
-  });
+  const url = await google.createAuthorizationURL(state, codeVerifier);
 
   context.cookies.set("state", state, {
     httpOnly: true,

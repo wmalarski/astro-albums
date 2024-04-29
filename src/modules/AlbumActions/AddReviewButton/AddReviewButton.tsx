@@ -3,18 +3,14 @@ import {
   ReviewForm,
   type ReviewFormData,
 } from "@modules/ReviewForm/ReviewForm";
-import { useClientTranslations, type Language } from "@utils/i18n";
 import { Show, createSignal, type JSX } from "solid-js";
 
 type Props = {
   albumId: string;
   header: string;
-  lang: Language;
 };
 
 export const AddReviewButton = (props: Props): JSX.Element => {
-  const t = useClientTranslations(() => props.lang);
-
   const [isOpen, setIsOpen] = createSignal(false);
 
   const [isLoading, setIsLoading] = createSignal(false);
@@ -38,7 +34,7 @@ export const AddReviewButton = (props: Props): JSX.Element => {
   return (
     <>
       <Button size="xs" onClick={() => setIsOpen(true)}>
-        {t("AlbumActions.AddReviewButton.button")?.toString()}
+        Review
       </Button>
       <Show when={isOpen()}>
         <div class="absolute inset-0 bg-base-300 p-8 flex flex-col gap-4">
