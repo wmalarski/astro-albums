@@ -1,9 +1,8 @@
 ---
-import type { HTMLAttributes } from "astro/types";
 import { buttonClass } from "./Button.recipes";
-import type { VariantProps } from "class-variance-authority";
+import type { ComponentVariantAttributes } from "@components/utils/twCva";
 
-type Props = HTMLAttributes<"button"> & VariantProps<typeof buttonClass>;
+type Props = ComponentVariantAttributes<"button", typeof buttonClass>;
 
 const {
   class: className,

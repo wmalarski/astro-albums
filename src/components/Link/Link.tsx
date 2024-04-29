@@ -1,9 +1,9 @@
-import { splitProps, type Component, type ComponentProps } from "solid-js";
-import type { VariantProps } from "class-variance-authority";
+import { splitProps, type Component } from "solid-js";
 import { buttonClass } from "@components/Button/Button.recipes";
 import { buttonSplitProps } from "@components/Button/Button";
+import type { ComponentVariantProps } from "@components/utils/twCva";
 
-export type LinkProps = ComponentProps<"a"> & VariantProps<typeof buttonClass>;
+export type LinkProps = ComponentVariantProps<"a", typeof buttonClass>;
 
 export const Link: Component<LinkProps> = (props) => {
   const [split, rest] = splitProps(props, buttonSplitProps);
