@@ -2,7 +2,7 @@ import { Button } from "@components/Button/Button";
 import {
   ReviewForm,
   type ReviewFormData,
-} from "@modules/ReviewForm/ReviewForm";
+} from "@modules/reviews/ReviewForm/ReviewForm";
 import { Show, createSignal, type JSX } from "solid-js";
 
 type Props = {

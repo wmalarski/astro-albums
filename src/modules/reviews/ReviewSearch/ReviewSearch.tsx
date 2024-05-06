@@ -9,16 +9,16 @@ import {
 import { paths } from "@utils/paths";
 import { createEffect, createSignal, type JSX } from "solid-js";
 
-type Props = {
+type ReviewSearchProps = {
   lower?: number;
   query?: string;
   upper?: number;
   order?: "rate" | "createdAt";
 };
 
-type Order = Required<Props>["order"];
+type Order = Required<ReviewSearchProps>["order"];
 
-export const ReviewSearch = (props: Props): JSX.Element => {
+export const ReviewSearch = (props: ReviewSearchProps): JSX.Element => {
   const [input, setInput] = createSignal("");
   const [lower, setLower] = createSignal(0);
   const [upper, setUpper] = createSignal(10);
