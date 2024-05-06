@@ -6,7 +6,6 @@
 declare namespace App {
   // eslint-disable-next-line @typescript-eslint/consistent-type-definitions
   interface Locals {
-    env: import("@server/serverEnv").ServerEnv;
     session: import("lucia").Session | null;
     user: import("lucia").User | null;
   }

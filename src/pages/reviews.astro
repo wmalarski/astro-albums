@@ -5,7 +5,7 @@ import { countReviewsByDates, findReviews } from "@server/reviews";
 import { paths } from "@utils/paths";
 import { ReviewSearch } from "@modules/reviews/ReviewSearch/ReviewSearch";
 import EmptyPlaceholder from "@modules/common/EmptyPlaceholder/EmptyPlaceholder.astro";
-import ReviewActivity from "@modules/ReviewActivity/ReviewActivity.astro";
+import ReviewActivity from "@modules/reviews/ReviewActivity/ReviewActivity.astro";
 import {
   integer,
   literal,
@@ -58,7 +58,7 @@ const [{ count, reviews }, { groups }] = await Promise.all([
   }),
 ]);
 
-const maxPage = Math.ceil(count / take);
+const maxPage = Math.ceil(count.length / take);
 ---
 
 <Layout title="Reviews" userId={session.userId}>

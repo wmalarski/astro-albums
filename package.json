@@ -1,5 +1,6 @@
 {
   "name": "astro-albums",
+  "type": "module",
   "version": "0.0.1",
   "private": true,
   "scripts": {
@@ -37,15 +38,17 @@
     "prettier-plugin-astro": "0.13.0"
   },
   "dependencies": {
+    "@astrojs/check": "^0.5.10",
     "@astrojs/db": "^0.11.0",
     "arctic": "^1.8.0",
+    "class-variance-authority": "0.7.0",
     "daisyui": "4.10.5",
     "lucia": "^3.2.0",
     "lucia-adapter-astrodb": "^0.0.8",
     "oslo": "^1.2.0",
     "solid-js": "1.8.17",
-    "valibot": "^0.30.0",
     "tailwind-merge": "2.3.0",
-    "class-variance-authority": "0.7.0"
+    "typescript": "^5.4.5",
+    "valibot": "^0.30.0"
   }
 }

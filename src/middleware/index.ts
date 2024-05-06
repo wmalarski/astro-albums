@@ -1,6 +1,7 @@
 import { verifyRequestOrigin } from "lucia";
 import { defineMiddleware } from "astro:middleware";
 import { lucia } from "@server/session";
+import { setBlankSessionCookie } from "@server/auth";
 
 export const onRequest = defineMiddleware(async (context, next) => {
   if (context.request.method !== "GET") {
@@ -28,6 +29,7 @@ export const onRequest = defineMiddleware(async (context, next) => {
 
   if (session && session.fresh) {
     const sessionCookie = lucia.createSessionCookie(session.id);
+
     context.cookies.set(
       sessionCookie.name,
       sessionCookie.value,
@@ -36,12 +38,7 @@ export const onRequest = defineMiddleware(async (context, next) => {
   }
 
   if (!session) {
-    const sessionCookie = lucia.createBlankSessionCookie();
-    context.cookies.set(
-      sessionCookie.name,
-      sessionCookie.value,
-      sessionCookie.attributes,
-    );
+    setBlankSessionCookie(context);
   }
 
   context.locals.session = session;
