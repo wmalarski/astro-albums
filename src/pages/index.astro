@@ -21,8 +21,8 @@ if (!session) {
 
 const parseResult = await safeParseAsync(
   object({
-    page: optional(number([minValue(0), integer()])),
-    query: optional(string()),
+    page: optional(number([minValue(0), integer()]), 0),
+    query: optional(string(), ""),
   }),
   Object.fromEntries(Astro.url.searchParams.entries()),
 );
@@ -33,7 +33,7 @@ if (!parseResult.success) {
 
 // const take = 20;
 // const page = parseResult.output.page || 0;
-const query = parseResult.output.query || "";
+const query = parseResult.output.query;
 
 // const findContent = async () => {
 //   if (query) {

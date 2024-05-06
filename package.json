@@ -22,7 +22,7 @@
     "@astrojs/tailwind": "5.1.0",
     "@typescript-eslint/eslint-plugin": "7.8.0",
     "@typescript-eslint/parser": "7.8.0",
-    "astro": "4.7.0",
+    "astro": "4.7.1",
     "eslint": "8.57.0",
     "eslint-config-prettier": "9.1.0",
     "eslint-import-resolver-node": "0.3.9",
@@ -37,9 +37,9 @@
     "prettier-plugin-astro": "0.13.0"
   },
   "dependencies": {
-    "@astrojs/db": "^0.10.6",
+    "@astrojs/db": "^0.11.0",
     "arctic": "^1.8.0",
-    "daisyui": "4.10.2",
+    "daisyui": "4.10.5",
     "lucia": "^3.2.0",
     "lucia-adapter-astrodb": "^0.0.8",
     "oslo": "^1.2.0",
