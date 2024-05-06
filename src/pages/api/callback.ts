@@ -15,7 +15,7 @@ export const GET = async (context: APIContext): Promise<Response> => {
   const storedState = context.cookies.get("state")?.value;
   const storedCodeVerifier = context.cookies.get("code_verifier")?.value;
 
-  console.log({ code, state, storedState, storedCodeVerifier });
+  console.log({ code, state, storedCodeVerifier, storedState });
 
   if (!code || !storedState || !storedCodeVerifier || state !== storedState) {
     return new Response(null, { status: 400 });
