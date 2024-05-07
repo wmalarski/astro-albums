@@ -15,7 +15,7 @@ export const GET = async (context: APIContext): Promise<Response> => {
 
     const googleUser = await getGoogleUser(tokens);
 
-    const existingUser = await getUserByGoogleId(googleUser.id);
+    const existingUser = await getUserByGoogleId(googleUser.sub);
 
     if (existingUser) {
       await setSessionCookie(context, existingUser.id);
@@ -29,8 +29,8 @@ export const GET = async (context: APIContext): Promise<Response> => {
 
     return context.redirect(paths.index());
   } catch (error) {
+    console.error({ error });
     if (error instanceof OAuth2RequestError) {
-      console.error({ error });
       return new Response(null, { status: 400 });
     }
     return new Response(null, { status: 500 });

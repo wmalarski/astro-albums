@@ -37,7 +37,13 @@ export const loadDumpData = async () => {
 
   const users = tables.get("User")?.map((entry) => {
     const [id, name] = entry;
-    return { google_id: id!, id: id!, username: name! };
+    return {
+      sub: id!,
+      id: id!,
+      name: name!,
+      picture:
+        "https://lh3.googleusercontent.com/a/ACg8ocLWk1JEjbj0iZIH91z1zUGpnNWEQz85mv0FPSD255PeBo17Qg=s96-c",
+    };
   });
 
   const userId = users?.[0]?.id ?? crypto.randomUUID();

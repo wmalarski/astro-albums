@@ -2,9 +2,10 @@ import { NOW, column, defineDb, defineTable } from "astro:db";
 
 const User = defineTable({
   columns: {
-    google_id: column.text(),
+    sub: column.text(),
     id: column.text({ primaryKey: true }),
-    username: column.text(),
+    name: column.text(),
+    picture: column.text(),
   },
 });
 

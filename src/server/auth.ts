@@ -19,7 +19,9 @@ export const createAuthorizationUrl = async (
   const state = generateState();
   const codeVerifier = generateCodeVerifier();
 
-  const url = await google.createAuthorizationURL(state, codeVerifier);
+  const url = await google.createAuthorizationURL(state, codeVerifier, {
+    scopes: ["profile", "email"],
+  });
 
   context.cookies.set(STATE_KEY, state, COOKIE_OPTIONS);
   context.cookies.set(CODE_VERIFIER_KEY, codeVerifier, COOKIE_OPTIONS);
@@ -40,7 +42,7 @@ export const validateAuthorizationCode = (
     return Promise.resolve(null);
   }
 
-  return google.validateAuthorizationCode(code, storedState);
+  return google.validateAuthorizationCode(code, storedCodeVerifier);
 };
 
 export const setSessionCookie = async (context: APIContext, userId: string) => {

@@ -18,7 +18,7 @@ declare module 'astro:db' {
 	>;
 	export const User: import("@astrojs/db/runtime").Table<
 		"User",
-		{"google_id":{"type":"text","schema":{"unique":false,"deprecated":false,"name":"google_id","collection":"User","primaryKey":false,"optional":false}},"id":{"type":"text","schema":{"unique":false,"deprecated":false,"name":"id","collection":"User","primaryKey":true}},"username":{"type":"text","schema":{"unique":false,"deprecated":false,"name":"username","collection":"User","primaryKey":false,"optional":false}}}
+		{"sub":{"type":"text","schema":{"unique":false,"deprecated":false,"name":"sub","collection":"User","primaryKey":false,"optional":false}},"id":{"type":"text","schema":{"unique":false,"deprecated":false,"name":"id","collection":"User","primaryKey":true}},"name":{"type":"text","schema":{"unique":false,"deprecated":false,"name":"name","collection":"User","primaryKey":false,"optional":false}},"picture":{"type":"text","schema":{"unique":false,"deprecated":false,"name":"picture","collection":"User","primaryKey":false,"optional":false}}}
 	>;
 	export const Visit: import("@astrojs/db/runtime").Table<
 		"Visit",

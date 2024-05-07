@@ -8,8 +8,10 @@ const adapter = new AstroDBAdapter(db, Session, User);
 export const lucia = new Lucia(adapter, {
   getUserAttributes: (attributes) => {
     return {
-      googleId: attributes.google_id,
-      username: attributes.username,
+      sub: attributes.sub,
+      name: attributes.name,
+      picture: attributes.picture,
+      id: attributes.id,
     };
   },
   sessionCookie: {
@@ -25,15 +27,10 @@ export const google = new Google(
   import.meta.env.GOOGLE_REDIRECT,
 );
 
-type DatabaseUserAttributes = {
-  google_id: number;
-  username: string;
-};
-
 declare module "lucia" {
   // eslint-disable-next-line @typescript-eslint/consistent-type-definitions
   interface Register {
     Lucia: typeof lucia;
-    DatabaseUserAttributes: DatabaseUserAttributes;
+    DatabaseUserAttributes: typeof User.$inferSelect;
   }
 }
