@@ -1,7 +1,7 @@
 ---
 import Layout from "@layouts/Layout.astro";
 import { AlbumSearch } from "@modules/albums/AlbumSearch/AlbumSearch";
-import { paths } from "@utils/paths";
+import * as paths from "@utils/paths";
 import CardGrid from "@modules/common/CardGrid/CardGrid.astro";
 import {
   integer,
@@ -12,11 +12,12 @@ import {
   safeParseAsync,
   string,
 } from "valibot";
+import { findHomepageAlbums } from "@server/albums";
 
 const session = Astro.locals.session;
 
 if (!session) {
-  return Astro.redirect(paths.login);
+  return Astro.redirect(paths.paths.login);
 }
 
 const parseResult = await safeParseAsync(
@@ -28,12 +29,20 @@ const parseResult = await safeParseAsync(
 );
 
 if (!parseResult.success) {
-  return Astro.redirect(paths.error);
+  return Astro.redirect(paths.paths.error);
 }
 
-// const take = 20;
-// const page = parseResult.output.page || 0;
+const take = 20;
+const page = parseResult.output.page;
 const query = parseResult.output.query;
+const skip = take * page;
+
+const data = await findHomepageAlbums({
+  query,
+  skip,
+  userId: session.userId,
+  take,
+});
 
 // const findContent = async () => {
 //   if (query) {
@@ -69,6 +78,7 @@ const query = parseResult.output.query;
       </div>
     </div>
     <CardGrid>
+      <pre>{JSON.stringify(data, null, 2)}</pre>
       <!-- {
         albums.map((album) => (
           <AlbumCard

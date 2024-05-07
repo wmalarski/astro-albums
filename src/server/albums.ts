@@ -12,33 +12,6 @@ import {
   sql,
 } from "astro:db";
 
-type FindRandomAlbums = {
-  take: number;
-  userId: string;
-};
-
-export const findRandomAlbums = async ({ take, userId }: FindRandomAlbums) => {
-  const result = await db.get<{ id: string }[]>(sql`
-    select "Album".id from "Album" 
-    left join "Review" on "Album".id = "Review"."albumId" 
-    where "Review".id is NULL or "Review"."userId" != ${userId}
-    order by random()
-    LIMIT ${take};
-  `);
-
-  const ids = result.map((entry) => entry.id);
-
-  const albums = await db
-    .select()
-    .from(Album)
-    .where(inArray(Album.id, ids))
-    .innerJoin(Artist, eq(Album.artistId, Artist.id));
-
-  const withReviews = albums.map((album) => ({ ...album, reviews: 0 }));
-
-  return { albums: withReviews };
-};
-
 const addReviewCounts = async <T extends { id: string }>(
   albums: T[],
   userId: string,
@@ -105,32 +78,74 @@ export const findAlbum = async ({ id }: FindAlbum) => {
   return { album, albums: [], reviews: [] };
 };
 
-type FindAlbums = {
+type FindAlbumsByQueryArgs = {
   take: number;
-  skip: number | null;
+  skip: number;
+  query: string;
+};
+
+export const findAlbumsByQuery = ({
+  skip,
+  take,
+  query,
+}: FindAlbumsByQueryArgs) => {
+  const pattern = `%${query}%`;
+
+  return db
+    .select()
+    .from(Album)
+    .innerJoin(Artist, eq(Album.artistId, Artist.id))
+    .where(or(like(Album.title, pattern), like(Artist.name, pattern)))
+    .limit(take)
+    .offset(skip)
+    .orderBy(Album.createdAt)
+    .all();
+};
+
+type FindRandomAlbums = {
+  take: number;
+  userId: string;
+};
+
+const findRandomAlbums = async ({ take, userId }: FindRandomAlbums) => {
+  const result = await db.all<{ id: string }>(sql`
+    select "Album".id from "Album" 
+    left join "Review" on "Album".id = "Review"."albumId" 
+    where "Review".id is NULL or "Review"."userId" != ${userId}
+    order by random()
+    LIMIT ${take};
+  `);
+
+  const ids = result.map((entry) => entry.id);
+
+  const albums = await db
+    .select()
+    .from(Album)
+    .where(inArray(Album.id, ids))
+    .innerJoin(Artist, eq(Album.artistId, Artist.id));
+
+  const withReviews = albums.map((album) => ({ ...album, reviews: 0 }));
+
+  return withReviews;
+};
+
+type FindHomepageAlbums = {
+  take: number;
+  skip: number;
   query: string;
   userId: string;
 };
 
-export const findAlbums = async ({ skip, take, query, userId }: FindAlbums) => {
-  const [, counts] = await Promise.all([
-    db
-      .select()
-      .from(Album)
-      .innerJoin(Artist, eq(Album.artistId, Artist.id))
-      .where(or(like(Album.title, query)))
-      .limit(take)
-      .offset(skip ?? 0)
-      .orderBy(Album.createdAt),
-    db
-      .select({ count: count() })
-      .from(Album)
-      .where(or(like(Album.title, query))),
-  ]);
-
-  const albumsWithCounts = await addReviewCounts([], userId);
-
-  return { albums: albumsWithCounts, count: counts };
+export const findHomepageAlbums = ({
+  query,
+  skip,
+  take,
+  userId,
+}: FindHomepageAlbums) => {
+  if (query.length === 0) {
+    return findRandomAlbums({ take, userId });
+  }
+  return findAlbumsByQuery({ skip, take, query });
 };
 
 type UpdateAlbum = {
