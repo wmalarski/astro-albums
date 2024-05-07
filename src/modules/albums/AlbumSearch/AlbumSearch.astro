@@ -1,0 +1,35 @@
+---
+import { Button } from "@components/Button/Button";
+import { Link } from "@components/Link/Link";
+import {
+  TextFieldInput,
+  TextFieldLabel,
+  TextFieldLabelText,
+  TextFieldRoot,
+} from "@components/TextField/TextField";
+import { paths } from "@utils/paths";
+
+export type Props = {
+  query: string;
+};
+
+const { query } = Astro.props;
+---
+
+<form class="w-full flex flex-row gap-2">
+  <TextFieldRoot>
+    <TextFieldLabel for="input">
+      <TextFieldLabelText>Search</TextFieldLabelText>
+    </TextFieldLabel>
+    <TextFieldInput
+      id="input"
+      name="query"
+      width="full"
+      placeholder="Search"
+      type="search"
+      value={query}
+    />
+  </TextFieldRoot>
+  <Button color="primary" type="submit">Search</Button>
+  <Link variant="ghost" href={paths.index()}>Random</Link>
+</form>

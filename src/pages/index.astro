@@ -1,7 +1,6 @@
 ---
 import Layout from "@layouts/Layout.astro";
-import { AlbumSearch } from "@modules/albums/AlbumSearch/AlbumSearch";
-import * as paths from "@utils/paths";
+import AlbumSearch from "@modules/albums/AlbumSearch/AlbumSearch.astro";
 import CardGrid from "@modules/common/CardGrid/CardGrid.astro";
 import {
   integer,
@@ -13,11 +12,13 @@ import {
   string,
 } from "valibot";
 import { findHomepageAlbums } from "@server/albums";
+import AlbumCard from "@modules/albums/AlbumCard/AlbumCard.astro";
+import EmptyPlaceholder from "@modules/common/EmptyPlaceholder/EmptyPlaceholder.astro";
 
 const session = Astro.locals.session;
 
 if (!session) {
-  return Astro.redirect(paths.paths.login);
+  return Astro.redirect("/login");
 }
 
 const parseResult = await safeParseAsync(
@@ -29,7 +30,7 @@ const parseResult = await safeParseAsync(
 );
 
 if (!parseResult.success) {
-  return Astro.redirect(paths.paths.error);
+  return Astro.redirect("/error");
 }
 
 const take = 20;
@@ -43,55 +44,28 @@ const data = await findHomepageAlbums({
   userId: session.userId,
   take,
 });
-
-// const findContent = async () => {
-//   if (query) {
-//     const { albums, count } = await findAlbums({
-//       query,
-//       skip: take * page,
-//       take,
-//       userId: session.user.id,
-//     });
-//     return { albums, count, kind: "query" };
-//   }
-
-//   const { albums } = await findRandomAlbums({
-//     take: take,
-//     userId: session.user.id,
-//   });
-
-//   return { albums, kind: "random" };
-// };
-
-// const data = await findContent();
-
-// const { albums } = data;
-
-// const maxPage = Math.ceil((data.count || 0) / take);
 ---
 
 <Layout title="Welcome to Astro." userId={session.userId}>
   <main class="p-4 flex flex-col gap-4">
     <div class="card bg-base-300 card-compact">
       <div class="card-body flex gap-2">
-        <AlbumSearch client:idle query={query} />
+        <AlbumSearch query={query} />
       </div>
     </div>
     <CardGrid>
-      <pre>{JSON.stringify(data, null, 2)}</pre>
-      <!-- {
-        albums.map((album) => (
+      {
+        data.map((entry) => (
           <AlbumCard
-            album={album}
-            artist={album.artist}
-            reviews={album.reviews}
-            userId={session.user.id}
+            album={entry.Album}
+            artist={entry.Artist}
+            userId={session.userId}
           />
         ))
-      } -->
+      }
     </CardGrid>
-    <!-- {albums.length === 0 && <EmptyPlaceholder />}
-    {
+    {data.length === 0 && <EmptyPlaceholder />}
+    <!-- {
       data.kind === "query" ? (
         <Pagination
           current={page}
