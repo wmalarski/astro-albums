@@ -1,7 +1,6 @@
 ---
 import Layout from "@layouts/Layout.astro";
 import { findAlbum } from "@server/albums";
-import { findReviewsByArtist } from "@server/reviews";
 import { jsonToCoversField } from "@server/coverArt";
 import { formatAlbum } from "@utils/format";
 import { paths } from "@utils/paths";
@@ -9,6 +8,9 @@ import AlbumActions from "@modules/albums/AlbumActions/AlbumActions.astro";
 import EmptyPlaceholder from "@modules/common/EmptyPlaceholder/EmptyPlaceholder.astro";
 import CoversCarousel from "@modules/common/CoversCarousel/CoversCarousel.astro";
 import { minLength, object, safeParseAsync, string } from "valibot";
+import CardGrid from "@modules/common/CardGrid/CardGrid.astro";
+import AlbumCard from "@modules/albums/AlbumCard/AlbumCard.astro";
+import ReviewCard from "@modules/reviews/ReviewCard/ReviewCard.astro";
 
 const session = Astro.locals.session;
 
@@ -21,29 +23,22 @@ const parseResult = await safeParseAsync(
   Astro.params,
 );
 
-console.log(parseResult)
-
 if (!parseResult.success) {
   return Astro.redirect(paths.error);
 }
 
-const id = parseResult.output.id;
-const { album, albums } = await findAlbum({ id, userId: session.userId });
-
-console.log({album, albums})
-
-if (!album) {
-  return Astro.redirect(paths.notFound);
-}
-
-const { reviews } = await findReviewsByArtist({
-  artistId: album.artistId,
-  skip: 0,
-  take: 20,
+const { album, albums, reviews, artist } = await findAlbum({
+  id: parseResult.output.id,
   userId: session.userId,
 });
 
-const header = formatAlbum({ album, artist: album.artist });
+console.log({ album, albums, reviews, artist });
+
+if (!album || !artist) {
+  return Astro.redirect(paths.notFound);
+}
+
+const header = formatAlbum({ album, artist });
 const covers = jsonToCoversField(album.covers);
 ---
 
@@ -58,39 +53,34 @@ const covers = jsonToCoversField(album.covers);
         <h3 class="card-title">{header}</h3>
         <AlbumActions
           album={album}
-          artist={album.artist}
+          artist={artist}
           deleteRedirect={paths.index()}
           userId={session.userId}
         />
       </div>
     </article>
     <h2 class="text-xl font-bold">Albums</h2>
-    <!-- <CardGrid>
+    <CardGrid>
       {
         albums.map((entry) => (
-          <AlbumCard
-            album={entry}
-            artist={album.artist}
-            reviews={entry.reviews}
-            userId={session.userId}
-          />
+          <AlbumCard album={entry} artist={artist} userId={session.userId} />
         ))
       }
-    </CardGrid> -->
+    </CardGrid>
     {albums.length === 0 && <EmptyPlaceholder />}
     <h2 class="text-xl font-bold">Reviews</h2>
-    <!-- <CardGrid>
+    <CardGrid>
       {
         reviews.map((entry) => (
           <ReviewCard
             review={entry}
-            album={entry.album}
-            artist={album.artist}
+            album={album}
+            artist={artist}
             userId={session.userId}
           />
         ))
       }
-    </CardGrid> -->
+    </CardGrid>
     {reviews.length === 0 && <EmptyPlaceholder />}
   </main>
 </Layout>

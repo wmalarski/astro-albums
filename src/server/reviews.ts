@@ -25,38 +25,6 @@ export const findReviews = async ({ skip, take, userId }: FindReviews) => {
   return { count: countResult, reviews };
 };
 
-type FindReviewsByArtist = {
-  artistId: string;
-  skip: number;
-  take: number;
-  userId: string;
-};
-
-export const findReviewsByArtist = async ({
-  artistId,
-  skip,
-  take,
-  userId,
-}: FindReviewsByArtist) => {
-  const [reviews, countResult] = await Promise.all([
-    db
-      .select()
-      .from(Review)
-      .innerJoin(Album, eq(Review.albumId, Album.id))
-      .where(and(eq(Album.artistId, artistId), eq(Review.userId, userId)))
-      .limit(take)
-      .offset(skip)
-      .orderBy(Review.createdAt),
-    db
-      .select({ count: count() })
-      .from(Review)
-      .innerJoin(Album, eq(Review.albumId, Album.id))
-      .where(and(eq(Album.artistId, artistId), eq(Review.userId, userId))),
-  ]);
-
-  return { count: countResult, reviews };
-};
-
 type CountReviewsByDates = {
   userId: string;
 };

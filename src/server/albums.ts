@@ -43,40 +43,43 @@ type FindAlbum = {
 };
 
 export const findAlbum = async ({ id }: FindAlbum) => {
-  const result = await db
+  const albumWithArtist = await db
+    .select()
+    .from(Album)
+    .innerJoin(Artist, eq(Album.artistId, Artist.id))
+    .where(eq(Album.id, id))
+    .get();
+
+  if (!albumWithArtist) {
+    return { album: null, albums: [], reviews: [], artist: null };
+  }
+
+  const artistReviewsAndAlbums = await db
     .select()
     .from(Review)
     .fullJoin(Album, eq(Review.albumId, Album.id))
-    .fullJoin(Artist, eq(Album.artistId, Artist.id))
-    .where(eq(Album.id, id))
+    .innerJoin(Artist, eq(Album.artistId, Artist.id))
+    .where(eq(Artist.id, albumWithArtist.Album.artistId))
     .all();
 
-  console.log(result);
+  const reviews = new Map<string, typeof Review.$inferSelect>();
+  const albums = new Map<string, typeof Album.$inferSelect>();
 
-  if (!result) {
-    return { album: null, albums: [], reviews: [] };
-  }
+  artistReviewsAndAlbums.forEach((row) => {
+    if (row.Review) {
+      reviews.set(row.Review.id, row.Review);
+    }
+    if (row.Album) {
+      albums.set(row.Album.id, row.Album);
+    }
+  });
 
-  // const [albums, reviews] = await Promise.all([
-  //   db.select().from(Album).where(eq(Album.artistId, album.Artist.id)),
-  //   db.select().from(Review).where()
-  //   prisma.review.findMany({
-  //     where: { album: { artistId: album.artistId }, userId },
-  //   }),
-  // ]);
-
-  // const counts = reviews.reduce<Record<string, number>>((prev, curr) => {
-  //   const count = prev[curr.albumId] || 0;
-  //   prev[curr.albumId] = count + 1;
-  //   return prev;
-  // }, {});
-
-  // const withCounts = albums.map((album) => ({
-  //   ...album,
-  //   reviews: counts[album.id] || 0,
-  // }));
-
-  return { album: null, albums: [], reviews: [] };
+  return {
+    album: albumWithArtist.Album,
+    artist: albumWithArtist.Artist,
+    albums: Array.from(albums.values()),
+    reviews: Array.from(reviews.values()),
+  };
 };
 
 type FindAlbumsByQueryArgs = {
