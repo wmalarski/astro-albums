@@ -43,16 +43,17 @@ type FindAlbum = {
 };
 
 export const findAlbum = async ({ id }: FindAlbum) => {
-  const album = await db
+  const result = await db
     .select()
     .from(Review)
-    .limit(1)
-    .where(eq(Review.albumId, id))
-    .innerJoin(Album, eq(Review.albumId, Album.id))
-    .innerJoin(Artist, eq(Album.id, Artist.id))
-    .then((result) => result.at(0));
+    .fullJoin(Album, eq(Review.albumId, Album.id))
+    .fullJoin(Artist, eq(Album.artistId, Artist.id))
+    .where(eq(Album.id, id))
+    .all();
 
-  if (!album) {
+  console.log(result);
+
+  if (!result) {
     return { album: null, albums: [], reviews: [] };
   }
 
@@ -75,7 +76,7 @@ export const findAlbum = async ({ id }: FindAlbum) => {
   //   reviews: counts[album.id] || 0,
   // }));
 
-  return { album, albums: [], reviews: [] };
+  return { album: null, albums: [], reviews: [] };
 };
 
 type FindAlbumsByQueryArgs = {

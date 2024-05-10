@@ -21,12 +21,16 @@ const parseResult = await safeParseAsync(
   Astro.params,
 );
 
+console.log(parseResult)
+
 if (!parseResult.success) {
   return Astro.redirect(paths.error);
 }
 
 const id = parseResult.output.id;
 const { album, albums } = await findAlbum({ id, userId: session.userId });
+
+console.log({album, albums})
 
 if (!album) {
   return Astro.redirect(paths.notFound);

@@ -11,13 +11,15 @@ export const findReviews = async ({ skip, take, userId }: FindReviews) => {
     db
       .select()
       .from(Review)
-      .where(eq(Review.userId, userId))
+      // .where(eq(Review.userId, userId))
       .innerJoin(Album, eq(Review.albumId, Album.id))
       .innerJoin(Artist, eq(Album.artistId, Artist.id))
       .limit(take)
       .offset(skip)
-      .orderBy(Review.createdAt),
-    db.select().from(Review).where(eq(Review.userId, userId)),
+      .orderBy(Review.createdAt)
+      .all(),
+    db.select({ count: count() }).from(Review),
+    // .where(eq(Review.userId, userId)),
   ]);
 
   return { count: countResult, reviews };
@@ -60,20 +62,19 @@ type CountReviewsByDates = {
 };
 
 export type CountReviewsByDatesResult = {
-  count: number;
-  date: Date;
+  "count(id)": number;
+  date: string;
 };
 
 export const countReviewsByDates = async ({ userId }: CountReviewsByDates) => {
-  const groups = await db.get<CountReviewsByDatesResult[]>(sql`
-    SELECT DATE_TRUNC('day', "created_at") as date, count(id) 
-    FROM "public"."Review" 
-    WHERE "created_at" > CURRENT_DATE - INTERVAL '1 year' AND "user_id" = ${userId} 
-    GROUP BY DATE_TRUNC('day', "created_at") 
-    ORDER BY DATE_TRUNC('day', "created_at") DESC
+  const groups = await db.all<CountReviewsByDatesResult>(sql`
+    SELECT datetime("Review".createdAt, 'start of day') as date, count(id) 
+    FROM "Review" 
+    WHERE "Review".createdAt > DATE('now', '-1 year') AND "userId" = ${userId}
+    GROUP BY datetime("Review".createdAt, 'start of day') 
+    ORDER BY datetime("Review".createdAt, 'start of day') DESC
   `);
-
-  return { groups };
+  return groups;
 };
 
 type CreateReview = {

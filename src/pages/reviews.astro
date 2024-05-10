@@ -18,6 +18,8 @@ import {
   string,
   union,
 } from "valibot";
+import CardGrid from "@modules/common/CardGrid/CardGrid.astro";
+import ReviewCard from "@modules/reviews/ReviewCard/ReviewCard.astro";
 
 const session = Astro.locals.session;
 
@@ -27,11 +29,14 @@ if (!session) {
 
 const parseResult = await safeParseAsync(
   object({
-    lower: optional(number([minValue(0), maxValue(10)])),
-    page: optional(number([minValue(0), integer()])),
-    query: optional(string()),
-    upper: optional(number([minValue(0), maxValue(10)])),
-    order: optional(union([literal("createdAt"), literal("rate")])),
+    lower: optional(number([minValue(0), maxValue(10)]), 0),
+    page: optional(number([minValue(0), integer()]), 0),
+    query: optional(string(), ""),
+    upper: optional(number([minValue(0), maxValue(10)]), 10),
+    order: optional(
+      union([literal("createdAt"), literal("rate")]),
+      "createdAt",
+    ),
   }),
   Object.fromEntries(Astro.url.searchParams.entries()),
 );
@@ -41,21 +46,11 @@ if (!parseResult.success) {
 }
 
 const take = 20;
-const page = parseResult.output.page || 0;
-const lower = parseResult.output.lower || 0;
-const query = parseResult.output.query || "";
-const upper = parseResult.output.upper || 10;
-const order = parseResult.output.order || "createdAt";
+const { lower, order, page, query, upper } = parseResult.output;
 
-const [{ count, reviews }, { groups }] = await Promise.all([
-  findReviews({
-    skip: take * page,
-    take,
-    userId: session.userId,
-  }),
-  countReviewsByDates({
-    userId: session.userId,
-  }),
+const [{ count, reviews }, groups] = await Promise.all([
+  findReviews({ skip: take * page, take, userId: session.userId }),
+  countReviewsByDates({ userId: session.userId }),
 ]);
 
 const maxPage = Math.ceil(count.length / take);
@@ -79,18 +74,18 @@ const maxPage = Math.ceil(count.length / take);
         />
       </div>
     </div>
-    <!-- <CardGrid>
+    <CardGrid>
       {
-        reviews.map((review) => (
+        reviews.map((entry) => (
           <ReviewCard
-            album={review.album}
-            artist={review.album.artist}
-            review={review}
+            album={entry.Album}
+            artist={entry.Artist}
+            review={entry.Review}
             userId={session.userId}
           />
         ))
       }
-    </CardGrid> -->
+    </CardGrid>
     {reviews.length === 0 && <EmptyPlaceholder />}
     <Pagination
       current={page}

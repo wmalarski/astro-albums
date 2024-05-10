@@ -2,12 +2,12 @@ import type { CountReviewsByDatesResult } from "@server/reviews";
 
 export const getCountItems = (groups: CountReviewsByDatesResult[]) => {
   const groupsMap = groups.reduce<Record<string, number>>((prev, curr) => {
-    prev[curr.date.toDateString()] = curr.count;
+    prev[curr.date] = curr["count(id)"];
     return prev;
   }, {});
 
   const maxCount = groups.reduce(
-    (prev, curr) => Math.max(prev, Number(curr.count)),
+    (prev, curr) => Math.max(prev, Number(curr["count(id)"])),
     0,
   );
 
