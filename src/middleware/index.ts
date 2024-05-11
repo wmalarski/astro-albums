@@ -41,6 +41,25 @@ export const onRequest = defineMiddleware(async (context, next) => {
     setBlankSessionCookie(context);
   }
 
+  if (
+    context.request.method === "POST" &&
+    context.request.headers
+      .get("Content-Type")
+      ?.startsWith("multipart/form-data")
+  ) {
+    try {
+      context.locals.formData = await context.request.formData();
+      console.log(
+        "context.locals.formData",
+        context.locals.formData.get("action"),
+      );
+    } catch (error) {
+      if (error instanceof Error) {
+        console.error(error.message);
+      }
+    }
+  }
+
   context.locals.session = session;
   context.locals.user = user;
 

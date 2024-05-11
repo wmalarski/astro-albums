@@ -1,0 +1,98 @@
+---
+import {
+  TextFieldInput,
+  TextFieldLabel,
+  TextFieldLabelText,
+  TextFieldRoot,
+} from "@components/TextField/TextField";
+
+// export type ReviewFormData = {
+//   text: string;
+//   rate: number;
+// };
+
+export type Props = {
+  action: string;
+  initialText?: string;
+  initialRate?: number;
+  formId: string;
+  albumId: string;
+};
+
+const { action, initialRate, initialText, formId, albumId } = Astro.props;
+
+// export const ReviewForm = (props: Props): JSX.Element => {
+//   const [text, setText] = createSignal("");
+//   const [rate, setRate] = createSignal(5);
+
+//   const handleSubmit = () => {
+//     props.onSubmit({ rate: rate(), text: text() });
+//   };
+
+//   createEffect(() => {
+//     if (!props.initial) {
+//       return;
+//     }
+//     setText(props.initial.text);
+//     setRate(props.initial.rate);
+//   });
+---
+
+<form class="w-full flex flex-col gap-2" id={formId} method="post">
+  <input type="hidden" name="action" value={action} />
+  <input type="hidden" name="albumId" value={albumId} />
+  <TextFieldRoot>
+    <TextFieldLabel for="review">
+      <TextFieldLabelText>Review:</TextFieldLabelText>
+    </TextFieldLabel>
+    <TextFieldInput
+      size="sm"
+      id="review"
+      name="text"
+      placeholder="Review"
+      type="text"
+      value={initialText ?? ""}
+      variant="bordered"
+    />
+  </TextFieldRoot>
+  <TextFieldRoot>
+    <TextFieldLabel for="rate">
+      <TextFieldLabelText>Rate:</TextFieldLabelText>
+    </TextFieldLabel>
+    <TextFieldInput
+      size="sm"
+      id="rate"
+      name="rate"
+      max={10}
+      min={0}
+      placeholder="Rate"
+      step={0.1}
+      type="number"
+      value={initialRate ?? 5}
+      variant="bordered"
+    />
+  </TextFieldRoot>
+  <!-- <Show when={props.error} keyed>
+    {(error) => <div class="text-sm text-red-400">{error}</div>}
+  </Show> -->
+  <!-- <div class="flex justify-end w-full gap-2">
+    <Button
+      variant="ghost"
+      isLoading={props.isLoading}
+      disabled={props.isLoading}
+      type="button"
+      onClick={() => props.onCancel()}
+    >
+      Cancel
+    </Button>
+    <Button
+      color="primary"
+      isLoading={props.isLoading}
+      disabled={props.isLoading}
+      type="button"
+      onClick={handleSubmit}
+    >
+      Save
+    </Button>
+  </div> -->
+</form>
