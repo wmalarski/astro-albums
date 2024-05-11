@@ -9,10 +9,9 @@ import Pagination from "@components/Pagination/Pagination.astro";
 export interface Props {
   page: number;
   query: string;
-  userId: string;
 }
 
-const { page, query, userId } = Astro.props;
+const { page, query } = Astro.props;
 const take = 20;
 const skip = take * page;
 
@@ -20,11 +19,7 @@ const data = await findAlbumsByQuery({ query, skip, take });
 ---
 
 <CardGrid>
-  {
-    data.map((entry) => (
-      <AlbumCard album={entry.Album} artist={entry.Artist} userId={userId} />
-    ))
-  }
+  {data.map((entry) => <AlbumCard album={entry.Album} artist={entry.Artist} />)}
 </CardGrid>
 {data.length === 0 && <EmptyPlaceholder />}
 <Pagination

@@ -43,7 +43,7 @@ const { page, query } = parseResult.output;
     </div>
     {
       query.length > 0 ? (
-        <AlbumSearchResults page={page} query={query} userId={session.userId} />
+        <AlbumSearchResults page={page} query={query} />
       ) : (
         <RandomAlbums userId={session.userId} />
       )

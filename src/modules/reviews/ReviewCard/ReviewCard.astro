@@ -14,10 +14,9 @@ export interface Props {
   review: typeof Review.$inferSelect;
   album: typeof Album.$inferSelect;
   artist: typeof Artist.$inferSelect;
-  userId: string;
 }
 
-const { album, artist, review, userId } = Astro.props;
+const { album, artist, review } = Astro.props;
 
 const details =
   album.release || (album.sid && paths.albumRelease({ sid: album.sid }));
@@ -52,24 +51,14 @@ const covers = jsonToCoversField(album.covers);
           </Link>
         )
       }
-      {
-        review.userId === userId ? (
-          <>
-            <EditReviewButton
-              client:load
-              reviewId={review.id}
-              header={header}
-              text={review.text}
-              rate={review.rate}
-            />
-            <DeleteReviewButton
-              client:load
-              reviewId={review.id}
-              header={header}
-            />
-          </>
-        ) : null
-      }
+      <EditReviewButton
+        client:load
+        reviewId={review.id}
+        header={header}
+        text={review.text}
+        rate={review.rate}
+      />
+      <DeleteReviewButton client:load reviewId={review.id} header={header} />
     </div>
   </div>
 </article>

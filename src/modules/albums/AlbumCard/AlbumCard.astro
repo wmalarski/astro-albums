@@ -10,10 +10,9 @@ export interface Props {
   album: typeof Album.$inferSelect;
   artist: typeof Artist.$inferSelect;
   reviews?: number;
-  userId: string;
 }
 
-const { album, artist, reviews, userId } = Astro.props;
+const { album, artist, reviews } = Astro.props;
 
 const header = formatAlbum({ album, artist });
 
@@ -30,6 +29,6 @@ const covers = jsonToCoversField(album.covers);
   </figure>
   <div class="card-body">
     <h3 class="card-title line-clamp-2">{header}</h3>
-    <AlbumActions album={album} artist={artist} userId={userId} />
+    <AlbumActions album={album} artist={artist} />
   </div>
 </article>

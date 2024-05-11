@@ -13,10 +13,9 @@ export interface Props {
   album: typeof Album.$inferSelect;
   artist: typeof Artist.$inferSelect;
   deleteRedirect?: string;
-  userId: string;
 }
 
-const { album, artist, deleteRedirect, userId } = Astro.props;
+const { album, artist, deleteRedirect } = Astro.props;
 
 const details =
   album.release || (album.sid && paths.albumRelease({ sid: album.sid }));
@@ -36,23 +35,17 @@ const header = formatAlbum({ album, artist });
     )
   }
   <AddReviewButton client:load albumId={album.id} header={header} />
-  {
-    album.userId === userId ? (
-      <>
-        <EditAlbumButton
-          client:load
-          albumId={album.id}
-          header={header}
-          title={album.title}
-          year={album.year}
-        />
-        <DeleteAlbumButton
-          client:load
-          albumId={album.id}
-          header={header}
-          redirect={deleteRedirect}
-        />
-      </>
-    ) : null
-  }
+  <EditAlbumButton
+    client:load
+    albumId={album.id}
+    header={header}
+    title={album.title}
+    year={album.year}
+  />
+  <DeleteAlbumButton
+    client:load
+    albumId={album.id}
+    header={header}
+    redirect={deleteRedirect}
+  />
 </div>

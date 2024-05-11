@@ -13,9 +13,5 @@ const data = await findRandomAlbums({ userId, take: 20 });
 ---
 
 <CardGrid>
-  {
-    data.map((entry) => (
-      <AlbumCard album={entry.Album} artist={entry.Artist} userId={userId} />
-    ))
-  }
+  {data.map((entry) => <AlbumCard album={entry.Album} artist={entry.Artist} />)}
 </CardGrid>

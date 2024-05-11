@@ -55,29 +55,19 @@ const covers = jsonToCoversField(album.covers);
           album={album}
           artist={artist}
           deleteRedirect={paths.index()}
-          userId={session.userId}
         />
       </div>
     </article>
     <h2 class="text-xl font-bold">Albums</h2>
     <CardGrid>
-      {
-        albums.map((entry) => (
-          <AlbumCard album={entry} artist={artist} userId={session.userId} />
-        ))
-      }
+      {albums.map((entry) => <AlbumCard album={entry} artist={artist} />)}
     </CardGrid>
     {albums.length === 0 && <EmptyPlaceholder />}
     <h2 class="text-xl font-bold">Reviews</h2>
     <CardGrid>
       {
         reviews.map((entry) => (
-          <ReviewCard
-            review={entry}
-            album={album}
-            artist={artist}
-            userId={session.userId}
-          />
+          <ReviewCard review={entry} album={album} artist={artist} />
         ))
       }
     </CardGrid>
