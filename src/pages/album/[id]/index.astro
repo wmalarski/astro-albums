@@ -1,16 +1,15 @@
 ---
 import Layout from "@layouts/Layout.astro";
 import { findAlbum } from "@server/albums";
-import { jsonToCoversField } from "@server/coverArt";
 import { formatAlbum } from "@utils/format";
 import { paths } from "@utils/paths";
-import AlbumActions from "@modules/albums/AlbumActions/AlbumActions.astro";
 import EmptyPlaceholder from "@modules/common/EmptyPlaceholder/EmptyPlaceholder.astro";
-import CoversCarousel from "@modules/common/CoversCarousel/CoversCarousel.astro";
 import { minLength, object, safeParseAsync, string } from "valibot";
 import CardGrid from "@modules/common/CardGrid/CardGrid.astro";
 import AlbumCard from "@modules/albums/AlbumCard/AlbumCard.astro";
 import ReviewCard from "@modules/reviews/ReviewCard/ReviewCard.astro";
+import AlbumHero from "@modules/albums/AlbumHero/AlbumHero.astro";
+import { findArtistAlbumsAndReviewsArgs } from "@server/artist";
 
 const session = Astro.locals.session;
 
@@ -27,35 +26,28 @@ if (!parseResult.success) {
   return Astro.redirect(paths.error);
 }
 
-const { album, albums, reviews, artist } = await findAlbum({
+const albumRow = await findAlbum({
   id: parseResult.output.id,
   userId: session.userId,
 });
 
-if (!album || !artist) {
+if (!albumRow) {
   return Astro.redirect(paths.notFound);
 }
 
+const { Album: album, Artist: artist } = albumRow;
+
+const { albums, reviews } = await findArtistAlbumsAndReviewsArgs({
+  artistId: album.artistId,
+});
+
 const header = formatAlbum({ album, artist });
-const covers = jsonToCoversField(album.covers);
 ---
 
 <Layout title={`${header} - Astro Albums`} userId={session.userId}>
   <main class="p-4 flex flex-col gap-4">
     <h2 class="text-xl font-bold">Album</h2>
-    <article class="card card-side bg-base-300 w-full min-h-[250px]">
-      <figure class="max-w-[500px]">
-        <CoversCarousel covers={covers.large} header={header} />
-      </figure>
-      <div class="card-body">
-        <h3 class="card-title">{header}</h3>
-        <AlbumActions
-          album={album}
-          artist={artist}
-          deleteRedirect={paths.index()}
-        />
-      </div>
-    </article>
+    <AlbumHero artist={artist} album={album} />
     <h2 class="text-xl font-bold">Albums</h2>
     <CardGrid>
       {albums.map((entry) => <AlbumCard album={entry} artist={artist} />)}

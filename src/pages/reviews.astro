@@ -49,8 +49,8 @@ const take = 20;
 const { lower, order, page, query, upper } = parseResult.output;
 
 const [{ count, reviews }, groups] = await Promise.all([
-  findReviews({ skip: take * page, take, userId: session.userId }),
-  countReviewsByDates({ userId: session.userId }),
+  findReviews({ skip: take * page, take }),
+  countReviewsByDates(),
 ]);
 
 const maxPage = Math.ceil(count.length / take);

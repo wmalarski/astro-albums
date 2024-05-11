@@ -1,0 +1,32 @@
+---
+import { jsonToCoversField } from "@server/coverArt";
+import { formatAlbum } from "@utils/format";
+import { paths } from "@utils/paths";
+import AlbumActions from "@modules/albums/AlbumActions/AlbumActions.astro";
+import CoversCarousel from "@modules/common/CoversCarousel/CoversCarousel.astro";
+import type { Album, Artist } from "astro:db";
+
+export type Props = {
+  album: typeof Album.$inferSelect;
+  artist: typeof Artist.$inferSelect;
+};
+
+const { album, artist } = Astro.props;
+
+const header = formatAlbum({ album, artist });
+const covers = jsonToCoversField(album.covers);
+---
+
+<article class="card card-side bg-base-300 w-full min-h-[250px]">
+  <figure class="max-w-[500px]">
+    <CoversCarousel covers={covers.large} header={header} />
+  </figure>
+  <div class="card-body">
+    <h3 class="card-title">{header}</h3>
+    <AlbumActions
+      album={album}
+      artist={artist}
+      deleteRedirect={paths.index()}
+    />
+  </div>
+</article>

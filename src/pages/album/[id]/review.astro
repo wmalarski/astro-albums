@@ -1,0 +1,53 @@
+---
+import Layout from "@layouts/Layout.astro";
+import { findAlbum } from "@server/albums";
+import { formatAlbum } from "@utils/format";
+import { paths } from "@utils/paths";
+import { minLength, object, safeParseAsync, string } from "valibot";
+import AlbumHero from "@modules/albums/AlbumHero/AlbumHero.astro";
+import ReviewForm from "@modules/reviews/ReviewForm/ReviewForm.astro";
+import Button from "@components/Button/Button.astro";
+
+const session = Astro.locals.session;
+
+if (!session) {
+  return Astro.redirect(paths.login);
+}
+
+const parseResult = await safeParseAsync(
+  object({ id: string([minLength(1)]) }),
+  Astro.params,
+);
+
+if (!parseResult.success) {
+  return Astro.redirect(paths.error);
+}
+
+const albumRow = await findAlbum({
+  id: parseResult.output.id,
+  userId: session.userId,
+});
+
+if (!albumRow) {
+  return Astro.redirect(paths.notFound);
+}
+
+const { Album: album, Artist: artist } = albumRow;
+
+const header = formatAlbum({ album, artist });
+const formId = `album-review-${album.id}`;
+---
+
+<Layout title={`${header} - Astro Albums`} userId={session.userId}>
+  <main class="p-4 flex flex-col gap-4">
+    <h2 class="text-xl font-bold">Album</h2>
+    <AlbumHero artist={artist} album={album} />
+    <h2 class="text-xl font-bold">Review</h2>
+    <div class="card">
+      <ReviewForm action="review" albumId={album.id} formId={formId} />
+      <div class="card-actions">
+        <Button type="submit" form={formId}>Save</Button>
+      </div>
+    </div>
+  </main>
+</Layout>
