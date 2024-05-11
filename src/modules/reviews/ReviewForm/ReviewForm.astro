@@ -1,15 +1,13 @@
 ---
+import { AlertIcon } from "@components/Alert/Alert";
+import { Alert } from "@components/Alert/Alert";
 import {
   TextFieldInput,
   TextFieldLabel,
   TextFieldLabelText,
   TextFieldRoot,
 } from "@components/TextField/TextField";
-
-// export type ReviewFormData = {
-//   text: string;
-//   rate: number;
-// };
+import { Show } from "solid-js";
 
 export type Props = {
   action: string;
@@ -17,30 +15,24 @@ export type Props = {
   initialRate?: number;
   formId: string;
   albumId: string;
+  error?: string;
+  errors?: Record<string, string>;
 };
 
-const { action, initialRate, initialText, formId, albumId } = Astro.props;
-
-// export const ReviewForm = (props: Props): JSX.Element => {
-//   const [text, setText] = createSignal("");
-//   const [rate, setRate] = createSignal(5);
-
-//   const handleSubmit = () => {
-//     props.onSubmit({ rate: rate(), text: text() });
-//   };
-
-//   createEffect(() => {
-//     if (!props.initial) {
-//       return;
-//     }
-//     setText(props.initial.text);
-//     setRate(props.initial.rate);
-//   });
+const { action, initialRate, initialText, formId, albumId, error, errors } =
+  Astro.props;
 ---
 
 <form class="w-full flex flex-col gap-2" id={formId} method="post">
   <input type="hidden" name="action" value={action} />
   <input type="hidden" name="albumId" value={albumId} />
+  <Show when={error}>
+    <Alert variant="error">
+      <AlertIcon variant="error">
+        {errors}
+      </AlertIcon>
+    </Alert>
+  </Show>
   <TextFieldRoot>
     <TextFieldLabel for="review">
       <TextFieldLabelText>Review:</TextFieldLabelText>
@@ -54,45 +46,36 @@ const { action, initialRate, initialText, formId, albumId } = Astro.props;
       value={initialText ?? ""}
       variant="bordered"
     />
+    <Show when={errors?.text}>
+      <Alert>
+        <AlertIcon variant="error">
+          {errors?.text}
+        </AlertIcon>
+      </Alert>
+    </Show>
+    <TextFieldRoot>
+      <TextFieldLabel for="rate">
+        <TextFieldLabelText>Rate:</TextFieldLabelText>
+      </TextFieldLabel>
+      <TextFieldInput
+        size="sm"
+        id="rate"
+        name="rate"
+        max={10}
+        min={0}
+        placeholder="Rate"
+        step={0.1}
+        type="number"
+        value={initialRate ?? 5}
+        variant="bordered"
+      />
+      <Show when={errors?.rate}>
+        <Alert variant="error">
+          <AlertIcon variant="error">
+            {errors?.rate}
+          </AlertIcon>
+        </Alert>
+      </Show>
+    </TextFieldRoot>
   </TextFieldRoot>
-  <TextFieldRoot>
-    <TextFieldLabel for="rate">
-      <TextFieldLabelText>Rate:</TextFieldLabelText>
-    </TextFieldLabel>
-    <TextFieldInput
-      size="sm"
-      id="rate"
-      name="rate"
-      max={10}
-      min={0}
-      placeholder="Rate"
-      step={0.1}
-      type="number"
-      value={initialRate ?? 5}
-      variant="bordered"
-    />
-  </TextFieldRoot>
-  <!-- <Show when={props.error} keyed>
-    {(error) => <div class="text-sm text-red-400">{error}</div>}
-  </Show> -->
-  <!-- <div class="flex justify-end w-full gap-2">
-    <Button
-      variant="ghost"
-      isLoading={props.isLoading}
-      disabled={props.isLoading}
-      type="button"
-      onClick={() => props.onCancel()}
-    >
-      Cancel
-    </Button>
-    <Button
-      color="primary"
-      isLoading={props.isLoading}
-      disabled={props.isLoading}
-      type="button"
-      onClick={handleSubmit}
-    >
-      Save
-    </Button>
-  </div> -->
 </form>

@@ -5,6 +5,7 @@
     "astrojs",
     "daisyui",
     "datetime",
+    "formdata",
     "pkce",
     "sbat",
     "sret",

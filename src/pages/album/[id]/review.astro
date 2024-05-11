@@ -5,8 +5,7 @@ import { formatAlbum } from "@utils/format";
 import { paths } from "@utils/paths";
 import { minLength, object, safeParseAsync, string } from "valibot";
 import AlbumHero from "@modules/albums/AlbumHero/AlbumHero.astro";
-import ReviewForm from "@modules/reviews/ReviewForm/ReviewForm.astro";
-import Button from "@components/Button/Button.astro";
+import ReviewAlbumCard from "@modules/reviews/ReviewAlbumCard/ReviewAlbumCard.astro";
 
 const session = Astro.locals.session;
 
@@ -35,7 +34,6 @@ if (!albumRow) {
 const { Album: album, Artist: artist } = albumRow;
 
 const header = formatAlbum({ album, artist });
-const formId = `album-review-${album.id}`;
 ---
 
 <Layout title={`${header} - Astro Albums`} userId={session.userId}>
@@ -43,11 +41,6 @@ const formId = `album-review-${album.id}`;
     <h2 class="text-xl font-bold">Album</h2>
     <AlbumHero artist={artist} album={album} />
     <h2 class="text-xl font-bold">Review</h2>
-    <div class="card">
-      <ReviewForm action="review" albumId={album.id} formId={formId} />
-      <div class="card-actions">
-        <Button type="submit" form={formId}>Save</Button>
-      </div>
-    </div>
+    <ReviewAlbumCard album={album} userId={session.userId} />
   </main>
 </Layout>

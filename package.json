@@ -41,6 +41,7 @@
     "arctic": "^1.8.0",
     "class-variance-authority": "0.7.0",
     "daisyui": "4.10.5",
+    "decode-formdata": "^0.7.2",
     "lucia": "^3.2.0",
     "lucia-adapter-astrodb": "^0.0.8",
     "oslo": "^1.2.0",

@@ -18,6 +18,7 @@ export const paths = {
   login: "/login",
   logout: "/api/logout",
   notFound: "/notFound",
+  review: (albumId: string) => `/album/${albumId}/review`,
   reviews: ({
     lower,
     page,

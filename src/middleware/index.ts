@@ -49,10 +49,6 @@ export const onRequest = defineMiddleware(async (context, next) => {
   ) {
     try {
       context.locals.formData = await context.request.formData();
-      console.log(
-        "context.locals.formData",
-        context.locals.formData.get("action"),
-      );
     } catch (error) {
       if (error instanceof Error) {
         console.error(error.message);
