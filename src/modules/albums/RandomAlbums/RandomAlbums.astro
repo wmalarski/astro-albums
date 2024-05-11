@@ -1,0 +1,21 @@
+---
+import CardGrid from "@modules/common/CardGrid/CardGrid.astro";
+import { findRandomAlbums } from "@server/albums";
+import AlbumCard from "@modules/albums/AlbumCard/AlbumCard.astro";
+
+export interface Props {
+  userId: string;
+}
+
+const { userId } = Astro.props;
+
+const data = await findRandomAlbums({ userId, take: 20 });
+---
+
+<CardGrid>
+  {
+    data.map((entry) => (
+      <AlbumCard album={entry.Album} artist={entry.Artist} userId={userId} />
+    ))
+  }
+</CardGrid>

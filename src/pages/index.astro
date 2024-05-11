@@ -1,7 +1,6 @@
 ---
 import Layout from "@layouts/Layout.astro";
 import AlbumSearch from "@modules/albums/AlbumSearch/AlbumSearch.astro";
-import CardGrid from "@modules/common/CardGrid/CardGrid.astro";
 import {
   integer,
   minValue,
@@ -11,11 +10,8 @@ import {
   safeParseAsync,
   string,
 } from "valibot";
-import { findHomepageAlbums } from "@server/albums";
-import AlbumCard from "@modules/albums/AlbumCard/AlbumCard.astro";
-import EmptyPlaceholder from "@modules/common/EmptyPlaceholder/EmptyPlaceholder.astro";
-import { paths } from "@utils/paths";
-import Pagination from "@components/Pagination/Pagination.astro";
+import AlbumSearchResults from "@modules/albums/AlbumSearchResults/AlbumSearchResults.astro";
+import RandomAlbums from "@modules/albums/RandomAlbums/RandomAlbums.astro";
 
 const session = Astro.locals.session;
 
@@ -35,17 +31,7 @@ if (!parseResult.success) {
   return Astro.redirect("/error");
 }
 
-const take = 20;
-const page = parseResult.output.page;
-const query = parseResult.output.query;
-const skip = take * page;
-
-const data = await findHomepageAlbums({
-  query,
-  skip,
-  userId: session.userId,
-  take,
-});
+const { page, query } = parseResult.output;
 ---
 
 <Layout title="Welcome to Astro." userId={session.userId}>
@@ -55,23 +41,12 @@ const data = await findHomepageAlbums({
         <AlbumSearch query={query} />
       </div>
     </div>
-    <CardGrid>
-      {
-        data.map((entry) => (
-          <AlbumCard
-            album={entry.Album}
-            artist={entry.Artist}
-            userId={session.userId}
-          />
-        ))
-      }
-    </CardGrid>
-    {data.length === 0 && <EmptyPlaceholder />}
-    <Pagination
-      current={page}
-      maxPage={2}
-      nextHref={paths.index({ page: page + 1 })}
-      prevHref={paths.index({ page: page - 1 })}
-    />
+    {
+      query.length > 0 ? (
+        <AlbumSearchResults page={page} query={query} userId={session.userId} />
+      ) : (
+        <RandomAlbums userId={session.userId} />
+      )
+    }
   </main>
 </Layout>

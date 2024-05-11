@@ -1,0 +1,35 @@
+---
+import CardGrid from "@modules/common/CardGrid/CardGrid.astro";
+import { findAlbumsByQuery } from "@server/albums";
+import AlbumCard from "@modules/albums/AlbumCard/AlbumCard.astro";
+import EmptyPlaceholder from "@modules/common/EmptyPlaceholder/EmptyPlaceholder.astro";
+import { paths } from "@utils/paths";
+import Pagination from "@components/Pagination/Pagination.astro";
+
+export interface Props {
+  page: number;
+  query: string;
+  userId: string;
+}
+
+const { page, query, userId } = Astro.props;
+const take = 20;
+const skip = take * page;
+
+const data = await findAlbumsByQuery({ query, skip, take });
+---
+
+<CardGrid>
+  {
+    data.map((entry) => (
+      <AlbumCard album={entry.Album} artist={entry.Artist} userId={userId} />
+    ))
+  }
+</CardGrid>
+{data.length === 0 && <EmptyPlaceholder />}
+<Pagination
+  current={page}
+  maxPage={2}
+  nextHref={paths.index({ page: page + 1 })}
+  prevHref={paths.index({ page: page - 1 })}
+/>

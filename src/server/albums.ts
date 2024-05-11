@@ -111,7 +111,7 @@ type FindRandomAlbums = {
   userId: string;
 };
 
-const findRandomAlbums = async ({ take, userId }: FindRandomAlbums) => {
+export const findRandomAlbums = async ({ take, userId }: FindRandomAlbums) => {
   const result = await db.all<{ id: string }>(sql`
     select "Album".id from "Album" 
     left join "Review" on "Album".id = "Review"."albumId" 
@@ -131,25 +131,6 @@ const findRandomAlbums = async ({ take, userId }: FindRandomAlbums) => {
   const withReviews = albums.map((album) => ({ ...album, reviews: 0 }));
 
   return withReviews;
-};
-
-type FindHomepageAlbums = {
-  take: number;
-  skip: number;
-  query: string;
-  userId: string;
-};
-
-export const findHomepageAlbums = ({
-  query,
-  skip,
-  take,
-  userId,
-}: FindHomepageAlbums) => {
-  if (query.length === 0) {
-    return findRandomAlbums({ take, userId });
-  }
-  return findAlbumsByQuery({ skip, take, query });
 };
 
 type UpdateAlbum = {
