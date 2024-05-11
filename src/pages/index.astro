@@ -14,6 +14,8 @@ import {
 import { findHomepageAlbums } from "@server/albums";
 import AlbumCard from "@modules/albums/AlbumCard/AlbumCard.astro";
 import EmptyPlaceholder from "@modules/common/EmptyPlaceholder/EmptyPlaceholder.astro";
+import { paths } from "@utils/paths";
+import Pagination from "@components/Pagination/Pagination.astro";
 
 const session = Astro.locals.session;
 
@@ -65,15 +67,11 @@ const data = await findHomepageAlbums({
       }
     </CardGrid>
     {data.length === 0 && <EmptyPlaceholder />}
-    <!-- {
-      data.kind === "query" ? (
-        <Pagination
-          current={page}
-          maxPage={maxPage}
-          nextHref={paths.index({ page: page + 1 })}
-          prevHref={paths.index({ page: page - 1 })}
-        />
-      ) : null
-    } -->
+    <Pagination
+      current={page}
+      maxPage={2}
+      nextHref={paths.index({ page: page + 1 })}
+      prevHref={paths.index({ page: page - 1 })}
+    />
   </main>
 </Layout>

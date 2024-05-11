@@ -17,11 +17,11 @@
     "code-check": "yarn lint --max-warnings=0 && yarn tsc"
   },
   "devDependencies": {
-    "@astrojs/solid-js": "4.1.0",
+    "@astrojs/solid-js": "4.2.0",
     "@astrojs/tailwind": "5.1.0",
     "@typescript-eslint/eslint-plugin": "7.8.0",
     "@typescript-eslint/parser": "7.8.0",
-    "astro": "4.7.1",
+    "astro": "4.8.2",
     "eslint": "8.57.0",
     "eslint-config-prettier": "9.1.0",
     "eslint-import-resolver-node": "0.3.9",
@@ -36,8 +36,8 @@
     "prettier-plugin-astro": "0.13.0"
   },
   "dependencies": {
-    "@astrojs/check": "^0.5.10",
-    "@astrojs/db": "^0.11.0",
+    "@astrojs/check": "^0.6.0",
+    "@astrojs/db": "^0.11.1",
     "arctic": "^1.8.0",
     "class-variance-authority": "0.7.0",
     "daisyui": "4.10.5",
