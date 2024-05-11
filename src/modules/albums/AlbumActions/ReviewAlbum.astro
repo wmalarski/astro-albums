@@ -1,0 +1,31 @@
+---
+import { formatAlbum } from "@utils/format";
+import type { Album, Artist } from "astro:db";
+import {
+  DialogTrigger,
+  DialogContainer,
+  DialogContent,
+  DialogActions,
+  DialogClose,
+} from "@components/Dialog/Dialog";
+
+export interface Props {
+  album: typeof Album.$inferSelect;
+  artist: typeof Artist.$inferSelect;
+}
+
+const { album, artist } = Astro.props;
+const dialogId = `review-album-${album.id}`;
+---
+
+<DialogTrigger dialogId={dialogId} client:load>Review</DialogTrigger>
+<DialogContainer id={dialogId}>
+  <DialogContent>
+    <h3 class="font-bold text-lg">Hello!</h3>
+    <p>{formatAlbum({ album, artist })}</p>
+    <p class="py-4">Press ESC key or click the button below to close</p>
+    <DialogActions>
+      <DialogClose />
+    </DialogActions>
+  </DialogContent>
+</DialogContainer>

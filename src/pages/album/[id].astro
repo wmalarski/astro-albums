@@ -32,8 +32,6 @@ const { album, albums, reviews, artist } = await findAlbum({
   userId: session.userId,
 });
 
-console.log({ album, albums, reviews, artist });
-
 if (!album || !artist) {
   return Astro.redirect(paths.notFound);
 }
