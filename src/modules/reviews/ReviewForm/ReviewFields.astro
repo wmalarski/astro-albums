@@ -7,25 +7,26 @@ import {
   TextFieldLabelText,
   TextFieldRoot,
 } from "@components/TextField/TextField";
+import TextFieldErrorMessage from "@components/TextField/TextFieldErrorMessage.astro";
 import { Show } from "solid-js";
 
-export type Props = {
-  action: string;
-  initialText?: string;
-  initialRate?: number;
-  formId: string;
-  albumId: string;
-  error?: string;
-  errors?: Record<string, string>;
+type FormFields = {
+  text: string;
+  rate: number;
 };
 
-const { action, initialRate, initialText, formId, albumId, error, errors } =
-  Astro.props;
+type FormErrors = Partial<Record<keyof FormFields, string[]>>;
+
+export type Props = {
+  initial?: FormFields;
+  error?: string;
+  errors?: FormErrors | null;
+};
+
+const { initial, error, errors } = Astro.props;
 ---
 
-<form class="w-full flex flex-col gap-2" id={formId} method="post">
-  <input type="hidden" name="action" value={action} />
-  <input type="hidden" name="albumId" value={albumId} />
+<div class="w-full flex flex-col gap-2">
   <Show when={error}>
     <Alert variant="error">
       <AlertIcon variant="error">
@@ -38,21 +39,20 @@ const { action, initialRate, initialText, formId, albumId, error, errors } =
       <TextFieldLabelText>Review:</TextFieldLabelText>
     </TextFieldLabel>
     <TextFieldInput
+      required
       size="sm"
       id="review"
       name="text"
       placeholder="Review"
       type="text"
-      value={initialText ?? ""}
+      value={initial?.text ?? ""}
       variant="bordered"
     />
-    <Show when={errors?.text}>
-      <Alert>
-        <AlertIcon variant="error">
-          {errors?.text}
-        </AlertIcon>
-      </Alert>
-    </Show>
+    {
+      errors?.text?.map((error) => (
+        <TextFieldErrorMessage>{error}</TextFieldErrorMessage>
+      ))
+    }
     <TextFieldRoot>
       <TextFieldLabel for="rate">
         <TextFieldLabelText>Rate:</TextFieldLabelText>
@@ -66,16 +66,15 @@ const { action, initialRate, initialText, formId, albumId, error, errors } =
         placeholder="Rate"
         step={0.1}
         type="number"
-        value={initialRate ?? 5}
+        value={initial?.rate ?? 5}
         variant="bordered"
+        required
       />
-      <Show when={errors?.rate}>
-        <Alert variant="error">
-          <AlertIcon variant="error">
-            {errors?.rate}
-          </AlertIcon>
-        </Alert>
-      </Show>
+      {
+        errors?.rate?.map((error) => (
+          <TextFieldErrorMessage>{error}</TextFieldErrorMessage>
+        ))
+      }
     </TextFieldRoot>
   </TextFieldRoot>
-</form>
+</div>

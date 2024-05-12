@@ -1,7 +1,8 @@
 ---
-import ReviewForm from "@modules/reviews/ReviewForm/ReviewForm.astro";
+import ReviewFields from "@modules/reviews/ReviewForm/ReviewFields.astro";
 import Button from "@components/Button/Button.astro";
 import type { Album } from "astro:db";
+import { getActionProps, actions, isInputError } from "astro:actions";
 
 export interface Props {
   album: typeof Album.$inferSelect;
@@ -10,8 +11,8 @@ export interface Props {
 
 const { album } = Astro.props;
 
-const formId = `album-review-${album.id}`;
-const formAction = `review-${album.id}`;
+const results = Astro.getActionResult(actions.review);
+const inputErrors = isInputError(results?.error) ? results.error.fields : null;
 
 // if (Astro.locals.formData?.get("action") === formAction) {
 //   const parsed = await safeParseAsync(
@@ -37,9 +38,12 @@ const formAction = `review-${album.id}`;
 // }
 ---
 
-<div class="card">
-  <ReviewForm action={formAction} albumId={album.id} formId={formId} />
+<form class="card" method="post">
+  <input {...getActionProps(actions.review)} />
+  <input type="hidden" name="albumId" value={album.id} />
+  <ReviewFields errors={inputErrors} />
   <div class="card-actions">
-    <Button type="submit" form={formId}>Save</Button>
+    <Button type="submit">Save</Button>
   </div>
-</div>
+  <pre>{JSON.stringify(results, null, 2)}</pre>
+</form>
