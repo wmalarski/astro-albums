@@ -19,18 +19,6 @@ export interface Props {
 const { album, artist } = Astro.props;
 const dialogId = `dialog-review-album-${album.id}`;
 const formId = `form-review-album-${album.id}`;
-const formAction = `review-${album.id}`;
-
-const action = Astro.locals.formData?.get("action");
-console.log({ action, formAction });
-
-if (Astro.locals.formData?.get("action") === formAction) {
-  const text = Astro.locals.formData.get("text");
-  const rate = Astro.locals.formData.get("rate");
-  const albumId = Astro.locals.formData.get("albumId");
-
-  console.log({ rate, text, albumId });
-}
 ---
 
 <DialogTrigger dialogId={dialogId} client:load>Review</DialogTrigger>
@@ -39,7 +27,7 @@ if (Astro.locals.formData?.get("action") === formAction) {
     <h3 class="font-bold text-lg">
       {`Review ${formatAlbum({ album, artist })}`}
     </h3>
-    <ReviewForm action={formAction} formId={formId} albumId={album.id} />
+    <ReviewForm />
     <DialogActions>
       <DialogClose>Close</DialogClose>
       <Button form={formId} type="submit">Submit</Button>

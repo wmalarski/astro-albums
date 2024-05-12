@@ -6,6 +6,7 @@ import { paths } from "@utils/paths";
 import { minLength, object, safeParseAsync, string } from "valibot";
 import AlbumHero from "@modules/albums/AlbumHero/AlbumHero.astro";
 import ReviewAlbumCard from "@modules/reviews/ReviewAlbumCard/ReviewAlbumCard.astro";
+import { actions } from "astro:actions";
 
 const session = Astro.locals.session;
 
@@ -17,9 +18,13 @@ const parseResult = await safeParseAsync(
   object({ id: string([minLength(1)]) }),
   Astro.params,
 );
-
 if (!parseResult.success) {
   return Astro.redirect(paths.error);
+}
+
+const actionResult = Astro.getActionResult(actions.review);
+if (actionResult?.data?.success) {
+  return Astro.redirect(paths.album(parseResult.output.id));
 }
 
 const albumRow = await findAlbum({
@@ -41,6 +46,6 @@ const header = formatAlbum({ album, artist });
     <h2 class="text-xl font-bold">Album</h2>
     <AlbumHero artist={artist} album={album} />
     <h2 class="text-xl font-bold">Review</h2>
-    <ReviewAlbumCard album={album} userId={session.userId} />
+    <ReviewAlbumCard album={album} />
   </main>
 </Layout>

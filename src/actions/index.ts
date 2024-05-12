@@ -1,6 +1,5 @@
 import { getActionSession } from "@server/auth";
 import { createReview } from "@server/reviews";
-import { paths } from "@utils/paths";
 import { ActionError, defineAction, getApiContext, z } from "astro:actions";
 
 const UNAUTHORIZED_ERROR = {
@@ -43,7 +42,7 @@ export const server = {
         console.log({ error });
       }
 
-      return context.redirect(paths.album(args.albumId));
+      return { success: true };
     },
   }),
 };
