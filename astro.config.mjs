@@ -9,4 +9,7 @@ export default defineConfig({
   integrations: [tailwind(), solidJs(), db()],
   output: "server",
   vite: { optimizeDeps: { exclude: ["astro:db", "oslo"] } },
+  experimental: {
+    actions: true,
+  },
 });

@@ -2,50 +2,39 @@
 import ReviewForm from "@modules/reviews/ReviewForm/ReviewForm.astro";
 import Button from "@components/Button/Button.astro";
 import type { Album } from "astro:db";
-import { decode } from "decode-formdata";
-import {
-  maxValue,
-  minValue,
-  number,
-  object,
-  safeParseAsync,
-  string,
-} from "valibot";
-import { createReview } from "@server/reviews";
-import { paths } from "@utils/paths";
 
 export interface Props {
   album: typeof Album.$inferSelect;
   userId: string;
 }
 
-const { album, userId } = Astro.props;
+const { album } = Astro.props;
 
 const formId = `album-review-${album.id}`;
 const formAction = `review-${album.id}`;
 
-if (Astro.locals.formData?.get("action") === formAction) {
-  const parsed = await safeParseAsync(
-    object({
-      albumId: string(),
-      rate: number([minValue(0), maxValue(10)]),
-      text: string(),
-    }),
-    decode(Astro.locals.formData, { numbers: ["rate"] }),
-  );
+// if (Astro.locals.formData?.get("action") === formAction) {
+//   const parsed = await safeParseAsync(
+//     object({
+//       albumId: string(),
+//       rate: number([minValue(0), maxValue(10)]),
+//       text: string(),
+//     }),
+//     decode(Astro.locals.formData, { numbers: ["rate"] }),
+//   );
 
-  if (parsed.success) {
-    try {
-      await createReview({ ...parsed.output, userId });
-      return Astro.redirect(paths.album(album.id));
-    } catch (error) {
-      console.error(error);
-      return Astro.redirect(paths.error);
-    }
-  }
+//   if (parsed.success) {
+//     try {
+//       await createReview({ ...parsed.output, userId });
+//       return Astro.redirect(paths.album(album.id));
+//     } catch (error) {
+//       console.error(error);
+//       return Astro.redirect(paths.error);
+//     }
+//   }
 
-  console.log(parsed.issues);
-}
+//   console.log(parsed.issues);
+// }
 ---
 
 <div class="card">
