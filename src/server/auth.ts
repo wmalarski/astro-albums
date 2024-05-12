@@ -1,6 +1,6 @@
 import { generateCodeVerifier, generateState, type GoogleTokens } from "arctic";
 
-import type { APIContext, AstroCookieSetOptions } from "astro";
+import type { APIContext, AstroCookieSetOptions, AstroCookies } from "astro";
 import { google, lucia } from "@server/session";
 import { verifyRequestOrigin } from "lucia";
 
@@ -105,4 +105,17 @@ export const authMiddleware = async (context: APIContext) => {
 
   context.locals.session = session;
   context.locals.user = user;
+};
+
+// TODO: remove this after middleware order changes
+export const getActionSession = async (cookies: AstroCookies) => {
+  const sessionId = cookies.get(lucia.sessionCookieName)?.value ?? null;
+
+  if (!sessionId) {
+    return null;
+  }
+
+  const { session } = await lucia.validateSession(sessionId);
+
+  return session;
 };

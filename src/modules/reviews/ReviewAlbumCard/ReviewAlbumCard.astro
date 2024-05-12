@@ -13,37 +13,15 @@ const { album } = Astro.props;
 
 const results = Astro.getActionResult(actions.review);
 const inputErrors = isInputError(results?.error) ? results.error.fields : null;
-
-// if (Astro.locals.formData?.get("action") === formAction) {
-//   const parsed = await safeParseAsync(
-//     object({
-//       albumId: string(),
-//       rate: number([minValue(0), maxValue(10)]),
-//       text: string(),
-//     }),
-//     decode(Astro.locals.formData, { numbers: ["rate"] }),
-//   );
-
-//   if (parsed.success) {
-//     try {
-//       await createReview({ ...parsed.output, userId });
-//       return Astro.redirect(paths.album(album.id));
-//     } catch (error) {
-//       console.error(error);
-//       return Astro.redirect(paths.error);
-//     }
-//   }
-
-//   console.log(parsed.issues);
-// }
+const otherError = !inputErrors ? results?.error?.message ?? null : null;
 ---
 
 <form class="card" method="post">
   <input {...getActionProps(actions.review)} />
   <input type="hidden" name="albumId" value={album.id} />
-  <ReviewFields errors={inputErrors} />
+  <ReviewFields errors={inputErrors} error={otherError} />
   <div class="card-actions">
     <Button type="submit">Save</Button>
   </div>
-  <pre>{JSON.stringify(results, null, 2)}</pre>
+  <pre>{JSON.stringify(results?.error?.message, null, 2)}</pre>
 </form>

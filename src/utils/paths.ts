@@ -4,7 +4,7 @@ export const loginPath = "/login";
 export const errorPath = "/error";
 
 export const paths = {
-  album: ({ id }: { id: string }): string => {
+  album: (id: string): string => {
     return `/album/${id}`;
   },
   albumRelease: ({ sid }: { sid: string }): string => {

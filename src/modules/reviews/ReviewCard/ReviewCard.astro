@@ -43,7 +43,7 @@ const covers = jsonToCoversField(album.covers);
     <div class="card-actions gap-1">
       <YtButton client:load title={album.title} name={artist.name} />
       <GoogleButton client:load title={album.title} name={artist.name} />
-      <Link size="xs" href={paths.album({ id: album.id })}>Show more</Link>
+      <Link size="xs" href={paths.album(album.id)}>Show more</Link>
       {
         details && (
           <Link size="xs" href={details}>

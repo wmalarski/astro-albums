@@ -8,7 +8,6 @@ import {
   TextFieldRoot,
 } from "@components/TextField/TextField";
 import TextFieldErrorMessage from "@components/TextField/TextFieldErrorMessage.astro";
-import { Show } from "solid-js";
 
 type FormFields = {
   text: string;
@@ -19,7 +18,7 @@ type FormErrors = Partial<Record<keyof FormFields, string[]>>;
 
 export type Props = {
   initial?: FormFields;
-  error?: string;
+  error?: string | null;
   errors?: FormErrors | null;
 };
 
@@ -27,13 +26,14 @@ const { initial, error, errors } = Astro.props;
 ---
 
 <div class="w-full flex flex-col gap-2">
-  <Show when={error}>
-    <Alert variant="error">
-      <AlertIcon variant="error">
-        {errors}
-      </AlertIcon>
-    </Alert>
-  </Show>
+  {
+    error ? (
+      <Alert variant="error">
+        <AlertIcon variant="error" />
+        {error}
+      </Alert>
+    ) : null
+  }
   <TextFieldRoot>
     <TextFieldLabel for="review">
       <TextFieldLabelText>Review:</TextFieldLabelText>
