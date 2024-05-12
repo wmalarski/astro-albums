@@ -3,6 +3,7 @@ import ReviewFields from "@modules/reviews/ReviewFields/ReviewFields.astro";
 import Button from "@components/Button/Button.astro";
 import { getActionProps, actions, isInputError } from "astro:actions";
 import type { Review } from "astro:db";
+import { CardActions, CardBody } from "@components/Card/Card";
 
 export interface Props {
   review: typeof Review.$inferSelect;
@@ -18,8 +19,10 @@ const otherError = !inputErrors ? results?.error?.message ?? null : null;
 <form class="card" method="post">
   <input {...getActionProps(actions.updateReview)} />
   <input type="hidden" name="reviewId" value={review.id} />
-  <ReviewFields errors={inputErrors} error={otherError} initial={review} />
-  <div class="card-actions">
-    <Button type="submit">Save</Button>
-  </div>
+  <CardBody>
+    <ReviewFields errors={inputErrors} error={otherError} initial={review} />
+    <CardActions>
+      <Button type="submit">Save</Button>
+    </CardActions>
+  </CardBody>
 </form>

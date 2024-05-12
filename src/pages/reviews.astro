@@ -20,6 +20,7 @@ import {
 } from "valibot";
 import CardGrid from "@modules/common/CardGrid/CardGrid.astro";
 import ReviewCard from "@modules/reviews/ReviewCard/ReviewCard.astro";
+import { Card, CardBody } from "@components/Card/Card";
 
 const session = Astro.locals.session;
 
@@ -58,12 +59,12 @@ const maxPage = Math.ceil(count.length / take);
 
 <Layout title="Reviews" userId={session.userId}>
   <main class="p-4 flex flex-col gap-4">
-    <div class="card bg-base-300 card-compact">
-      <div class="card-body">
+    <Card bg="base-300" size="compact">
+      <CardBody>
         <ReviewActivity groups={groups} />
-      </div>
-    </div>
-    <div class="card bg-base-300 card-compact">
+      </CardBody>
+    </Card>
+    <Card bg="base-300" size="compact">
       <div class="card-body flex gap-2">
         <ReviewSearch
           client:idle
@@ -73,7 +74,7 @@ const maxPage = Math.ceil(count.length / take);
           order={order}
         />
       </div>
-    </div>
+    </Card>
     <CardGrid>
       {
         reviews.map((entry) => (

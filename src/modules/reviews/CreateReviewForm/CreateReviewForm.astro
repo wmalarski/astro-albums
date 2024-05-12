@@ -3,6 +3,7 @@ import ReviewFields from "@modules/reviews/ReviewFields/ReviewFields.astro";
 import Button from "@components/Button/Button.astro";
 import type { Album } from "astro:db";
 import { getActionProps, actions, isInputError } from "astro:actions";
+import { CardActions, CardBody } from "@components/Card/Card";
 
 export interface Props {
   album: typeof Album.$inferSelect;
@@ -18,8 +19,10 @@ const otherError = !inputErrors ? results?.error?.message ?? null : null;
 <form class="card" method="post">
   <input {...getActionProps(actions.createReview)} />
   <input type="hidden" name="albumId" value={album.id} />
-  <ReviewFields errors={inputErrors} error={otherError} />
-  <div class="card-actions">
-    <Button type="submit">Save</Button>
-  </div>
+  <CardBody>
+    <ReviewFields errors={inputErrors} error={otherError} />
+    <CardActions>
+      <Button type="submit">Save</Button>
+    </CardActions>
+  </CardBody>
 </form>

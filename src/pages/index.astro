@@ -12,6 +12,7 @@ import {
 } from "valibot";
 import AlbumSearchResults from "@modules/albums/AlbumSearchResults/AlbumSearchResults.astro";
 import RandomAlbums from "@modules/albums/RandomAlbums/RandomAlbums.astro";
+import { Card } from "@components/Card/Card";
 
 const session = Astro.locals.session;
 
@@ -36,11 +37,11 @@ const { page, query } = parseResult.output;
 
 <Layout title="Welcome to Astro." userId={session.userId}>
   <main class="p-4 flex flex-col gap-4">
-    <div class="card bg-base-300 card-compact">
+    <Card bg="base-300" size="compact">
       <div class="card-body flex gap-2">
         <AlbumSearch query={query} />
       </div>
-    </div>
+    </Card>
     {
       query.length > 0 ? (
         <AlbumSearchResults page={page} query={query} />

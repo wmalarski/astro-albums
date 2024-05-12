@@ -1,11 +1,12 @@
 ---
+import { CardActions } from "@components/Card/Card";
 import Link from "@components/Link/Link.astro";
 ---
 
 <div class="card bg-base-300 w-fit">
-  <div class="card-body">
+  <div class="card-body flex flex-col gap-3">
     <h2 class="card-title">Login</h2>
-    <div class="card-actions pt-3">
+    <CardActions>
       <Link
         color="primary"
         variant="default"
@@ -15,6 +16,6 @@ import Link from "@components/Link/Link.astro";
       >
         Sign In using Google!
       </Link>
-    </div>
+    </CardActions>
   </div>
 </div>
