@@ -5,7 +5,7 @@ import { formatAlbum } from "@utils/format";
 import { paths } from "@utils/paths";
 import { minLength, object, safeParseAsync, string } from "valibot";
 import AlbumHero from "@modules/albums/AlbumHero/AlbumHero.astro";
-import ReviewAlbumCard from "@modules/reviews/ReviewAlbumCard/ReviewAlbumCard.astro";
+import CreateReviewForm from "@modules/reviews/CreateReviewForm/CreateReviewForm.astro";
 import { actions } from "astro:actions";
 
 const session = Astro.locals.session;
@@ -45,6 +45,6 @@ const header = formatAlbum({ album, artist });
     <h2 class="text-xl font-bold">Album</h2>
     <AlbumHero artist={artist} album={album} />
     <h2 class="text-xl font-bold">Review</h2>
-    <ReviewAlbumCard album={album} />
+    <CreateReviewForm album={album} />
   </main>
 </Layout>

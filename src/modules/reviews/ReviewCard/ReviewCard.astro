@@ -2,7 +2,6 @@
 import { formatAlbum } from "@utils/format";
 import { jsonToCoversField } from "@server/coverArt";
 import { paths } from "@utils/paths";
-import { EditReviewButton } from "./EditReviewButton/EditReviewButton";
 import { DeleteReviewButton } from "./DeleteReviewButton/DeleteReviewButton";
 import CoversCarousel from "@modules/common/CoversCarousel/CoversCarousel.astro";
 import { YtButton } from "@modules/common/YtButton/YtButton";
@@ -52,13 +51,6 @@ const covers = jsonToCoversField(album.covers);
         )
       }
       <Link size="xs" href={paths.editReview(review.id)}>Edit</Link>
-      <EditReviewButton
-        client:load
-        reviewId={review.id}
-        header={header}
-        text={review.text}
-        rate={review.rate}
-      />
       <DeleteReviewButton client:load reviewId={review.id} header={header} />
     </div>
   </div>
