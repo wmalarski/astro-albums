@@ -1,0 +1,25 @@
+---
+import ReviewFields from "@modules/reviews/ReviewForm/ReviewFields.astro";
+import Button from "@components/Button/Button.astro";
+import type { Album } from "astro:db";
+import { getActionProps, actions, isInputError } from "astro:actions";
+
+export interface Props {
+  album: typeof Album.$inferSelect;
+}
+
+const { album } = Astro.props;
+
+const results = Astro.getActionResult(actions.createReview);
+const inputErrors = isInputError(results?.error) ? results.error.fields : null;
+const otherError = !inputErrors ? results?.error?.message ?? null : null;
+---
+
+<form class="card" method="post">
+  <input {...getActionProps(actions.createReview)} />
+  <input type="hidden" name="albumId" value={album.id} />
+  <ReviewFields errors={inputErrors} error={otherError} />
+  <div class="card-actions">
+    <Button type="submit">Save</Button>
+  </div>
+</form>

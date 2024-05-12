@@ -1,31 +1,25 @@
 ---
 import ReviewFields from "@modules/reviews/ReviewForm/ReviewFields.astro";
 import Button from "@components/Button/Button.astro";
-import type { Album } from "astro:db";
 import { getActionProps, actions, isInputError } from "astro:actions";
-import { paths } from "@utils/paths";
+import type { Review } from "astro:db";
 
 export interface Props {
-  album: typeof Album.$inferSelect;
+  review: typeof Review.$inferSelect;
 }
 
-const { album } = Astro.props;
+const { review } = Astro.props;
 
-const results = Astro.getActionResult(actions.review);
+const results = Astro.getActionResult(actions.updateReview);
 const inputErrors = isInputError(results?.error) ? results.error.fields : null;
 const otherError = !inputErrors ? results?.error?.message ?? null : null;
-
-if (results?.data?.success) {
-  return Astro.redirect(paths.album(album.id));
-}
 ---
 
 <form class="card" method="post">
-  <input {...getActionProps(actions.review)} />
-  <input type="hidden" name="albumId" value={album.id} />
-  <ReviewFields errors={inputErrors} error={otherError} />
+  <input {...getActionProps(actions.updateReview)} />
+  <input type="hidden" name="reviewId" value={review.id} />
+  <ReviewFields errors={inputErrors} error={otherError} initial={review} />
   <div class="card-actions">
     <Button type="submit">Save</Button>
   </div>
-  <pre>{JSON.stringify(results?.error?.message, null, 2)}</pre>
 </form>

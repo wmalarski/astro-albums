@@ -1,38 +1,17 @@
-import {
-  Album,
-  and,
-  Artist,
-  count,
-  db,
-  eq,
-  inArray,
-  Review,
-  sql,
-} from "astro:db";
+import { Album, and, Artist, count, db, eq, Review, sql } from "astro:db";
 
-const addReviewCounts = async <T extends { id: string }>(
-  albums: T[],
-  userId: string,
-) => {
-  const albumIds = albums.map((album) => album.id);
+type FindReviewArgs = {
+  reviewId: string;
+};
 
-  const groups = await db
-    .select({ albumId: Review.albumId, count: count() })
+export const findReview = ({ reviewId }: FindReviewArgs) => {
+  return db
+    .select()
     .from(Review)
-    .groupBy(Review.albumId)
-    .having(inArray(Review.albumId, albumIds))
-    .where(eq(Review.userId, userId));
-
-  const reviewsCount = new Map<string, number>();
-
-  groups.forEach((group) => {
-    reviewsCount.set(group.albumId, group.count);
-  });
-
-  return albums.map((album) => ({
-    ...album,
-    reviews: reviewsCount.get(album.id) ?? 0,
-  }));
+    .innerJoin(Album, eq(Review.albumId, Album.id))
+    .innerJoin(Artist, eq(Album.artistId, Artist.id))
+    .where(eq(Review.id, reviewId))
+    .get();
 };
 
 type FindReviews = {
@@ -88,19 +67,13 @@ type UpdateReview = {
   rate?: number | undefined;
   text?: string | undefined;
   reviewId: string;
-  userId: string;
 };
 
-export const updateReview = ({
-  rate,
-  text,
-  reviewId,
-  userId,
-}: UpdateReview) => {
+export const updateReview = ({ rate, text, reviewId }: UpdateReview) => {
   return db
     .update(Review)
     .set({ ...(rate || rate === 0 ? { rate } : {}), ...(text ? { text } : {}) })
-    .where(and(eq(Review.id, reviewId), eq(Review.userId, userId)))
+    .where(eq(Review.id, reviewId))
     .run();
 };
 

@@ -19,6 +19,7 @@ export const paths = {
   logout: "/api/logout",
   notFound: "/notFound",
   review: (albumId: string) => `/album/${albumId}/review`,
+  editReview: (reviewId: string) => `/review/${reviewId}/edit`,
   reviews: ({
     lower,
     page,

@@ -27,8 +27,7 @@ if (!parseResult.success) {
 }
 
 const albumRow = await findAlbum({
-  id: parseResult.output.id,
-  userId: session.userId,
+  albumId: parseResult.output.id,
 });
 
 if (!albumRow) {

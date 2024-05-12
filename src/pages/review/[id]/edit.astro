@@ -1,12 +1,12 @@
 ---
 import Layout from "@layouts/Layout.astro";
-import { findAlbum } from "@server/albums";
 import { formatAlbum } from "@utils/format";
 import { paths } from "@utils/paths";
 import { minLength, object, safeParseAsync, string } from "valibot";
 import AlbumHero from "@modules/albums/AlbumHero/AlbumHero.astro";
-import ReviewAlbumCard from "@modules/reviews/ReviewAlbumCard/ReviewAlbumCard.astro";
 import { actions } from "astro:actions";
+import { findReview } from "@server/reviews";
+import EditReviewForm from "@modules/reviews/EditReviewForm/EditReviewForm.astro";
 
 const session = Astro.locals.session;
 
@@ -22,20 +22,20 @@ if (!parseResult.success) {
   return Astro.redirect(paths.error);
 }
 
-const actionResult = Astro.getActionResult(actions.createReview);
-if (actionResult?.data?.success) {
-  return Astro.redirect(paths.album(parseResult.output.id));
-}
-
-const albumRow = await findAlbum({
-  albumId: parseResult.output.id,
+const reviewRow = await findReview({
+  reviewId: parseResult.output.id,
 });
 
-if (!albumRow) {
+if (!reviewRow) {
   return Astro.redirect(paths.notFound);
 }
 
-const { Album: album, Artist: artist } = albumRow;
+const { Album: album, Artist: artist, Review: review } = reviewRow;
+
+const actionResult = Astro.getActionResult(actions.updateReview);
+if (actionResult?.data?.success) {
+  return Astro.redirect(paths.album(album.id));
+}
 
 const header = formatAlbum({ album, artist });
 ---
@@ -44,7 +44,7 @@ const header = formatAlbum({ album, artist });
   <main class="p-4 flex flex-col gap-4">
     <h2 class="text-xl font-bold">Album</h2>
     <AlbumHero artist={artist} album={album} />
-    <h2 class="text-xl font-bold">Review</h2>
-    <ReviewAlbumCard album={album} />
+    <h2 class="text-xl font-bold">Edit Review</h2>
+    <EditReviewForm review={review} />
   </main>
 </Layout>

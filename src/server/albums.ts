@@ -1,16 +1,15 @@
 import { Album, and, db, eq, or, like, Artist, inArray, sql } from "astro:db";
 
-type FindAlbum = {
-  id: string;
-  userId: string;
+type FindAlbumArgs = {
+  albumId: string;
 };
 
-export const findAlbum = ({ id }: FindAlbum) => {
+export const findAlbum = ({ albumId }: FindAlbumArgs) => {
   return db
     .select()
     .from(Album)
     .innerJoin(Artist, eq(Album.artistId, Artist.id))
-    .where(eq(Album.id, id))
+    .where(eq(Album.id, albumId))
     .get();
 };
 

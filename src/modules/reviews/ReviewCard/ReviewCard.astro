@@ -51,6 +51,7 @@ const covers = jsonToCoversField(album.covers);
           </Link>
         )
       }
+      <Link size="xs" href={paths.editReview(review.id)}>Edit</Link>
       <EditReviewButton
         client:load
         reviewId={review.id}

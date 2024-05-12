@@ -1,5 +1,5 @@
 import { getActionSession } from "@server/auth";
-import { createReview } from "@server/reviews";
+import { createReview, updateReview } from "@server/reviews";
 import { ActionError, defineAction, getApiContext, z } from "astro:actions";
 
 const UNAUTHORIZED_ERROR = {
@@ -13,7 +13,7 @@ const DB_ERROR = {
 } as const;
 
 export const server = {
-  review: defineAction({
+  createReview: defineAction({
     accept: "form",
     input: z.object({
       albumId: z.string(),
@@ -24,22 +24,38 @@ export const server = {
       const context = getApiContext();
       const session = await getActionSession(context.cookies);
 
-      console.log("userId", context.locals, session);
+      if (!session?.userId) {
+        throw new ActionError(UNAUTHORIZED_ERROR);
+      }
+
+      const result = await createReview({ ...args, userId: session.userId });
+
+      if (result.rowsAffected === 0) {
+        throw new ActionError(DB_ERROR);
+      }
+
+      return { success: true };
+    },
+  }),
+  updateReview: defineAction({
+    accept: "form",
+    input: z.object({
+      reviewId: z.string(),
+      rate: z.number().min(0).max(10),
+      text: z.string(),
+    }),
+    handler: async (args) => {
+      const context = getApiContext();
+      const session = await getActionSession(context.cookies);
 
       if (!session?.userId) {
         throw new ActionError(UNAUTHORIZED_ERROR);
       }
 
-      try {
-        const result = await createReview({
-          ...args,
-          userId: session.userId,
-        });
-        if (result.rowsAffected === 0) {
-          throw new ActionError(DB_ERROR);
-        }
-      } catch (error) {
-        console.log({ error });
+      const result = await updateReview(args);
+
+      if (result.rowsAffected === 0) {
+        throw new ActionError(DB_ERROR);
       }
 
       return { success: true };

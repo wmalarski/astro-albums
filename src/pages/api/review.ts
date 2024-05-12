@@ -65,10 +65,7 @@ export const POST: APIRoute = async (context): Promise<Response> => {
     return invalidRequestError({ text: parsed.issues[0].message });
   }
 
-  const result = await updateReview({
-    ...parsed.output,
-    userId: session.userId,
-  });
+  const result = await updateReview(parsed.output);
 
   // if (result.count === 0) {
   //   return invalidRequestError({});
