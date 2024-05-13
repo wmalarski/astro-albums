@@ -84,12 +84,8 @@ export const updateAlbum = ({ albumId, title, userId, year }: UpdateAlbum) => {
 
 type DeleteAlbum = {
   albumId: string;
-  userId: string;
 };
 
-export const deleteAlbum = ({ albumId, userId }: DeleteAlbum) => {
-  return db
-    .delete(Album)
-    .where(and(eq(Album.id, albumId), eq(Album.userId, userId)))
-    .run();
+export const deleteAlbum = ({ albumId }: DeleteAlbum) => {
+  return db.delete(Album).where(eq(Album.id, albumId)).run();
 };

@@ -79,12 +79,8 @@ export const updateReview = ({ rate, text, reviewId }: UpdateReview) => {
 
 type DeleteReview = {
   reviewId: string;
-  userId: string;
 };
 
-export const deleteReview = ({ reviewId, userId }: DeleteReview) => {
-  return db
-    .delete(Review)
-    .where(and(eq(Review.id, reviewId), eq(Review.userId, userId)))
-    .run();
+export const deleteReview = ({ reviewId }: DeleteReview) => {
+  return db.delete(Review).where(eq(Review.id, reviewId)).run();
 };
