@@ -1,4 +1,4 @@
-import { deleteAlbum } from "@server/albums";
+import { deleteAlbum, updateAlbum } from "@server/albums";
 import { getActionSession } from "@server/auth";
 import { createReview, deleteReview, updateReview } from "@server/reviews";
 import { ActionError, defineAction, getApiContext, z } from "astro:actions";
@@ -76,6 +76,30 @@ export const server = {
       }
 
       const result = await deleteReview(args);
+
+      if (result.rowsAffected === 0) {
+        throw new ActionError(DB_ERROR);
+      }
+
+      return { success: true };
+    },
+  }),
+  updateAlbum: defineAction({
+    accept: "form",
+    input: z.object({
+      albumId: z.string(),
+      title: z.string().optional(),
+      year: z.coerce.number().optional(),
+    }),
+    handler: async (args) => {
+      const context = getApiContext();
+      const session = await getActionSession(context.cookies);
+
+      if (!session?.userId) {
+        throw new ActionError(UNAUTHORIZED_ERROR);
+      }
+
+      const result = await updateAlbum(args);
 
       if (result.rowsAffected === 0) {
         throw new ActionError(DB_ERROR);

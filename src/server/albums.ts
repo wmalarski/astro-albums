@@ -68,17 +68,16 @@ type UpdateAlbum = {
   year?: number | undefined;
   title?: string | undefined;
   albumId: string;
-  userId: string;
 };
 
-export const updateAlbum = ({ albumId, title, userId, year }: UpdateAlbum) => {
+export const updateAlbum = ({ albumId, title, year }: UpdateAlbum) => {
   return db
     .update(Album)
     .set({
       ...(title ? { title } : {}),
       ...(year || year === 0 ? { year } : {}),
     })
-    .where(and(eq(Album.id, albumId), eq(Album.userId, userId)))
+    .where(eq(Album.id, albumId))
     .run();
 };
 
