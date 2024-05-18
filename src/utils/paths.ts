@@ -20,6 +20,7 @@ export const paths = {
   notFound: "/notFound",
   review: (albumId: string) => `/album/${albumId}/review`,
   editReview: (reviewId: string) => `/review/${reviewId}/edit`,
+  editAlbum: (albumId: string) => `/album/${albumId}/edit`,
   reviews: ({
     lower,
     page,

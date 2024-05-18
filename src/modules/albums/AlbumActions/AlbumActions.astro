@@ -1,7 +1,5 @@
 ---
-import { formatAlbum } from "@utils/format";
 import { paths } from "@utils/paths";
-import { EditAlbumButton } from "./EditAlbumButton/EditAlbumButton";
 import { YtButton } from "@modules/common/YtButton/YtButton";
 import { GoogleButton } from "@modules/common/GoogleButton/GoogleButton";
 import type { Album, Artist } from "astro:db";
@@ -17,8 +15,6 @@ const { album, artist } = Astro.props;
 
 const details =
   album.release || (album.sid && paths.albumRelease({ sid: album.sid }));
-
-const header = formatAlbum({ album, artist });
 ---
 
 <div class="card-actions gap-1">
@@ -33,12 +29,6 @@ const header = formatAlbum({ album, artist });
     )
   }
   <Link size="xs" href={paths.review(album.id)}>Review</Link>
-  <EditAlbumButton
-    client:load
-    albumId={album.id}
-    header={header}
-    title={album.title}
-    year={album.year}
-  />
+  <Link size="xs" href={paths.editAlbum(album.id)}>Edit</Link>
   <DeleteAlbumButton album={album} artist={artist} />
 </div>

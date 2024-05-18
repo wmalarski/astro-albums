@@ -1,0 +1,24 @@
+---
+import AlbumFields from "@modules/albums/AlbumFields/AlbumFields.astro";
+import { CardBody } from "@components/Card/Card";
+import { actions, getActionProps, isInputError } from "astro:actions";
+import type { Album } from "astro:db";
+
+export type Props = {
+  album: typeof Album.$inferSelect;
+};
+
+const { album } = Astro.props;
+
+const results = Astro.getActionResult(actions.updateAlbum);
+const inputErrors = isInputError(results?.error) ? results.error.fields : null;
+const otherError = !inputErrors ? results?.error?.message ?? null : null;
+---
+
+<form class="card" method="post">
+  <input {...getActionProps(actions.updateReview)} />
+  <input type="hidden" name="albumId" value={album.id} />
+  <CardBody>
+    <AlbumFields errors={inputErrors} error={otherError} initial={album} />
+  </CardBody>
+</form>
