@@ -1,6 +1,5 @@
 ---
-import { AlertIcon } from "@components/Alert/Alert";
-import { Alert } from "@components/Alert/Alert";
+import { Alert, AlertIcon } from "@components/Alert/Alert";
 import TextFieldErrorMessage from "@components/TextField/TextFieldErrorMessage.astro";
 import TextFieldInput from "@components/TextField/TextFieldInput.astro";
 import TextFieldLabel from "@components/TextField/TextFieldLabel.astro";
@@ -8,8 +7,8 @@ import TextFieldLabelText from "@components/TextField/TextFieldLabelText.astro";
 import TextFieldRoot from "@components/TextField/TextFieldRoot.astro";
 
 type FormFields = {
-  text: string;
-  rate: number;
+  title: string;
+  year: number | null;
 };
 
 type FormErrors = Partial<Record<keyof FormFields, string[]>>;
@@ -33,46 +32,45 @@ const { initial, error, errors } = Astro.props;
     ) : null
   }
   <TextFieldRoot>
-    <TextFieldLabel for="review">
-      <TextFieldLabelText>Review:</TextFieldLabelText>
+    <TextFieldLabel for="title">
+      <TextFieldLabelText>Title:</TextFieldLabelText>
     </TextFieldLabel>
     <TextFieldInput
-      required
+      id="title"
       size="sm"
-      id="review"
-      name="text"
-      placeholder="Review"
+      required
+      name="title"
+      placeholder="Title"
       type="text"
-      value={initial?.text ?? ""}
+      value={initial?.title ?? ""}
       variant="bordered"
     />
     {
-      errors?.text?.map((error) => (
+      errors?.title?.map((error) => (
         <TextFieldErrorMessage>{error}</TextFieldErrorMessage>
       ))
     }
-    <TextFieldRoot>
-      <TextFieldLabel for="rate">
-        <TextFieldLabelText>Rate:</TextFieldLabelText>
-      </TextFieldLabel>
-      <TextFieldInput
-        size="sm"
-        id="rate"
-        name="rate"
-        max={10}
-        min={0}
-        placeholder="Rate"
-        step={0.1}
-        type="number"
-        value={initial?.rate ?? 5}
-        variant="bordered"
-        required
-      />
-      {
-        errors?.rate?.map((error) => (
-          <TextFieldErrorMessage>{error}</TextFieldErrorMessage>
-        ))
-      }
-    </TextFieldRoot>
+  </TextFieldRoot>
+  <TextFieldRoot>
+    <TextFieldLabel for="year">
+      <TextFieldLabelText>Year:</TextFieldLabelText>
+    </TextFieldLabel>
+    <TextFieldInput
+      id="year"
+      name="year"
+      max={2100}
+      min={0}
+      placeholder="Year"
+      step={1}
+      type="number"
+      value={initial?.year}
+      size="sm"
+      variant="bordered"
+    />
+    {
+      errors?.year?.map((error) => (
+        <TextFieldErrorMessage>{error}</TextFieldErrorMessage>
+      ))
+    }
   </TextFieldRoot>
 </div>
