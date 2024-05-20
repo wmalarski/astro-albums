@@ -1,0 +1,42 @@
+---
+import { Button } from "@components/Button/Button";
+import {
+  DialogTrigger,
+  DialogContainer,
+  DialogContent,
+  DialogActions,
+  DialogClose,
+} from "@components/Dialog/Dialog";
+import { formatAlbum } from "@utils/format";
+import { Album, Artist } from "astro:db";
+import { getActionProps, actions } from "astro:actions";
+import type { Review } from "astro:db";
+
+export interface Props {
+  album: typeof Album.$inferSelect;
+  artist: typeof Artist.$inferSelect;
+  review: typeof Review.$inferInsert;
+}
+
+const { album, artist, review } = Astro.props;
+
+const dialogId = `dialog-delete-review-${review.id}`;
+const formId = `form-delete-review-${review.id}`;
+---
+
+<DialogTrigger dialogId={dialogId} size="xs" client:load>Delete</DialogTrigger>
+<DialogContainer id={dialogId}>
+  <DialogContent>
+    <h3 class="font-bold text-lg">
+      {`Delete review ${formatAlbum({ album, artist })}`}
+    </h3>
+    <form>
+      <input {...getActionProps(actions.deleteReview)} />
+      <input type="hidden" name="reviewId" value={review.id} />
+    </form>
+    <DialogActions>
+      <DialogClose>Close</DialogClose>
+      <Button form={formId} type="submit">Submit</Button>
+    </DialogActions>
+  </DialogContent>
+</DialogContainer>
