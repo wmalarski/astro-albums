@@ -3,8 +3,8 @@ import Pagination from "@components/Pagination/Pagination.astro";
 import Layout from "@layouts/Layout.astro";
 import { countReviewsByDates, findReviews } from "@server/reviews";
 import { paths } from "@utils/paths";
-import { ReviewSearch } from "@modules/reviews/ReviewSearch/ReviewSearch";
-import EmptyPlaceholder from "@modules/common/EmptyPlaceholder/EmptyPlaceholder.astro";
+import { ReviewSearch } from "@modules/reviews/ReviewSearch
+import EmptyPlaceholder from "@modules/common/EmptyPlaceholder.astro";
 import ReviewActivity from "@modules/reviews/ReviewActivity/ReviewActivity.astro";
 import {
   integer,
@@ -18,8 +18,8 @@ import {
   string,
   union,
 } from "valibot";
-import CardGrid from "@modules/common/CardGrid/CardGrid.astro";
-import ReviewCard from "@modules/reviews/ReviewCard/ReviewCard.astro";
+import CardGrid from "@modules/common/CardGrid.astro";
+import ReviewCard from "@modules/reviews/ReviewCard.astro";
 import { Card, CardBody } from "@components/Card/Card";
 
 const session = Astro.locals.session;

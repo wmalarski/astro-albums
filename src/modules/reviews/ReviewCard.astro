@@ -2,10 +2,10 @@
 import { formatAlbum } from "@utils/format";
 import { jsonToCoversField } from "@server/coverArt";
 import { paths } from "@utils/paths";
-import DeleteReviewDialog from "../DeleteReviewForm.astro";
-import CoversCarousel from "@modules/common/CoversCarousel/CoversCarousel.astro";
-import { YtButton } from "@modules/common/YtButton/YtButton";
-import { GoogleButton } from "@modules/common/GoogleButton/GoogleButton";
+import DeleteReviewDialog from "./DeleteReviewForm.astro";
+import CoversCarousel from "@modules/common/CoversCarousel.astro";
+import { YtButton } from "@modules/common/YtButton";
+import { GoogleButton } from "@modules/common/GoogleButton";
 import type { Album, Artist, Review } from "astro:db";
 import Link from "@components/Link/Link.astro";
 

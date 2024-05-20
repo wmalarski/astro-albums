@@ -1,6 +1,6 @@
 ---
 import Layout from "@layouts/Layout.astro";
-import AlbumSearch from "@modules/albums/AlbumSearch/AlbumSearch.astro";
+import AlbumSearch from "@modules/albums/AlbumSearch.astro";
 import {
   integer,
   minValue,
@@ -10,8 +10,8 @@ import {
   safeParseAsync,
   string,
 } from "valibot";
-import AlbumSearchResults from "@modules/albums/AlbumSearchResults/AlbumSearchResults.astro";
-import RandomAlbums from "@modules/albums/RandomAlbums/RandomAlbums.astro";
+import AlbumSearchResults from "@modules/albums/AlbumSearchResults.astro";
+import RandomAlbums from "@modules/albums/RandomAlbums.astro";
 import { Card } from "@components/Card/Card";
 
 const session = Astro.locals.session;
