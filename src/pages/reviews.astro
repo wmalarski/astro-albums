@@ -3,7 +3,7 @@ import Pagination from "@components/Pagination/Pagination.astro";
 import Layout from "@layouts/Layout.astro";
 import { countReviewsByDates, findReviews } from "@server/reviews";
 import { paths } from "@utils/paths";
-import { ReviewSearch } from "@modules/reviews/ReviewSearch
+import ReviewSearch from "@modules/reviews/ReviewSearch.astro";
 import EmptyPlaceholder from "@modules/common/EmptyPlaceholder.astro";
 import ReviewActivity from "@modules/reviews/ReviewActivity/ReviewActivity.astro";
 import {
@@ -90,8 +90,8 @@ const maxPage = Math.ceil(count.length / take);
     <Pagination
       current={page}
       maxPage={maxPage}
-      nextHref={paths.reviews({ page: page + 1 })}
-      prevHref={paths.reviews({ page: page - 1 })}
+      nextHref={paths.reviews({ ...parseResult.output, page: page + 1 })}
+      prevHref={paths.reviews({ ...parseResult.output, page: page - 1 })}
     />
   </main>
 </Layout>

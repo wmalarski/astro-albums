@@ -1,4 +1,4 @@
-import { Album, and, db, eq, or, like, Artist, inArray, sql } from "astro:db";
+import { Album, db, eq, or, like, Artist, inArray, sql } from "astro:db";
 
 type FindAlbumArgs = {
   albumId: string;

@@ -12,26 +12,21 @@ export const paths = {
   },
   callback: "/api/callback",
   error: "/error",
-  index: ({ page, query }: { page?: number; query?: string } = {}): string => {
-    return `/?${buildSearchParams({ page, query })}`;
-  },
+  index: ({ page, query }: { page?: number; query?: string } = {}) =>
+    `/?${buildSearchParams({ page, query })}`,
   login: "/login",
   logout: "/api/logout",
   notFound: "/notFound",
   review: (albumId: string) => `/album/${albumId}/review`,
   editReview: (reviewId: string) => `/review/${reviewId}/edit`,
   editAlbum: (albumId: string) => `/album/${albumId}/edit`,
-  reviews: ({
-    lower,
-    page,
-    query,
-    upper,
-  }: {
-    page?: number;
-    query?: string;
-    lower?: number;
-    upper?: number;
-  } = {}): string => {
-    return `/reviews?${buildSearchParams({ lower, page, query, upper })}`;
-  },
+  reviews: (
+    args: {
+      page?: number;
+      query?: string;
+      lower?: number;
+      upper?: number;
+      order?: string;
+    } = {},
+  ) => `/reviews?${buildSearchParams(args)}`,
 };
