@@ -10,6 +10,7 @@ import { actions } from "astro:actions";
 
 const session = Astro.locals.session;
 
+paths;
 if (!session) {
   return Astro.redirect(paths.login);
 }

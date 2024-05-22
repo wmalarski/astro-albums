@@ -10,6 +10,7 @@ import EditAlbumForm from "@modules/albums/EditAlbumForm.astro";
 
 const session = Astro.locals.session;
 
+paths;
 if (!session) {
   return Astro.redirect(paths.login);
 }

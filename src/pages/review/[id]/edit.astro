@@ -10,6 +10,7 @@ import EditReviewForm from "@modules/reviews/EditReviewForm.astro";
 
 const session = Astro.locals.session;
 
+paths;
 if (!session) {
   return Astro.redirect(paths.login);
 }

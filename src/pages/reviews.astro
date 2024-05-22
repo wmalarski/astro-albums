@@ -24,6 +24,7 @@ import { Card, CardBody } from "@components/Card/Card";
 
 const session = Astro.locals.session;
 
+paths;
 if (!session) {
   return Astro.redirect(paths.login);
 }
@@ -43,6 +44,7 @@ const parseResult = await safeParseAsync(
 );
 
 if (!parseResult.success) {
+  // return astroRedirect(Astro.redirect, path);
   return Astro.redirect(paths.error);
 }
 

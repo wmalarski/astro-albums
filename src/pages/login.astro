@@ -5,6 +5,7 @@ import { paths } from "@utils/paths";
 
 const session = Astro.locals.session;
 
+paths;
 if (session) {
   return Astro.redirect(paths.index());
 }

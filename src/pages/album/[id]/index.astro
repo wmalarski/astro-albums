@@ -13,6 +13,7 @@ import { findArtistAlbumsAndReviewsArgs } from "@server/artist";
 
 const session = Astro.locals.session;
 
+paths;
 if (!session) {
   return Astro.redirect(paths.login);
 }
