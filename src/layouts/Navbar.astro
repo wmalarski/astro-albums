@@ -2,9 +2,9 @@
 import { Link } from "@components/Link/Link";
 import { paths } from "@utils/paths";
 
-export interface Props {
+export type Props = {
   userId: string | null;
-}
+};
 
 const { userId } = Astro.props;
 const isLoggedIn = userId !== null;

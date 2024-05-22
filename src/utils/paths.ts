@@ -1,8 +1,5 @@
 import { buildSearchParams } from "./searchParams";
 
-export const loginPath = "/login";
-export const errorPath = "/error";
-
 export const paths = {
   album: (id: string): string => {
     return `/album/${id}`;

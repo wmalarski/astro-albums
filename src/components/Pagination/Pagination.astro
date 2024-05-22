@@ -1,12 +1,12 @@
 ---
 import Link from "@components/Link/Link.astro";
 
-export interface Props {
+export type Props = {
   current: number;
   maxPage: number;
   nextHref: string;
   prevHref: string;
-}
+};
 
 const { current, maxPage, nextHref, prevHref } = Astro.props;
 ---

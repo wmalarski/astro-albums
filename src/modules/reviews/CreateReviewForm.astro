@@ -5,9 +5,9 @@ import type { Album } from "astro:db";
 import { getActionProps, actions, isInputError } from "astro:actions";
 import { CardActions, CardBody } from "@components/Card/Card";
 
-export interface Props {
+export type Props = {
   album: typeof Album.$inferSelect;
-}
+};
 
 const { album } = Astro.props;
 

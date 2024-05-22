@@ -4,9 +4,9 @@ import { paths } from "@utils/paths";
 import { getCountItems } from "./ReviewActivity.utils";
 import { buttonClass } from "@components/Button/Button.recipes";
 
-export interface Props {
+export type Props = {
   groups: CountReviewsByDatesResult[];
-}
+};
 
 const { groups } = Astro.props;
 

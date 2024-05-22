@@ -6,10 +6,10 @@ import type { Album, Artist } from "astro:db";
 import Link from "@components/Link/Link.astro";
 import DeleteAlbumDialog from "./DeleteAlbumDialog.astro";
 
-export interface Props {
+export type Props = {
   album: typeof Album.$inferSelect;
   artist: typeof Artist.$inferSelect;
-}
+};
 
 const { album, artist } = Astro.props;
 

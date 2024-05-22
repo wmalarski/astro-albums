@@ -3,9 +3,9 @@ import CardGrid from "@modules/common/CardGrid.astro";
 import { findRandomAlbums } from "@server/albums";
 import AlbumCard from "@modules/albums/AlbumCard.astro";
 
-export interface Props {
+export type Props = {
   userId: string;
-}
+};
 
 const { userId } = Astro.props;
 

@@ -11,10 +11,10 @@ import { formatAlbum } from "@utils/format";
 import { Album, Artist } from "astro:db";
 import { getActionProps, actions } from "astro:actions";
 
-export interface Props {
+export type Props = {
   album: typeof Album.$inferSelect;
   artist: typeof Artist.$inferSelect;
-}
+};
 
 const { album, artist } = Astro.props;
 

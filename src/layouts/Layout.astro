@@ -2,10 +2,10 @@
 import Navbar from "@layouts/Navbar.astro";
 import { ViewTransitions } from "astro:transitions";
 
-export interface Props {
+export type Props = {
   title: string;
   userId: string | null;
-}
+};
 
 const { title, userId } = Astro.props;
 ---

@@ -9,11 +9,11 @@ import { GoogleButton } from "@modules/common/GoogleButton";
 import type { Album, Artist, Review } from "astro:db";
 import Link from "@components/Link/Link.astro";
 
-export interface Props {
+export type Props = {
   review: typeof Review.$inferSelect;
   album: typeof Album.$inferSelect;
   artist: typeof Artist.$inferSelect;
-}
+};
 
 const { album, artist, review } = Astro.props;
 

@@ -12,11 +12,11 @@ import { Album, Artist } from "astro:db";
 import { getActionProps, actions } from "astro:actions";
 import type { Review } from "astro:db";
 
-export interface Props {
+export type Props = {
   album: typeof Album.$inferSelect;
   artist: typeof Artist.$inferSelect;
   review: typeof Review.$inferInsert;
-}
+};
 
 const { album, artist, review } = Astro.props;
 

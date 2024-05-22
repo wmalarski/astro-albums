@@ -14,12 +14,12 @@ export const findReview = ({ reviewId }: FindReviewArgs) => {
     .get();
 };
 
-type FindReviews = {
+type FindReviewsArgs = {
   take: number;
   skip: number;
 };
 
-export const findReviews = async ({ skip, take }: FindReviews) => {
+export const findReviews = async ({ skip, take }: FindReviewsArgs) => {
   const [reviews, countResult] = await Promise.all([
     db
       .select()
@@ -52,24 +52,29 @@ export const countReviewsByDates = async () => {
   return groups;
 };
 
-type CreateReview = {
+type CreateReviewArgs = {
   rate: number;
   text: string;
   albumId: string;
   userId: string;
 };
 
-export const createReview = ({ rate, text, albumId, userId }: CreateReview) => {
+export const createReview = ({
+  rate,
+  text,
+  albumId,
+  userId,
+}: CreateReviewArgs) => {
   return db.insert(Review).values({ albumId, rate, text, userId }).run();
 };
 
-type UpdateReview = {
+type UpdateReviewArgs = {
   rate?: number | undefined;
   text?: string | undefined;
   reviewId: string;
 };
 
-export const updateReview = ({ rate, text, reviewId }: UpdateReview) => {
+export const updateReview = ({ rate, text, reviewId }: UpdateReviewArgs) => {
   return db
     .update(Review)
     .set({ ...(rate || rate === 0 ? { rate } : {}), ...(text ? { text } : {}) })
@@ -77,10 +82,10 @@ export const updateReview = ({ rate, text, reviewId }: UpdateReview) => {
     .run();
 };
 
-type DeleteReview = {
+type DeleteReviewArgs = {
   reviewId: string;
 };
 
-export const deleteReview = ({ reviewId }: DeleteReview) => {
+export const deleteReview = ({ reviewId }: DeleteReviewArgs) => {
   return db.delete(Review).where(eq(Review.id, reviewId)).run();
 };

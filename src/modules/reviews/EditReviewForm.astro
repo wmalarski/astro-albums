@@ -5,9 +5,9 @@ import { getActionProps, actions, isInputError } from "astro:actions";
 import type { Review } from "astro:db";
 import { CardActions, CardBody } from "@components/Card/Card";
 
-export interface Props {
+export type Props = {
   review: typeof Review.$inferSelect;
-}
+};
 
 const { review } = Astro.props;
 

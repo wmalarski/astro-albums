@@ -13,11 +13,13 @@ import {
 import AlbumSearchResults from "@modules/albums/AlbumSearchResults.astro";
 import RandomAlbums from "@modules/albums/RandomAlbums.astro";
 import { Card } from "@components/Card/Card";
+import { paths } from "@utils/paths";
 
 const session = Astro.locals.session;
 
+paths;
 if (!session) {
-  return Astro.redirect("/login");
+  return Astro.redirect(paths.login);
 }
 
 const parseResult = await safeParseAsync(
@@ -29,7 +31,7 @@ const parseResult = await safeParseAsync(
 );
 
 if (!parseResult.success) {
-  return Astro.redirect("/error");
+  return Astro.redirect(paths.error);
 }
 
 const { page, query } = parseResult.output;

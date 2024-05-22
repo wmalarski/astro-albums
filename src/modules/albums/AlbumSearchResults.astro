@@ -6,10 +6,10 @@ import EmptyPlaceholder from "@modules/common/EmptyPlaceholder.astro";
 import { paths } from "@utils/paths";
 import Pagination from "@components/Pagination/Pagination.astro";
 
-export interface Props {
+export type Props = {
   page: number;
   query: string;
-}
+};
 
 const { page, query } = Astro.props;
 const take = 20;

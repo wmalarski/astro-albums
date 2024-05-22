@@ -37,12 +37,15 @@ export const findAlbumsByQuery = ({
     .all();
 };
 
-type FindRandomAlbums = {
+type FindRandomAlbumsArgs = {
   take: number;
   userId: string;
 };
 
-export const findRandomAlbums = async ({ take, userId }: FindRandomAlbums) => {
+export const findRandomAlbums = async ({
+  take,
+  userId,
+}: FindRandomAlbumsArgs) => {
   const result = await db.all<{ id: string }>(sql`
     select "Album".id from "Album" 
     left join "Review" on "Album".id = "Review"."albumId" 
@@ -64,13 +67,13 @@ export const findRandomAlbums = async ({ take, userId }: FindRandomAlbums) => {
   return withReviews;
 };
 
-type UpdateAlbum = {
+type UpdateAlbumArgs = {
   year?: number | undefined;
   title?: string | undefined;
   albumId: string;
 };
 
-export const updateAlbum = ({ albumId, title, year }: UpdateAlbum) => {
+export const updateAlbum = ({ albumId, title, year }: UpdateAlbumArgs) => {
   return db
     .update(Album)
     .set({
@@ -81,10 +84,10 @@ export const updateAlbum = ({ albumId, title, year }: UpdateAlbum) => {
     .run();
 };
 
-type DeleteAlbum = {
+type DeleteAlbumArgs = {
   albumId: string;
 };
 
-export const deleteAlbum = ({ albumId }: DeleteAlbum) => {
+export const deleteAlbum = ({ albumId }: DeleteAlbumArgs) => {
   return db.delete(Album).where(eq(Album.id, albumId)).run();
 };

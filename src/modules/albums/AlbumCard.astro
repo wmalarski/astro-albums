@@ -6,11 +6,11 @@ import CoversCarousel from "@modules/common/CoversCarousel.astro";
 import type { Album, Artist } from "astro:db";
 import { twCx } from "@components/utils/twCva";
 
-export interface Props {
+export type Props = {
   album: typeof Album.$inferSelect;
   artist: typeof Artist.$inferSelect;
   reviews?: number;
-}
+};
 
 const { album, artist, reviews } = Astro.props;
 
