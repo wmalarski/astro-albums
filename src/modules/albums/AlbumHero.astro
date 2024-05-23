@@ -1,7 +1,7 @@
 ---
 import { jsonToCoversField } from "@server/coverArt";
 import { formatAlbum } from "@utils/format";
-import AlbumActions from "@modules/albums/AlbumCard/AlbumActions.astro";
+import { AlbumActions } from "@modules/albums/AlbumCard/AlbumActions";
 import CoversCarousel from "@modules/common/CoversCarousel.astro";
 import type { Album, Artist } from "astro:db";
 
@@ -22,6 +22,6 @@ const covers = jsonToCoversField(album.covers);
   </figure>
   <div class="card-body">
     <h3 class="card-title">{header}</h3>
-    <AlbumActions album={album} artist={artist} />
+    <AlbumActions client:load album={album} artist={artist} />
   </div>
 </article>

@@ -1,7 +1,7 @@
 ---
 import CardGrid from "@modules/common/CardGrid.astro";
 import { findAlbumsByQuery } from "@server/albums";
-import AlbumCard from "@modules/albums/AlbumCard/AlbumCard.astro";
+import { AlbumCard } from "@modules/albums/AlbumCard/AlbumCard";
 import EmptyPlaceholder from "@modules/common/EmptyPlaceholder.astro";
 
 export type Props = {
@@ -13,6 +13,10 @@ const data = await findAlbumsByQuery({ query, skip: 0, take: 20 });
 ---
 
 <CardGrid>
-  {data.map((entry) => <AlbumCard album={entry.Album} artist={entry.Artist} />)}
+  {
+    data.map((entry) => (
+      <AlbumCard client:load album={entry.Album} artist={entry.Artist} />
+    ))
+  }
 </CardGrid>
 {data.length === 0 && <EmptyPlaceholder />}

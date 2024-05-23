@@ -5,7 +5,7 @@ import { formatAlbum } from "@utils/format";
 import { paths } from "@utils/paths";
 import EmptyPlaceholder from "@modules/common/EmptyPlaceholder.astro";
 import CardGrid from "@modules/common/CardGrid.astro";
-import AlbumCard from "@modules/albums/AlbumCard/AlbumCard.astro";
+import { AlbumCard } from "@modules/albums/AlbumCard/AlbumCard";
 import ReviewCard from "@modules/reviews/ReviewCard/ReviewCard.astro";
 import AlbumHero from "@modules/albums/AlbumHero.astro";
 import { findArtistAlbumsAndReviewsArgs } from "@server/artist";
@@ -49,7 +49,11 @@ const header = formatAlbum({ album, artist });
     <AlbumHero artist={artist} album={album} />
     <h2 class="text-xl font-bold">Albums</h2>
     <CardGrid>
-      {albums.map((entry) => <AlbumCard album={entry} artist={artist} />)}
+      {
+        albums.map((entry) => (
+          <AlbumCard client:load album={entry} artist={artist} />
+        ))
+      }
     </CardGrid>
     {albums.length === 0 && <EmptyPlaceholder />}
     <h2 class="text-xl font-bold">Reviews</h2>
