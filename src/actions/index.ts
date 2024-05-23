@@ -1,4 +1,9 @@
-import { deleteAlbum, updateAlbum } from "@server/albums";
+import {
+  deleteAlbum,
+  findAlbumsByQuery,
+  findRandomAlbums,
+  updateAlbum,
+} from "@server/albums";
 import { getActionSession } from "@server/auth";
 import { createReview, deleteReview, updateReview } from "@server/reviews";
 import { ActionError, defineAction, getApiContext, z } from "astro:actions";
@@ -82,6 +87,37 @@ export const server = {
       }
 
       return { success: true };
+    },
+  }),
+  findRandomAlbums: defineAction({
+    accept: "json",
+    handler: async () => {
+      const context = getApiContext();
+      const session = await getActionSession(context.cookies);
+
+      if (!session?.userId) {
+        throw new ActionError(UNAUTHORIZED_ERROR);
+      }
+
+      return findRandomAlbums({ userId: session.userId, take: 20 });
+    },
+  }),
+  findAlbumsByQuery: defineAction({
+    accept: "json",
+    input: z.object({
+      query: z.string(),
+      page: z.number(),
+    }),
+    handler: async ({ query, page }) => {
+      const context = getApiContext();
+      const session = await getActionSession(context.cookies);
+
+      if (!session?.userId) {
+        throw new ActionError(UNAUTHORIZED_ERROR);
+      }
+
+      const take = 20;
+      return findAlbumsByQuery({ query, skip: page * take, take });
     },
   }),
   updateAlbum: defineAction({
