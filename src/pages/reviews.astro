@@ -7,7 +7,7 @@ import ReviewSearch from "@modules/reviews/ReviewSearch.astro";
 import EmptyPlaceholder from "@modules/common/EmptyPlaceholder.astro";
 import ReviewActivity from "@modules/reviews/ReviewActivity/ReviewActivity.astro";
 import CardGrid from "@modules/common/CardGrid.astro";
-import ReviewCard from "@modules/reviews/ReviewCard/ReviewCard.astro";
+import { ReviewCard } from "@modules/reviews/ReviewCard/ReviewCard";
 import { Card, CardBody } from "@components/Card/Card";
 import { z } from "astro:actions";
 
@@ -55,19 +55,14 @@ const maxPage = Math.ceil(count.length / take);
     </Card>
     <Card bg="base-300" size="compact">
       <div class="card-body flex gap-2">
-        <ReviewSearch
-          client:idle
-          lower={lower}
-          upper={upper}
-          query={query}
-          order={order}
-        />
+        <ReviewSearch lower={lower} upper={upper} query={query} order={order} />
       </div>
     </Card>
     <CardGrid>
       {
         reviews.map((entry) => (
           <ReviewCard
+            client:load
             album={entry.Album}
             artist={entry.Artist}
             review={entry.Review}

@@ -6,7 +6,7 @@ import { paths } from "@utils/paths";
 import EmptyPlaceholder from "@modules/common/EmptyPlaceholder.astro";
 import CardGrid from "@modules/common/CardGrid.astro";
 import { AlbumCard } from "@modules/albums/AlbumCard/AlbumCard";
-import ReviewCard from "@modules/reviews/ReviewCard/ReviewCard.astro";
+import { ReviewCard } from "@modules/reviews/ReviewCard/ReviewCard";
 import AlbumHero from "@modules/albums/AlbumHero.astro";
 import { findArtistAlbumsAndReviewsArgs } from "@server/artist";
 import { z } from "astro:actions";
@@ -60,7 +60,12 @@ const header = formatAlbum({ album, artist });
     <CardGrid>
       {
         reviews.map((entry) => (
-          <ReviewCard review={entry} album={album} artist={artist} />
+          <ReviewCard
+            client:load
+            review={entry}
+            album={album}
+            artist={artist}
+          />
         ))
       }
     </CardGrid>
