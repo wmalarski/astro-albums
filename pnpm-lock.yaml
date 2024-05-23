@@ -44,9 +44,6 @@ importers:
       typescript:
         specifier: ^5.4.5
         version: 5.4.5
-      valibot:
-        specifier: ^0.30.0
-        version: 0.30.0
     devDependencies:
       '@astrojs/solid-js':
         specifier: 4.2.0
@@ -3693,9 +3690,6 @@ packages:
 
   util-deprecate@1.0.2:
     resolution: {integrity: sha512-EPD5q1uXyFxJpCrLnCc1nHnq3gOa6DZBocAIiI2TaSCA7VCJ1UJDMagCzIkXNsUYfD1daK//LTEQ8xiIbrHtcw==}
-
-  valibot@0.30.0:
-    resolution: {integrity: sha512-5POBdbSkM+3nvJ6ZlyQHsggisfRtyT4tVTo1EIIShs6qCdXJnyWU5TJ68vr8iTg5zpOLjXLRiBqNx+9zwZz/rA==}
 
   validate-html-nesting@1.2.2:
     resolution: {integrity: sha512-hGdgQozCsQJMyfK5urgFcWEqsSSrK63Awe0t/IMR0bZ0QMtnuaiHzThW81guu3qx9abLi99NEuiaN6P9gVYsNg==}
@@ -8131,8 +8125,6 @@ snapshots:
       punycode: 2.3.0
 
   util-deprecate@1.0.2: {}
-
-  valibot@0.30.0: {}
 
   validate-html-nesting@1.2.2: {}
 

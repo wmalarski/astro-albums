@@ -6,21 +6,10 @@ import { paths } from "@utils/paths";
 import ReviewSearch from "@modules/reviews/ReviewSearch.astro";
 import EmptyPlaceholder from "@modules/common/EmptyPlaceholder.astro";
 import ReviewActivity from "@modules/reviews/ReviewActivity/ReviewActivity.astro";
-import {
-  integer,
-  literal,
-  maxValue,
-  minValue,
-  number,
-  object,
-  optional,
-  safeParseAsync,
-  string,
-  union,
-} from "valibot";
 import CardGrid from "@modules/common/CardGrid.astro";
 import ReviewCard from "@modules/reviews/ReviewCard.astro";
 import { Card, CardBody } from "@components/Card/Card";
+import { z } from "astro:actions";
 
 const session = Astro.locals.session;
 
@@ -29,27 +18,25 @@ if (!session) {
   return Astro.redirect(paths.login);
 }
 
-const parseResult = await safeParseAsync(
-  object({
-    lower: optional(number([minValue(0), maxValue(10)]), 0),
-    page: optional(number([minValue(0), integer()]), 0),
-    query: optional(string(), ""),
-    upper: optional(number([minValue(0), maxValue(10)]), 10),
-    order: optional(
-      union([literal("createdAt"), literal("rate")]),
-      "createdAt",
-    ),
-  }),
-  Object.fromEntries(Astro.url.searchParams.entries()),
-);
+const params = Object.fromEntries(Astro.url.searchParams.entries());
+const parseResult = await z
+  .object({
+    lower: z.coerce.number().min(0).max(10).default(0),
+    page: z.coerce.number().min(0).int().default(0),
+    query: z.string().default(""),
+    upper: z.coerce.number().min(0).max(10).default(10),
+    order: z
+      .union([z.literal("createdAt"), z.literal("rate")])
+      .default("createdAt"),
+  })
+  .safeParseAsync(params);
 
 if (!parseResult.success) {
-  // return astroRedirect(Astro.redirect, path);
   return Astro.redirect(paths.error);
 }
 
 const take = 20;
-const { lower, order, page, query, upper } = parseResult.output;
+const { lower, order, page, query, upper } = parseResult.data;
 
 const [{ count, reviews }, groups] = await Promise.all([
   findReviews({ skip: take * page, take }),
@@ -92,8 +79,8 @@ const maxPage = Math.ceil(count.length / take);
     <Pagination
       current={page}
       maxPage={maxPage}
-      nextHref={paths.reviews({ ...parseResult.output, page: page + 1 })}
-      prevHref={paths.reviews({ ...parseResult.output, page: page - 1 })}
+      nextHref={paths.reviews({ ...parseResult.data, page: page + 1 })}
+      prevHref={paths.reviews({ ...parseResult.data, page: page - 1 })}
     />
   </main>
 </Layout>

@@ -1,19 +1,11 @@
 ---
 import Layout from "@layouts/Layout.astro";
 import AlbumSearch from "@modules/albums/AlbumSearch.astro";
-import {
-  integer,
-  minValue,
-  number,
-  object,
-  optional,
-  safeParseAsync,
-  string,
-} from "valibot";
 import AlbumSearchResults from "@modules/albums/AlbumSearchResults.astro";
 import RandomAlbums from "@modules/albums/RandomAlbums.astro";
 import { Card } from "@components/Card/Card";
 import { paths } from "@utils/paths";
+import { z } from "astro:actions";
 
 const session = Astro.locals.session;
 
@@ -22,19 +14,16 @@ if (!session) {
   return Astro.redirect(paths.login);
 }
 
-const parseResult = await safeParseAsync(
-  object({
-    page: optional(number([minValue(0), integer()]), 0),
-    query: optional(string(), ""),
-  }),
-  Object.fromEntries(Astro.url.searchParams.entries()),
-);
+const search = Object.fromEntries(Astro.url.searchParams.entries());
+const parseResult = await z
+  .object({ query: z.string().default("") })
+  .safeParseAsync(search);
 
 if (!parseResult.success) {
   return Astro.redirect(paths.error);
 }
 
-const { page, query } = parseResult.output;
+const { query } = parseResult.data;
 ---
 
 <Layout title="Welcome to Astro." userId={session.userId}>
@@ -46,7 +35,7 @@ const { page, query } = parseResult.output;
     </Card>
     {
       query.length > 0 ? (
-        <AlbumSearchResults page={page} query={query} />
+        <AlbumSearchResults query={query} />
       ) : (
         <RandomAlbums userId={session.userId} />
       )

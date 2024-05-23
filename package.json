@@ -47,7 +47,6 @@
     "oslo": "^1.2.0",
     "solid-js": "1.8.17",
     "tailwind-merge": "2.3.0",
-    "typescript": "^5.4.5",
-    "valibot": "^0.30.0"
+    "typescript": "^5.4.5"
   }
 }

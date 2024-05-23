@@ -4,12 +4,12 @@ import { findAlbum } from "@server/albums";
 import { formatAlbum } from "@utils/format";
 import { paths } from "@utils/paths";
 import EmptyPlaceholder from "@modules/common/EmptyPlaceholder.astro";
-import { minLength, object, safeParseAsync, string } from "valibot";
 import CardGrid from "@modules/common/CardGrid.astro";
 import AlbumCard from "@modules/albums/AlbumCard.astro";
 import ReviewCard from "@modules/reviews/ReviewCard.astro";
 import AlbumHero from "@modules/albums/AlbumHero.astro";
 import { findArtistAlbumsAndReviewsArgs } from "@server/artist";
+import { z } from "astro:actions";
 
 const session = Astro.locals.session;
 
@@ -18,17 +18,16 @@ if (!session) {
   return Astro.redirect(paths.login);
 }
 
-const parseResult = await safeParseAsync(
-  object({ id: string([minLength(1)]) }),
-  Astro.params,
-);
+const parseResult = await z
+  .object({ id: z.string().min(1) })
+  .safeParseAsync(Astro.params);
 
 if (!parseResult.success) {
   return Astro.redirect(paths.error);
 }
 
 const albumRow = await findAlbum({
-  albumId: parseResult.output.id,
+  albumId: parseResult.data.id,
 });
 
 if (!albumRow) {
