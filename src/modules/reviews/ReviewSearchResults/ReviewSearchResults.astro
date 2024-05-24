@@ -1,13 +1,13 @@
 ---
 import { findReviews } from "@server/reviews";
 import EmptyPlaceholder from "@modules/common/EmptyPlaceholder.astro";
-import { CardGrid } from "@modules/common/CardGrid";
 import { ReviewCard } from "@modules/reviews/ReviewCard/ReviewCard";
+import { InfiniteReviewResults } from "./InfiniteReviewResults";
 
 const reviews = await findReviews({ skip: 0, take: 20 });
 ---
 
-<CardGrid>
+<InfiniteReviewResults>
   {
     reviews.map((entry) => (
       <ReviewCard
@@ -18,5 +18,5 @@ const reviews = await findReviews({ skip: 0, take: 20 });
       />
     ))
   }
-</CardGrid>
+</InfiniteReviewResults>
 {reviews.length === 0 && <EmptyPlaceholder />}

@@ -3,23 +3,17 @@ import { CardGrid } from "@modules/common/CardGrid";
 import { actions } from "astro:actions";
 import { For, createSignal, type Component, type ParentProps } from "solid-js";
 import { createStore, produce } from "solid-js/store";
-import { AlbumCard } from "../AlbumCard/AlbumCard";
-
-type InfiniteAlbumResultsProps = ParentProps<{
-  query: string;
-}>;
+import { ReviewCard } from "../ReviewCard/ReviewCard";
 
 type ResultsStore = {
   page: number;
-  results: Awaited<ReturnType<typeof actions.findAlbumsByQuery>>;
+  results: Awaited<ReturnType<typeof actions.findReviews>>;
 };
 
-export const InfiniteAlbumResults: Component<InfiniteAlbumResultsProps> = (
-  props,
-) => {
+export const InfiniteReviewResults: Component<ParentProps> = (props) => {
   const [isLoading, setIsLoading] = createSignal(false);
 
-  const [albums, setAlbums] = createStore<ResultsStore>({
+  const [reviews, setReviews] = createStore<ResultsStore>({
     page: 1,
     results: [],
   });
@@ -28,15 +22,12 @@ export const InfiniteAlbumResults: Component<InfiniteAlbumResultsProps> = (
     setIsLoading(true);
 
     try {
-      const newAlbums = await actions.findAlbumsByQuery({
-        page: albums.page,
-        query: props.query,
-      });
+      const newReviews = await actions.findReviews({ page: reviews.page });
 
-      setAlbums(
+      setReviews(
         produce((state) => {
           state.page += 1;
-          state.results.push(...newAlbums);
+          state.results.push(...newReviews);
         }),
       );
     } finally {
@@ -48,8 +39,14 @@ export const InfiniteAlbumResults: Component<InfiniteAlbumResultsProps> = (
     <div class="flex flex-col gap-4">
       <CardGrid>
         {props.children}
-        <For each={albums.results}>
-          {(entry) => <AlbumCard album={entry.Album} artist={entry.Artist} />}
+        <For each={reviews.results}>
+          {(entry) => (
+            <ReviewCard
+              review={entry.Review}
+              album={entry.Album}
+              artist={entry.Artist}
+            />
+          )}
         </For>
       </CardGrid>
       <Button onClick={onClick} isLoading={isLoading()}>

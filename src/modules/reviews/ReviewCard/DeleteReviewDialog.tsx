@@ -36,7 +36,11 @@ export const DeleteReviewDialog: Component<DeleteReviewDialogProps> = (
           </h3>
           <form>
             <input {...getActionProps(actions.deleteReview)} />
-            <input type="hidden" name="reviewId" value={props.review.id} />
+            <input
+              type="hidden"
+              name="reviewId"
+              value={props.review.id ?? ""}
+            />
           </form>
           <DialogActions>
             <DialogClose>Close</DialogClose>

@@ -5,7 +5,12 @@ import {
   updateAlbum,
 } from "@server/albums";
 import { getActionSession } from "@server/auth";
-import { createReview, deleteReview, updateReview } from "@server/reviews";
+import {
+  createReview,
+  deleteReview,
+  findReviews,
+  updateReview,
+} from "@server/reviews";
 import { ActionError, defineAction, z } from "astro:actions";
 
 const UNAUTHORIZED_ERROR = {
@@ -19,6 +24,22 @@ const DB_ERROR = {
 } as const;
 
 export const server = {
+  findReviews: defineAction({
+    accept: "json",
+    input: z.object({
+      page: z.number(),
+    }),
+    handler: async ({ page }, context) => {
+      const session = await getActionSession(context.cookies);
+
+      if (!session?.userId) {
+        throw new ActionError(UNAUTHORIZED_ERROR);
+      }
+
+      const take = 20;
+      return findReviews({ skip: page * take, take });
+    },
+  }),
   createReview: defineAction({
     accept: "form",
     input: z.object({
