@@ -1,0 +1,13 @@
+---
+import { countReviewsByDates } from "@server/reviews";
+import ReviewActivity from "@modules/reviews/ReviewActivity/ReviewActivity.astro";
+import { Card, CardBody } from "@components/Card/Card";
+
+const groups = await countReviewsByDates();
+---
+
+<Card bg="base-300" size="compact">
+  <CardBody>
+    <ReviewActivity groups={groups} />
+  </CardBody>
+</Card>

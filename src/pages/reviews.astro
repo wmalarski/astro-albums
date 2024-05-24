@@ -1,15 +1,11 @@
 ---
-import Pagination from "@components/Pagination/Pagination.astro";
 import Layout from "@layouts/Layout.astro";
-import { countReviewsByDates, findReviews } from "@server/reviews";
 import { paths } from "@utils/paths";
 import ReviewSearch from "@modules/reviews/ReviewSearch.astro";
-import EmptyPlaceholder from "@modules/common/EmptyPlaceholder.astro";
-import ReviewActivity from "@modules/reviews/ReviewActivity/ReviewActivity.astro";
-import { CardGrid } from "@modules/common/CardGrid";
-import { ReviewCard } from "@modules/reviews/ReviewCard/ReviewCard";
-import { Card, CardBody } from "@components/Card/Card";
+import { Card } from "@components/Card/Card";
 import { z } from "astro:actions";
+import ReviewActivityCard from "@modules/reviews/ReviewActivity/ReviewActivityCard.astro";
+import ReviewSearchResults from "@modules/reviews/ReviewSearchResults/ReviewSearchResults.astro";
 
 const session = Astro.locals.session;
 
@@ -35,47 +31,17 @@ if (!parseResult.success) {
   return Astro.redirect(paths.error);
 }
 
-const take = 20;
-const { lower, order, page, query, upper } = parseResult.data;
-
-const [{ count, reviews }, groups] = await Promise.all([
-  findReviews({ skip: take * page, take }),
-  countReviewsByDates(),
-]);
-
-const maxPage = Math.ceil(count.length / take);
+const { lower, order, query, upper } = parseResult.data;
 ---
 
 <Layout title="Reviews" userId={session.userId}>
   <main class="p-4 flex flex-col gap-4">
-    <Card bg="base-300" size="compact">
-      <CardBody>
-        <ReviewActivity groups={groups} />
-      </CardBody>
-    </Card>
+    <ReviewActivityCard />
     <Card bg="base-300" size="compact">
       <div class="card-body flex gap-2">
         <ReviewSearch lower={lower} upper={upper} query={query} order={order} />
       </div>
     </Card>
-    <CardGrid>
-      {
-        reviews.map((entry) => (
-          <ReviewCard
-            client:load
-            album={entry.Album}
-            artist={entry.Artist}
-            review={entry.Review}
-          />
-        ))
-      }
-    </CardGrid>
-    {reviews.length === 0 && <EmptyPlaceholder />}
-    <Pagination
-      current={page}
-      maxPage={maxPage}
-      nextHref={paths.reviews({ ...parseResult.data, page: page + 1 })}
-      prevHref={paths.reviews({ ...parseResult.data, page: page - 1 })}
-    />
+    <ReviewSearchResults />
   </main>
 </Layout>

@@ -1,0 +1,22 @@
+---
+import { findReviews } from "@server/reviews";
+import EmptyPlaceholder from "@modules/common/EmptyPlaceholder.astro";
+import { CardGrid } from "@modules/common/CardGrid";
+import { ReviewCard } from "@modules/reviews/ReviewCard/ReviewCard";
+
+const reviews = await findReviews({ skip: 0, take: 20 });
+---
+
+<CardGrid>
+  {
+    reviews.map((entry) => (
+      <ReviewCard
+        client:load
+        album={entry.Album}
+        artist={entry.Artist}
+        review={entry.Review}
+      />
+    ))
+  }
+</CardGrid>
+{reviews.length === 0 && <EmptyPlaceholder />}

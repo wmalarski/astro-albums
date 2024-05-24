@@ -19,21 +19,16 @@ type FindReviewsArgs = {
   skip: number;
 };
 
-export const findReviews = async ({ skip, take }: FindReviewsArgs) => {
-  const [reviews, countResult] = await Promise.all([
-    db
-      .select()
-      .from(Review)
-      .innerJoin(Album, eq(Review.albumId, Album.id))
-      .innerJoin(Artist, eq(Album.artistId, Artist.id))
-      .limit(take)
-      .offset(skip)
-      .orderBy(Review.createdAt)
-      .all(),
-    db.select({ count: count() }).from(Review),
-  ]);
-
-  return { count: countResult, reviews };
+export const findReviews = ({ skip, take }: FindReviewsArgs) => {
+  return db
+    .select()
+    .from(Review)
+    .innerJoin(Album, eq(Review.albumId, Album.id))
+    .innerJoin(Artist, eq(Album.artistId, Artist.id))
+    .limit(take)
+    .offset(skip)
+    .orderBy(Review.createdAt)
+    .all();
 };
 
 export type CountReviewsByDatesResult = {
