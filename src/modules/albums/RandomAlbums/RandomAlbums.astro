@@ -1,8 +1,8 @@
 ---
-import { CardGrid } from "@modules/common/CardGrid";
 import { findRandomAlbums } from "@server/albums";
 import { AlbumCard } from "@modules/albums/AlbumCard/AlbumCard";
 import EmptyPlaceholder from "@modules/common/EmptyPlaceholder.astro";
+import { InfiniteRandomAlbums } from "./InfiniteRandomAlbums";
 
 export type Props = {
   userId: string;
@@ -13,11 +13,11 @@ const { userId } = Astro.props;
 const data = await findRandomAlbums({ userId, take: 20 });
 ---
 
-<CardGrid>
+<InfiniteRandomAlbums>
   {
     data.map((entry) => (
       <AlbumCard client:load album={entry.Album} artist={entry.Artist} />
     ))
   }
-</CardGrid>
+</InfiniteRandomAlbums>
 {data.length === 0 && <EmptyPlaceholder />}

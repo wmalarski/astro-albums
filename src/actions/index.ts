@@ -6,7 +6,7 @@ import {
 } from "@server/albums";
 import { getActionSession } from "@server/auth";
 import { createReview, deleteReview, updateReview } from "@server/reviews";
-import { ActionError, defineAction, getApiContext, z } from "astro:actions";
+import { ActionError, defineAction, z } from "astro:actions";
 
 const UNAUTHORIZED_ERROR = {
   code: "UNAUTHORIZED",
@@ -26,8 +26,7 @@ export const server = {
       rate: z.number().min(0).max(10),
       text: z.string(),
     }),
-    handler: async (args) => {
-      const context = getApiContext();
+    handler: async (args, context) => {
       const session = await getActionSession(context.cookies);
 
       if (!session?.userId) {
@@ -50,8 +49,7 @@ export const server = {
       rate: z.number().min(0).max(10),
       text: z.string(),
     }),
-    handler: async (args) => {
-      const context = getApiContext();
+    handler: async (args, context) => {
       const session = await getActionSession(context.cookies);
 
       if (!session?.userId) {
@@ -72,8 +70,7 @@ export const server = {
     input: z.object({
       reviewId: z.string(),
     }),
-    handler: async (args) => {
-      const context = getApiContext();
+    handler: async (args, context) => {
       const session = await getActionSession(context.cookies);
 
       if (!session?.userId) {
@@ -91,8 +88,7 @@ export const server = {
   }),
   findRandomAlbums: defineAction({
     accept: "json",
-    handler: async () => {
-      const context = getApiContext();
+    handler: async (_input, context) => {
       const session = await getActionSession(context.cookies);
 
       if (!session?.userId) {
@@ -108,8 +104,7 @@ export const server = {
       query: z.string(),
       page: z.number(),
     }),
-    handler: async ({ query, page }) => {
-      const context = getApiContext();
+    handler: async ({ query, page }, context) => {
       const session = await getActionSession(context.cookies);
 
       if (!session?.userId) {
@@ -127,8 +122,7 @@ export const server = {
       title: z.string().optional(),
       year: z.coerce.number().optional(),
     }),
-    handler: async (args) => {
-      const context = getApiContext();
+    handler: async (args, context) => {
       const session = await getActionSession(context.cookies);
 
       if (!session?.userId) {
@@ -149,8 +143,7 @@ export const server = {
     input: z.object({
       albumId: z.string(),
     }),
-    handler: async (args) => {
-      const context = getApiContext();
+    handler: async (args, context) => {
       const session = await getActionSession(context.cookies);
 
       if (!session?.userId) {
