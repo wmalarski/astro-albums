@@ -1,5 +1,6 @@
 ---
 import { Button } from "@components/Button/Button";
+import { Card } from "@components/Card/Card";
 import {
   TextFieldInput,
   TextFieldLabel,
@@ -17,57 +18,61 @@ export type Props = {
 const { lower, order, query, upper } = Astro.props;
 ---
 
-<form class="w-full flex flex-row gap-2">
-  <div class="flex flex-col gap-2 w-full">
-    <TextFieldRoot>
-      <TextFieldLabel for="query">
-        <TextFieldLabelText>Search</TextFieldLabelText>
-      </TextFieldLabel>
-      <TextFieldInput
-        id="query"
-        name="query"
-        placeholder="Search"
-        type="text"
-        value={query ?? ""}
-      />
-    </TextFieldRoot>
-    <TextFieldRoot>
-      <TextFieldLabel for="lower">
-        <TextFieldLabelText>Lower rate</TextFieldLabelText>
-      </TextFieldLabel>
-      <TextFieldInput
-        id="lower"
-        max={10}
-        min={0}
-        placeholder="Lower"
-        step={0.1}
-        type="number"
-        value={lower ?? 0}
-      />
-    </TextFieldRoot>
-    <TextFieldRoot>
-      <TextFieldLabel for="upper">
-        <TextFieldLabelText>Upper rate</TextFieldLabelText>
-      </TextFieldLabel>
-      <TextFieldInput
-        id="upper"
-        max={10}
-        min={0}
-        placeholder="Upper"
-        step={0.1}
-        type="number"
-        value={upper ?? 0}
-      />
-    </TextFieldRoot>
-    <TextFieldRoot>
-      <TextFieldLabel for="order">
-        <TextFieldLabelText>Order by</TextFieldLabelText>
-      </TextFieldLabel>
-      <select class="select" id="order" value={order ?? "createdAt"}>
-        <option value="rate">Rate</option>
-        <option value="createdAt">Created At</option>
-      </select>
-    </TextFieldRoot>
+<Card bg="base-300" size="compact">
+  <div class="card-body flex gap-2">
+    <form class="w-full flex flex-row gap-2">
+      <div class="flex flex-col gap-2 w-full">
+        <TextFieldRoot>
+          <TextFieldLabel for="query">
+            <TextFieldLabelText>Search</TextFieldLabelText>
+          </TextFieldLabel>
+          <TextFieldInput
+            id="query"
+            name="query"
+            placeholder="Search"
+            type="text"
+            value={query ?? ""}
+          />
+        </TextFieldRoot>
+        <TextFieldRoot>
+          <TextFieldLabel for="lower">
+            <TextFieldLabelText>Lower rate</TextFieldLabelText>
+          </TextFieldLabel>
+          <TextFieldInput
+            id="lower"
+            max={10}
+            min={0}
+            placeholder="Lower"
+            step={0.1}
+            type="number"
+            value={lower ?? 0}
+          />
+        </TextFieldRoot>
+        <TextFieldRoot>
+          <TextFieldLabel for="upper">
+            <TextFieldLabelText>Upper rate</TextFieldLabelText>
+          </TextFieldLabel>
+          <TextFieldInput
+            id="upper"
+            max={10}
+            min={0}
+            placeholder="Upper"
+            step={0.1}
+            type="number"
+            value={upper ?? 0}
+          />
+        </TextFieldRoot>
+        <TextFieldRoot>
+          <TextFieldLabel for="order">
+            <TextFieldLabelText>Order by</TextFieldLabelText>
+          </TextFieldLabel>
+          <select class="select" id="order" value={order ?? "createdAt"}>
+            <option value="rate">Rate</option>
+            <option value="createdAt">Created At</option>
+          </select>
+        </TextFieldRoot>
+      </div>
+      <Button color="primary" type="submit">Search</Button>
+    </form>
   </div>
-  <Button color="primary" type="submit">Search</Button>
-</form>
+</Card>

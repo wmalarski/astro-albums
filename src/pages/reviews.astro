@@ -2,7 +2,6 @@
 import Layout from "@layouts/Layout.astro";
 import { paths } from "@utils/paths";
 import ReviewSearch from "@modules/reviews/ReviewSearch.astro";
-import { Card } from "@components/Card/Card";
 import { z } from "astro:actions";
 import ReviewActivityCard from "@modules/reviews/ReviewActivity/ReviewActivityCard.astro";
 import ReviewSearchResults from "@modules/reviews/ReviewSearchResults/ReviewSearchResults.astro";
@@ -37,11 +36,7 @@ const { lower, order, query, upper } = parseResult.data;
 <Layout title="Reviews" userId={session.userId}>
   <main class="p-4 flex flex-col gap-4">
     <ReviewActivityCard />
-    <Card bg="base-300" size="compact">
-      <div class="card-body flex gap-2">
-        <ReviewSearch lower={lower} upper={upper} query={query} order={order} />
-      </div>
-    </Card>
+    <ReviewSearch lower={lower} upper={upper} query={query} order={order} />
     <ReviewSearchResults />
   </main>
 </Layout>
