@@ -1,7 +1,7 @@
 import { paths } from "@utils/paths";
 import { YtButton } from "@modules/common/YtButton";
 import { GoogleButton } from "@modules/common/GoogleButton";
-import type { Album, Artist } from "astro:db";
+import type { Album, Artist, Visit } from "astro:db";
 import { Link } from "@components/Link/Link";
 import { DeleteAlbumDialog } from "./DeleteAlbumDialog.tsx";
 import { Show, type Component } from "solid-js";
@@ -9,6 +9,7 @@ import { Show, type Component } from "solid-js";
 type AlbumActionsProps = {
   album: typeof Album.$inferSelect;
   artist: typeof Artist.$inferSelect;
+  reminder?: typeof Visit.$inferSelect | undefined;
 };
 
 export const AlbumActions: Component<AlbumActionsProps> = (props) => {

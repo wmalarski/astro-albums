@@ -3,14 +3,15 @@ import { jsonToCoversField } from "@server/coverArt";
 import { formatAlbum } from "@utils/format";
 import { AlbumActions } from "@modules/albums/AlbumCard/AlbumActions";
 import CoversCarousel from "@modules/common/CoversCarousel.astro";
-import type { Album, Artist } from "astro:db";
+import type { Album, Artist, Visit } from "astro:db";
 
 export type Props = {
   album: typeof Album.$inferSelect;
   artist: typeof Artist.$inferSelect;
+  reminder?: typeof Visit.$inferSelect | undefined;
 };
 
-const { album, artist } = Astro.props;
+const { album, artist, reminder } = Astro.props;
 
 const header = formatAlbum({ album, artist });
 const covers = jsonToCoversField(album.covers);
@@ -22,6 +23,11 @@ const covers = jsonToCoversField(album.covers);
   </figure>
   <div class="card-body">
     <h3 class="card-title">{header}</h3>
-    <AlbumActions client:load album={album} artist={artist} />
+    <AlbumActions
+      client:load
+      album={album}
+      artist={artist}
+      reminder={reminder}
+    />
   </div>
 </article>

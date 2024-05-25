@@ -17,6 +17,15 @@ export const findReminders = ({ skip, take }: FindRemindersArgs) => {
     .all();
 };
 
+type CreateReminderArgs = {
+  albumId: string;
+  userId: string;
+};
+
+export const createReminder = ({ albumId, userId }: CreateReminderArgs) => {
+  return db.insert(Visit).values({ albumId, userId }).run();
+};
+
 type DeleteReminderArgs = {
   reminderId: string;
 };

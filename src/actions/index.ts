@@ -5,7 +5,11 @@ import {
   updateAlbum,
 } from "@server/albums";
 import { getActionSession } from "@server/auth";
-import { deleteReminder, findReminders } from "@server/reminders";
+import {
+  createReminder,
+  deleteReminder,
+  findReminders,
+} from "@server/reminders";
 import {
   createReview,
   deleteReview,
@@ -195,6 +199,27 @@ export const server = {
 
       const take = 20;
       return findReminders({ skip: page * take, take });
+    },
+  }),
+  createReminder: defineAction({
+    accept: "form",
+    input: z.object({
+      albumId: z.string(),
+    }),
+    handler: async (args, context) => {
+      const session = await getActionSession(context.cookies);
+
+      if (!session?.userId) {
+        throw new ActionError(UNAUTHORIZED_ERROR);
+      }
+
+      const result = await createReminder({ ...args, userId: session.userId });
+
+      if (result.rowsAffected === 0) {
+        throw new ActionError(DB_ERROR);
+      }
+
+      return { success: true };
     },
   }),
   deleteReminder: defineAction({
