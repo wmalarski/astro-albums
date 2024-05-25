@@ -7,7 +7,7 @@ import {
   DialogClose,
 } from "@components/Dialog/Dialog";
 import { formatAlbum } from "@utils/format";
-import { Album, Artist } from "astro:db";
+import type { Album, Artist } from "astro:db";
 import { getActionProps, actions } from "astro:actions";
 import type { Component } from "solid-js";
 

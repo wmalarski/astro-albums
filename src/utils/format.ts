@@ -1,4 +1,4 @@
-import { Album, Artist } from "astro:db";
+import type { Album, Artist } from "astro:db";
 
 type FormatAlbum = {
   album: typeof Album.$inferSelect;

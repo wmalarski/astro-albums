@@ -7,6 +7,7 @@ const User = defineTable({
     name: column.text(),
     picture: column.text(),
   },
+  indexes: [{ on: "id" }],
 });
 
 const Session = defineTable({
@@ -15,6 +16,7 @@ const Session = defineTable({
     id: column.text({ primaryKey: true }),
     userId: column.text({ references: () => User.columns.id }),
   },
+  indexes: [{ on: "id" }, { on: "userId" }],
 });
 
 const Artist = defineTable({
@@ -25,7 +27,7 @@ const Artist = defineTable({
     sid: column.text({ optional: true }),
     userId: column.text({ name: "user_id", references: () => User.columns.id }),
   },
-  indexes: [{ on: "userId" }],
+  indexes: [{ on: "userId" }, { on: "id" }],
 });
 
 const Album = defineTable({
@@ -43,7 +45,7 @@ const Album = defineTable({
     userId: column.text({ name: "user_id", references: () => User.columns.id }),
     year: column.number({ optional: true }),
   },
-  indexes: [{ on: "userId" }],
+  indexes: [{ on: "userId" }, { on: "artistId" }, { on: "id" }],
 });
 
 const Review = defineTable({
@@ -58,7 +60,7 @@ const Review = defineTable({
     text: column.text(),
     userId: column.text({ name: "user_id", references: () => User.columns.id }),
   },
-  indexes: [{ on: "userId" }],
+  indexes: [{ on: "userId" }, { on: "albumId" }, { on: "id" }],
 });
 
 const Reminder = defineTable({
@@ -71,7 +73,7 @@ const Reminder = defineTable({
     id: column.text({ primaryKey: true }),
     userId: column.text({ name: "user_id", references: () => User.columns.id }),
   },
-  indexes: [{ on: "userId" }],
+  indexes: [{ on: "userId" }, { on: "albumId" }, { on: "id" }],
 });
 
 export default defineDb({

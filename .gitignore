@@ -23,3 +23,6 @@ db/dump.sql
 
 # macOS-specific files
 .DS_Store
+
+.astro
+.vercel

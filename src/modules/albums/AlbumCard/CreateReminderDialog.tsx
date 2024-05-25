@@ -6,7 +6,7 @@ import {
   DialogActions,
   DialogClose,
 } from "@components/Dialog/Dialog";
-import { Album } from "astro:db";
+import type { Album } from "astro:db";
 import { getActionProps, actions } from "astro:actions";
 import type { Component } from "solid-js";
 
