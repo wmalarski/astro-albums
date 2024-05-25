@@ -6,8 +6,8 @@ import CoversCarousel from "@modules/common/CoversCarousel.astro";
 import { YtButton } from "@modules/common/YtButton";
 import { GoogleButton } from "@modules/common/GoogleButton";
 import type { Album, Artist, Review } from "astro:db";
-import Link from "@components/Link/Link.astro";
-import type { Component } from "solid-js";
+import { Link } from "@components/Link/Link";
+import { Show, type Component } from "solid-js";
 
 type ReviewCardProps = {
   review: typeof Review.$inferSelect;
@@ -48,11 +48,13 @@ export const ReviewCard: Component<ReviewCardProps> = (props) => {
           <Link size="xs" href={paths.album(props.album.id)}>
             Show more
           </Link>
-          {details && (
-            <Link size="xs" href={details()}>
-              Details
-            </Link>
-          )}
+          <Show when={details()}>
+            {(details) => (
+              <Link size="xs" href={details()}>
+                Details
+              </Link>
+            )}
+          </Show>
           <Link size="xs" href={paths.editReview(props.review.id)}>
             Edit
           </Link>

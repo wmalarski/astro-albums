@@ -2,7 +2,7 @@ import { paths } from "@utils/paths";
 import { YtButton } from "@modules/common/YtButton";
 import { GoogleButton } from "@modules/common/GoogleButton";
 import type { Album, Artist } from "astro:db";
-import Link from "@components/Link/Link.astro";
+import { Link } from "@components/Link/Link";
 import { DeleteAlbumDialog } from "./DeleteAlbumDialog.tsx";
 import { Show, type Component } from "solid-js";
 
@@ -24,9 +24,11 @@ export const AlbumActions: Component<AlbumActionsProps> = (props) => {
         Show more
       </Link>
       <Show when={details()}>
-        <Link size="xs" href={details()}>
-          Details
-        </Link>
+        {(details) => (
+          <Link size="xs" href={details()}>
+            Details
+          </Link>
+        )}
       </Show>
       <Link size="xs" href={paths.review(props.album.id)}>
         Review

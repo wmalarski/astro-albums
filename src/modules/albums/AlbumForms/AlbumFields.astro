@@ -1,10 +1,12 @@
 ---
 import { Alert, AlertIcon } from "@components/Alert/Alert";
-import TextFieldErrorMessage from "@components/TextField/TextFieldErrorMessage.astro";
-import TextFieldInput from "@components/TextField/TextFieldInput.astro";
-import TextFieldLabel from "@components/TextField/TextFieldLabel.astro";
-import TextFieldLabelText from "@components/TextField/TextFieldLabelText.astro";
-import TextFieldRoot from "@components/TextField/TextFieldRoot.astro";
+import {
+  TextFieldErrorMessage,
+  TextFieldInput,
+  TextFieldLabel,
+  TextFieldLabelText,
+  TextFieldRoot,
+} from "@components/TextField/TextField";
 
 type FormFields = {
   title: string;
@@ -63,7 +65,7 @@ const { initial, error, errors } = Astro.props;
       placeholder="Year"
       step={1}
       type="number"
-      value={initial?.year}
+      value={initial?.year ?? 1990}
       size="sm"
       variant="bordered"
     />
