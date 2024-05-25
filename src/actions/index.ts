@@ -5,6 +5,7 @@ import {
   updateAlbum,
 } from "@server/albums";
 import { getActionSession } from "@server/auth";
+import { deleteReminder, findReminders } from "@server/reminders";
 import {
   createReview,
   deleteReview,
@@ -172,6 +173,43 @@ export const server = {
       }
 
       const result = await deleteAlbum(args);
+
+      if (result.rowsAffected === 0) {
+        throw new ActionError(DB_ERROR);
+      }
+
+      return { success: true };
+    },
+  }),
+  findReminders: defineAction({
+    accept: "json",
+    input: z.object({
+      page: z.number(),
+    }),
+    handler: async ({ page }, context) => {
+      const session = await getActionSession(context.cookies);
+
+      if (!session?.userId) {
+        throw new ActionError(UNAUTHORIZED_ERROR);
+      }
+
+      const take = 20;
+      return findReminders({ skip: page * take, take });
+    },
+  }),
+  deleteReminder: defineAction({
+    accept: "form",
+    input: z.object({
+      reminderId: z.string(),
+    }),
+    handler: async (args, context) => {
+      const session = await getActionSession(context.cookies);
+
+      if (!session?.userId) {
+        throw new ActionError(UNAUTHORIZED_ERROR);
+      }
+
+      const result = await deleteReminder(args);
 
       if (result.rowsAffected === 0) {
         throw new ActionError(DB_ERROR);
