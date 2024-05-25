@@ -34,7 +34,7 @@ if (!albumRow) {
   return Astro.redirect(paths.notFound);
 }
 
-const { Album: album, Artist: artist, Visit: reminder } = albumRow;
+const { Album: album, Artist: artist, Reminder: reminder } = albumRow;
 
 const { albums, reviews, reminders } = await findArtistAlbumsAndReviewsArgs({
   artistId: album.artistId,

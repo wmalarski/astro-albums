@@ -3,12 +3,12 @@ import { jsonToCoversField } from "@server/coverArt";
 import { formatAlbum } from "@utils/format";
 import { AlbumActions } from "@modules/albums/AlbumCard/AlbumActions";
 import CoversCarousel from "@modules/common/CoversCarousel.astro";
-import type { Album, Artist, Visit } from "astro:db";
+import type { Album, Artist, Reminder } from "astro:db";
 
 export type Props = {
   album: typeof Album.$inferSelect;
   artist: typeof Artist.$inferSelect;
-  reminder?: typeof Visit.$inferSelect | undefined | null;
+  reminder?: typeof Reminder.$inferSelect | undefined | null;
 };
 
 const { album, artist, reminder } = Astro.props;

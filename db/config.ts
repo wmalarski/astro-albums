@@ -61,7 +61,7 @@ const Review = defineTable({
   indexes: [{ on: "userId" }],
 });
 
-const Visit = defineTable({
+const Reminder = defineTable({
   columns: {
     albumId: column.text({
       name: "album_id",
@@ -81,6 +81,6 @@ export default defineDb({
     Review,
     Session,
     User,
-    Visit,
+    Reminder,
   },
 });

@@ -6,12 +6,12 @@ import {
   DialogActions,
   DialogClose,
 } from "@components/Dialog/Dialog";
-import { Visit } from "astro:db";
+import { Reminder } from "astro:db";
 import { getActionProps, actions } from "astro:actions";
 import type { Component } from "solid-js";
 
 type DeleteAlbumDialogProps = {
-  reminder: typeof Visit.$inferSelect;
+  reminder: typeof Reminder.$inferSelect;
 };
 
 export const DeleteAlbumDialog: Component<DeleteAlbumDialogProps> = (props) => {

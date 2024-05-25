@@ -2,14 +2,14 @@ import { formatAlbum } from "@utils/format";
 import { jsonToCoversField } from "@server/coverArt";
 import { AlbumActions } from "@modules/albums/AlbumCard/AlbumActions";
 import CoversCarousel from "@modules/common/CoversCarousel.astro";
-import type { Album, Artist, Visit } from "astro:db";
+import type { Album, Artist, Reminder } from "astro:db";
 import { twCx } from "@components/utils/twCva";
 import type { Component } from "solid-js";
 
 type AlbumCardProps = {
   album: typeof Album.$inferSelect;
   artist: typeof Artist.$inferSelect;
-  reminder?: typeof Visit.$inferSelect | null | undefined;
+  reminder?: typeof Reminder.$inferSelect | null | undefined;
   reviews?: number;
 };
 

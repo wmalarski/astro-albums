@@ -1,4 +1,4 @@
-import { Album, db, eq, Artist, Visit } from "astro:db";
+import { Album, db, eq, Artist, Reminder } from "astro:db";
 
 type FindRemindersArgs = {
   take: number;
@@ -8,12 +8,12 @@ type FindRemindersArgs = {
 export const findReminders = ({ skip, take }: FindRemindersArgs) => {
   return db
     .select()
-    .from(Visit)
-    .innerJoin(Album, eq(Visit.albumId, Album.id))
+    .from(Reminder)
+    .innerJoin(Album, eq(Reminder.albumId, Album.id))
     .innerJoin(Artist, eq(Album.artistId, Artist.id))
     .limit(take)
     .offset(skip)
-    .orderBy(Visit.createdAt)
+    .orderBy(Reminder.createdAt)
     .all();
 };
 
@@ -23,7 +23,7 @@ type CreateReminderArgs = {
 };
 
 export const createReminder = ({ albumId, userId }: CreateReminderArgs) => {
-  return db.insert(Visit).values({ albumId, userId }).run();
+  return db.insert(Reminder).values({ albumId, userId }).run();
 };
 
 type DeleteReminderArgs = {
@@ -31,5 +31,5 @@ type DeleteReminderArgs = {
 };
 
 export const deleteReminder = ({ reminderId }: DeleteReminderArgs) => {
-  return db.delete(Visit).where(eq(Visit.id, reminderId)).run();
+  return db.delete(Reminder).where(eq(Reminder.id, reminderId)).run();
 };

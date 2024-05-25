@@ -1,4 +1,14 @@
-import { Album, db, eq, or, like, Artist, inArray, sql, Visit } from "astro:db";
+import {
+  Album,
+  db,
+  eq,
+  or,
+  like,
+  Artist,
+  inArray,
+  sql,
+  Reminder,
+} from "astro:db";
 
 type FindAlbumArgs = {
   albumId: string;
@@ -9,7 +19,7 @@ export const findAlbum = ({ albumId }: FindAlbumArgs) => {
     .select()
     .from(Album)
     .innerJoin(Artist, eq(Album.artistId, Artist.id))
-    .leftJoin(Visit, eq(Album.id, Visit.albumId))
+    .leftJoin(Reminder, eq(Album.id, Reminder.albumId))
     .where(eq(Album.id, albumId))
     .get();
 };
@@ -31,7 +41,7 @@ export const findAlbumsByQuery = ({
     .select()
     .from(Album)
     .innerJoin(Artist, eq(Album.artistId, Artist.id))
-    .leftJoin(Visit, eq(Album.id, Visit.albumId))
+    .leftJoin(Reminder, eq(Album.id, Reminder.albumId))
     .where(or(like(Album.title, pattern), like(Artist.name, pattern)))
     .limit(take)
     .offset(skip)
@@ -63,7 +73,7 @@ export const findRandomAlbums = async ({
     .from(Album)
     .where(inArray(Album.id, ids))
     .innerJoin(Artist, eq(Album.artistId, Artist.id))
-    .leftJoin(Visit, eq(Album.id, Visit.albumId));
+    .leftJoin(Reminder, eq(Album.id, Reminder.albumId));
 
   const withReviews = albums.map((album) => ({ ...album, reviews: 0 }));
 

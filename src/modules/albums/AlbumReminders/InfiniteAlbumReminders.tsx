@@ -46,7 +46,7 @@ export const InfiniteAlbumReminders: Component<ParentProps> = (props) => {
             <AlbumCard
               album={entry.Album}
               artist={entry.Artist}
-              reminder={entry.Visit}
+              reminder={entry.Reminder}
             />
           )}
         </For>

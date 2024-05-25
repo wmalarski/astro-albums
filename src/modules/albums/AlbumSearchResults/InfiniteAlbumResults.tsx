@@ -53,7 +53,7 @@ export const InfiniteAlbumResults: Component<InfiniteAlbumResultsProps> = (
             <AlbumCard
               album={entry.Album}
               artist={entry.Artist}
-              reminder={entry.Visit}
+              reminder={entry.Reminder}
             />
           )}
         </For>

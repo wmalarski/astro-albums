@@ -1,4 +1,4 @@
-import { Album, Artist, Review, Visit, db, eq } from "astro:db";
+import { Album, Artist, Review, Reminder, db, eq } from "astro:db";
 
 type FindArtistAlbumsAndReviewsArgs = {
   artistId: string;
@@ -12,13 +12,13 @@ export const findArtistAlbumsAndReviewsArgs = async ({
     .from(Review)
     .fullJoin(Album, eq(Review.albumId, Album.id))
     .innerJoin(Artist, eq(Album.artistId, Artist.id))
-    .leftJoin(Visit, eq(Album.id, Visit.albumId))
+    .leftJoin(Reminder, eq(Album.id, Reminder.albumId))
     .where(eq(Artist.id, artistId))
     .all();
 
   const reviews = new Map<string, typeof Review.$inferSelect>();
   const albums = new Map<string, typeof Album.$inferSelect>();
-  const reminders = new Map<string, typeof Visit.$inferSelect>();
+  const reminders = new Map<string, typeof Reminder.$inferSelect>();
 
   artistReviewsAndAlbums.forEach((row) => {
     if (row.Review) {
@@ -27,8 +27,8 @@ export const findArtistAlbumsAndReviewsArgs = async ({
     if (row.Album) {
       albums.set(row.Album.id, row.Album);
     }
-    if (row.Visit) {
-      reminders.set(row.Visit.albumId, row.Visit);
+    if (row.Reminder) {
+      reminders.set(row.Reminder.albumId, row.Reminder);
     }
   });
 

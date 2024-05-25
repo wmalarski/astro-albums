@@ -35,7 +35,7 @@ if (!albumRow) {
   return Astro.redirect(paths.notFound);
 }
 
-const { Album: album, Artist: artist, Visit: reminder } = albumRow;
+const { Album: album, Artist: artist, Reminder: reminder } = albumRow;
 
 const header = formatAlbum({ album, artist });
 ---
