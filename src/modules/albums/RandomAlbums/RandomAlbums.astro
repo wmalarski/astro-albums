@@ -16,7 +16,12 @@ const data = await findRandomAlbums({ userId, take: 20 });
 <InfiniteRandomAlbums>
   {
     data.map((entry) => (
-      <AlbumCard client:load album={entry.Album} artist={entry.Artist} />
+      <AlbumCard
+        client:load
+        album={entry.Album}
+        artist={entry.Artist}
+        reminder={entry.Visit}
+      />
     ))
   }
 </InfiniteRandomAlbums>

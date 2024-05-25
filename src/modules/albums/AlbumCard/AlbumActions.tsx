@@ -9,7 +9,7 @@ import { Show, type Component } from "solid-js";
 type AlbumActionsProps = {
   album: typeof Album.$inferSelect;
   artist: typeof Artist.$inferSelect;
-  reminder?: typeof Visit.$inferSelect | undefined;
+  reminder?: typeof Visit.$inferSelect | undefined | null;
 };
 
 export const AlbumActions: Component<AlbumActionsProps> = (props) => {

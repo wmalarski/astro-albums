@@ -49,7 +49,13 @@ export const InfiniteAlbumResults: Component<InfiniteAlbumResultsProps> = (
       <CardGrid>
         {props.children}
         <For each={albums.results}>
-          {(entry) => <AlbumCard album={entry.Album} artist={entry.Artist} />}
+          {(entry) => (
+            <AlbumCard
+              album={entry.Album}
+              artist={entry.Artist}
+              reminder={entry.Visit}
+            />
+          )}
         </For>
       </CardGrid>
       <Button onClick={onClick} isLoading={isLoading()}>

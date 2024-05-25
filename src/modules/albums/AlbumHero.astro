@@ -8,7 +8,7 @@ import type { Album, Artist, Visit } from "astro:db";
 export type Props = {
   album: typeof Album.$inferSelect;
   artist: typeof Artist.$inferSelect;
-  reminder?: typeof Visit.$inferSelect | undefined;
+  reminder?: typeof Visit.$inferSelect | undefined | null;
 };
 
 const { album, artist, reminder } = Astro.props;

@@ -35,7 +35,7 @@ if (!albumRow) {
   return Astro.redirect(paths.notFound);
 }
 
-const { Album: album, Artist: artist } = albumRow;
+const { Album: album, Artist: artist, Visit: reminder } = albumRow;
 
 const header = formatAlbum({ album, artist });
 ---
@@ -43,7 +43,7 @@ const header = formatAlbum({ album, artist });
 <Layout title={`${header} - Astro Albums`} userId={session.userId}>
   <main class="p-4 flex flex-col gap-4">
     <h2 class="text-xl font-bold">Album</h2>
-    <AlbumHero artist={artist} album={album} />
+    <AlbumHero artist={artist} album={album} reminder={reminder} />
     <h2 class="text-xl font-bold">Review</h2>
     <CreateReviewForm album={album} />
   </main>

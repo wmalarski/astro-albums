@@ -9,7 +9,7 @@ import type { Component } from "solid-js";
 type AlbumCardProps = {
   album: typeof Album.$inferSelect;
   artist: typeof Artist.$inferSelect;
-  reminder?: typeof Visit.$inferSelect | undefined;
+  reminder?: typeof Visit.$inferSelect | null | undefined;
   reviews?: number;
 };
 

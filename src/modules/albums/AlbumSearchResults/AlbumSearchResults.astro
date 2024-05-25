@@ -15,7 +15,12 @@ const data = await findAlbumsByQuery({ query, skip: 0, take: 20 });
 <InfiniteAlbumResults client:load query={query}>
   {
     data.map((entry) => (
-      <AlbumCard client:load album={entry.Album} artist={entry.Artist} />
+      <AlbumCard
+        client:load
+        album={entry.Album}
+        artist={entry.Artist}
+        reminder={entry.Visit}
+      />
     ))
   }
 </InfiniteAlbumResults>

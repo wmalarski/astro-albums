@@ -1,4 +1,4 @@
-import { Album, Artist, db, eq, Review, sql } from "astro:db";
+import { Album, Artist, db, eq, Review, sql, Visit } from "astro:db";
 
 type FindReviewArgs = {
   reviewId: string;
@@ -10,6 +10,7 @@ export const findReview = ({ reviewId }: FindReviewArgs) => {
     .from(Review)
     .innerJoin(Album, eq(Review.albumId, Album.id))
     .innerJoin(Artist, eq(Album.artistId, Artist.id))
+    .leftJoin(Visit, eq(Album.id, Visit.albumId))
     .where(eq(Review.id, reviewId))
     .get();
 };
