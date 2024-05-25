@@ -7,7 +7,7 @@ import { InfiniteReviewResults } from "./InfiniteReviewResults";
 const reviews = await findReviews({ skip: 0, take: 20 });
 ---
 
-<InfiniteReviewResults>
+<InfiniteReviewResults client:load>
   {
     reviews.map((entry) => (
       <ReviewCard

@@ -1,4 +1,3 @@
-import { getActionSession } from "@server/auth";
 import {
   createReview,
   deleteReview,
@@ -15,9 +14,9 @@ export const reviews = {
       page: z.number(),
     }),
     handler: async ({ page }, context) => {
-      const session = await getActionSession(context.cookies);
+      const userId = context.locals.session?.userId;
 
-      if (!session?.userId) {
+      if (!userId) {
         throw new ActionError(UNAUTHORIZED_ERROR);
       }
 
@@ -33,13 +32,13 @@ export const reviews = {
       text: z.string(),
     }),
     handler: async (args, context) => {
-      const session = await getActionSession(context.cookies);
+      const userId = context.locals.session?.userId;
 
-      if (!session?.userId) {
+      if (!userId) {
         throw new ActionError(UNAUTHORIZED_ERROR);
       }
 
-      const result = await createReview({ ...args, userId: session.userId });
+      const result = await createReview({ ...args, userId });
 
       if (result.rowsAffected === 0) {
         throw new ActionError(DB_ERROR);
@@ -56,9 +55,9 @@ export const reviews = {
       text: z.string(),
     }),
     handler: async (args, context) => {
-      const session = await getActionSession(context.cookies);
+      const userId = context.locals.session?.userId;
 
-      if (!session?.userId) {
+      if (!userId) {
         throw new ActionError(UNAUTHORIZED_ERROR);
       }
 
@@ -77,9 +76,9 @@ export const reviews = {
       reviewId: z.string(),
     }),
     handler: async (args, context) => {
-      const session = await getActionSession(context.cookies);
+      const userId = context.locals.session?.userId;
 
-      if (!session?.userId) {
+      if (!userId) {
         throw new ActionError(UNAUTHORIZED_ERROR);
       }
 

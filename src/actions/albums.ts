@@ -4,7 +4,6 @@ import {
   findRandomAlbums,
   updateAlbum,
 } from "@server/albums";
-import { getActionSession } from "@server/auth";
 import { ActionError, defineAction, z } from "astro:actions";
 import { DB_ERROR, UNAUTHORIZED_ERROR } from "./errors";
 
@@ -12,15 +11,13 @@ export const albums = {
   findRandomAlbums: defineAction({
     accept: "json",
     handler: async (_input, context) => {
-      console.log("context.locals.session", context.locals.session);
+      const userId = context.locals.session?.userId;
 
-      const session = await getActionSession(context.cookies);
-
-      if (!session?.userId) {
+      if (!userId) {
         throw new ActionError(UNAUTHORIZED_ERROR);
       }
 
-      return findRandomAlbums({ userId: session.userId, take: 20 });
+      return findRandomAlbums({ userId, take: 20 });
     },
   }),
   findAlbumsByQuery: defineAction({
@@ -30,9 +27,9 @@ export const albums = {
       page: z.number(),
     }),
     handler: async ({ query, page }, context) => {
-      const session = await getActionSession(context.cookies);
+      const userId = context.locals.session?.userId;
 
-      if (!session?.userId) {
+      if (!userId) {
         throw new ActionError(UNAUTHORIZED_ERROR);
       }
 
@@ -48,9 +45,9 @@ export const albums = {
       year: z.coerce.number().optional(),
     }),
     handler: async (args, context) => {
-      const session = await getActionSession(context.cookies);
+      const userId = context.locals.session?.userId;
 
-      if (!session?.userId) {
+      if (!userId) {
         throw new ActionError(UNAUTHORIZED_ERROR);
       }
 
@@ -69,9 +66,9 @@ export const albums = {
       albumId: z.string(),
     }),
     handler: async (args, context) => {
-      const session = await getActionSession(context.cookies);
+      const userId = context.locals.session?.userId;
 
-      if (!session?.userId) {
+      if (!userId) {
         throw new ActionError(UNAUTHORIZED_ERROR);
       }
 

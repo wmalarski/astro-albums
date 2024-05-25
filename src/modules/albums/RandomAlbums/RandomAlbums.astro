@@ -13,7 +13,7 @@ const { userId } = Astro.props;
 const data = await findRandomAlbums({ userId, take: 20 });
 ---
 
-<InfiniteRandomAlbums>
+<InfiniteRandomAlbums client:load>
   {
     data.map((entry) => (
       <AlbumCard

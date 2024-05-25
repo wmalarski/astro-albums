@@ -1,4 +1,3 @@
-import { getActionSession } from "@server/auth";
 import {
   createReminder,
   deleteReminder,
@@ -14,9 +13,9 @@ export const reminders = {
       page: z.number(),
     }),
     handler: async ({ page }, context) => {
-      const session = await getActionSession(context.cookies);
+      const userId = context.locals.session?.userId;
 
-      if (!session?.userId) {
+      if (!userId) {
         throw new ActionError(UNAUTHORIZED_ERROR);
       }
 
@@ -30,13 +29,13 @@ export const reminders = {
       albumId: z.string(),
     }),
     handler: async (args, context) => {
-      const session = await getActionSession(context.cookies);
+      const userId = context.locals.session?.userId;
 
-      if (!session?.userId) {
+      if (!userId) {
         throw new ActionError(UNAUTHORIZED_ERROR);
       }
 
-      const result = await createReminder({ ...args, userId: session.userId });
+      const result = await createReminder({ ...args, userId });
 
       if (result.rowsAffected === 0) {
         throw new ActionError(DB_ERROR);
@@ -51,9 +50,9 @@ export const reminders = {
       reminderId: z.string(),
     }),
     handler: async (args, context) => {
-      const session = await getActionSession(context.cookies);
+      const userId = context.locals.session?.userId;
 
-      if (!session?.userId) {
+      if (!userId) {
         throw new ActionError(UNAUTHORIZED_ERROR);
       }
 
