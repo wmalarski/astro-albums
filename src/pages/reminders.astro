@@ -1,0 +1,16 @@
+---
+import Layout from "@layouts/Layout.astro";
+import AlbumReminders from "@modules/albums/AlbumReminders/AlbumReminders.astro";
+import { paths } from "@utils/paths";
+
+const session = Astro.locals.session;
+
+paths;
+if (!session) {
+  return Astro.redirect(paths.login);
+}
+---
+
+<Layout title="Album Reminders" userId={session.userId}>
+  <AlbumReminders />
+</Layout>

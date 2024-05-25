@@ -33,7 +33,7 @@ const { items, months } = getCountItems(groups);
   {
     items.map((item) => (
       <a
-        href={paths.reviews({})}
+        href={paths.reviews()}
         class={buttonClass({ size: "xs", class: `item-${item.suffix}` })}
         title={new Intl.DateTimeFormat().format(item.date)}
       >

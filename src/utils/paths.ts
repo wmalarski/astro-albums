@@ -17,9 +17,9 @@ export const paths = {
   review: (albumId: string) => `/album/${albumId}/review`,
   editReview: (reviewId: string) => `/review/${reviewId}/edit`,
   editAlbum: (albumId: string) => `/album/${albumId}/edit`,
+  reminders: "/reminders",
   reviews: (
     args: {
-      page?: number;
       query?: string;
       lower?: number;
       upper?: number;

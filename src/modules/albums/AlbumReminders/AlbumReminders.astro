@@ -1,0 +1,17 @@
+---
+import { AlbumCard } from "@modules/albums/AlbumCard/AlbumCard";
+import EmptyPlaceholder from "@modules/common/EmptyPlaceholder.astro";
+import { InfiniteAlbumReminders } from "./InfiniteAlbumReminders";
+import { findReminders } from "@server/reminders";
+
+const data = await findReminders({ skip: 0, take: 20 });
+---
+
+<InfiniteAlbumReminders client:load>
+  {
+    data.map((entry) => (
+      <AlbumCard client:load album={entry.Album} artist={entry.Artist} />
+    ))
+  }
+</InfiniteAlbumReminders>
+{data.length === 0 && <EmptyPlaceholder />}
