@@ -10,11 +10,13 @@ import { Reminder } from "astro:db";
 import { getActionProps, actions } from "astro:actions";
 import type { Component } from "solid-js";
 
-type DeleteAlbumDialogProps = {
+type DeleteReminderDialogProps = {
   reminder: typeof Reminder.$inferSelect;
 };
 
-export const DeleteAlbumDialog: Component<DeleteAlbumDialogProps> = (props) => {
+export const DeleteReminderDialog: Component<DeleteReminderDialogProps> = (
+  props,
+) => {
   const dialogId = () => `dialog-delete-reminder-${props.reminder.id}`;
   const formId = () => `form-delete-reminder-${props.reminder.id}`;
 

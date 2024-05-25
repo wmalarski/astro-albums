@@ -5,6 +5,8 @@ import type { Album, Artist, Reminder } from "astro:db";
 import { Link } from "@components/Link/Link";
 import { DeleteAlbumDialog } from "./DeleteAlbumDialog.tsx";
 import { Show, type Component } from "solid-js";
+import { DeleteReminderDialog } from "./DeleteReminderDialog.tsx";
+import { CreateReminderDialog } from "./CreateReminderDialog.tsx";
 
 type AlbumActionsProps = {
   album: typeof Album.$inferSelect;
@@ -30,6 +32,12 @@ export const AlbumActions: Component<AlbumActionsProps> = (props) => {
             Details
           </Link>
         )}
+      </Show>
+      <Show
+        when={props.reminder}
+        fallback={<CreateReminderDialog album={props.album} />}
+      >
+        {(reminder) => <DeleteReminderDialog reminder={reminder()} />}
       </Show>
       <Link size="xs" href={paths.review(props.album.id)}>
         Review
