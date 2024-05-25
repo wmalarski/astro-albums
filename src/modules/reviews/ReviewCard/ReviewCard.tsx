@@ -2,7 +2,7 @@ import { formatAlbum } from "@utils/format";
 import { jsonToCoversField } from "@server/coverArt";
 import { paths } from "@utils/paths";
 import { DeleteReviewDialog } from "./DeleteReviewDialog";
-import CoversCarousel from "@modules/common/CoversCarousel.astro";
+import { CoversCarousel } from "@modules/common/CoversCarousel";
 import { YtButton } from "@modules/common/YtButton";
 import { GoogleButton } from "@modules/common/GoogleButton";
 import type { Album, Artist, Review } from "astro:db";

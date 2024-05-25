@@ -12,6 +12,8 @@ export const albums = {
   findRandomAlbums: defineAction({
     accept: "json",
     handler: async (_input, context) => {
+      console.log("context.locals.session", context.locals.session);
+
       const session = await getActionSession(context.cookies);
 
       if (!session?.userId) {
