@@ -11,11 +11,11 @@ export default defineConfig({
   output: "server",
   vite: {
     optimizeDeps: {
-      exclude: ["astro:db", "oslo"]
-    }
+      exclude: ["astro:db", "oslo"],
+    },
   },
   experimental: {
-    actions: true
+    actions: true,
   },
-  adapter: vercel()
+  adapter: vercel(),
 });

@@ -68,6 +68,10 @@ export const findRandomAlbums = async ({
 
   const ids = result.map((entry) => entry.id);
 
+  if (ids.length < 1) {
+    return [];
+  }
+
   const albums = await db
     .select()
     .from(Album)
