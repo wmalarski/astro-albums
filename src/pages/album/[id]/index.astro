@@ -3,12 +3,8 @@ import Layout from "@layouts/Layout.astro";
 import { findAlbum } from "@server/albums";
 import { formatAlbum } from "@utils/format";
 import { paths } from "@utils/paths";
-import EmptyPlaceholder from "@modules/common/EmptyPlaceholder.astro";
-import { CardGrid } from "@modules/common/CardGrid";
-import { AlbumCard } from "@modules/albums/AlbumCard/AlbumCard";
-import { ReviewCard } from "@modules/reviews/ReviewCard/ReviewCard";
 import AlbumHero from "@modules/albums/AlbumHero.astro";
-import { findArtistAlbumsAndReviewsArgs } from "@server/artist";
+import AlbumDetails from "@modules/albums/AlbumDetails.astro";
 import { z } from "astro:actions";
 
 const session = Astro.locals.session;
@@ -36,10 +32,6 @@ if (!albumRow) {
 
 const { Album: album, Artist: artist, Reminder: reminder } = albumRow;
 
-const { albums, reviews, reminders } = await findArtistAlbumsAndReviewsArgs({
-  artistId: album.artistId,
-});
-
 const header = formatAlbum({ album, artist });
 ---
 
@@ -47,33 +39,6 @@ const header = formatAlbum({ album, artist });
   <main class="p-4 flex flex-col gap-4">
     <h2 class="text-xl font-bold">Album</h2>
     <AlbumHero artist={artist} album={album} reminder={reminder} />
-    <h2 class="text-xl font-bold">Albums</h2>
-    <CardGrid>
-      {
-        albums.map((entry) => (
-          <AlbumCard
-            client:load
-            album={entry}
-            artist={artist}
-            reminder={reminders.get(entry.id)}
-          />
-        ))
-      }
-    </CardGrid>
-    {albums.length === 0 && <EmptyPlaceholder />}
-    <h2 class="text-xl font-bold">Reviews</h2>
-    <CardGrid>
-      {
-        reviews.map((entry) => (
-          <ReviewCard
-            client:load
-            review={entry}
-            album={album}
-            artist={artist}
-          />
-        ))
-      }
-    </CardGrid>
-    {reviews.length === 0 && <EmptyPlaceholder />}
+    <AlbumDetails artist={artist} album={album} />
   </main>
 </Layout>

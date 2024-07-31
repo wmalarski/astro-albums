@@ -1,0 +1,44 @@
+---
+import EmptyPlaceholder from "@modules/common/EmptyPlaceholder.astro";
+import { CardGrid } from "@modules/common/CardGrid";
+import { AlbumCard } from "@modules/albums/AlbumCard/AlbumCard";
+import { ReviewCard } from "@modules/reviews/ReviewCard/ReviewCard";
+import { findArtistAlbumsAndReviewsArgs } from "@server/artist";
+import type { Album, Artist } from "astro:db";
+
+export type Props = {
+  album: typeof Album.$inferSelect;
+  artist: typeof Artist.$inferSelect;
+};
+
+const { album, artist } = Astro.props;
+
+const { albums, reviews, reminders } = await findArtistAlbumsAndReviewsArgs({
+  artistId: album.artistId,
+});
+---
+
+<h2 class="text-xl font-bold">Albums</h2>
+<CardGrid>
+  {
+    albums.map((entry) => (
+      <AlbumCard
+        client:load
+        album={entry}
+        artist={artist}
+        reminder={reminders.get(entry.id)}
+      />
+    ))
+  }
+</CardGrid>
+{albums.length === 0 && <EmptyPlaceholder />}
+
+<h2 class="text-xl font-bold">Reviews</h2>
+<CardGrid>
+  {
+    reviews.map((entry) => (
+      <ReviewCard client:load review={entry} album={album} artist={artist} />
+    ))
+  }
+</CardGrid>
+{reviews.length === 0 && <EmptyPlaceholder />}
