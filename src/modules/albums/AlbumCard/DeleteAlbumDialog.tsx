@@ -8,7 +8,7 @@ import {
 } from "@components/Dialog/Dialog";
 import { formatAlbum } from "@utils/format";
 import type { Album, Artist } from "astro:db";
-import { getActionProps, actions } from "astro:actions";
+import { actions } from "astro:actions";
 import type { Component } from "solid-js";
 
 type DeleteAlbumDialogProps = {
@@ -30,8 +30,7 @@ export const DeleteAlbumDialog: Component<DeleteAlbumDialogProps> = (props) => {
           <h3 class="font-bold text-lg">
             {`Delete album ${formatAlbum({ album: props.album, artist: props.artist })}`}
           </h3>
-          <form id={formId()}>
-            <input {...getActionProps(actions.deleteAlbum)} />
+          <form id={formId()} action={actions.deleteAlbum} method="post">
             <input type="hidden" name="albumId" value={props.album.id} />
           </form>
           <DialogActions>

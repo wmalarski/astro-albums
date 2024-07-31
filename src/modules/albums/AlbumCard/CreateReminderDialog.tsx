@@ -7,7 +7,7 @@ import {
   DialogClose,
 } from "@components/Dialog/Dialog";
 import type { Album } from "astro:db";
-import { getActionProps, actions } from "astro:actions";
+import { actions } from "astro:actions";
 import type { Component } from "solid-js";
 
 type CreateReminderDialogProps = {
@@ -28,8 +28,7 @@ export const CreateReminderDialog: Component<CreateReminderDialogProps> = (
       <DialogContainer id={dialogId()}>
         <DialogContent>
           <h3 class="font-bold text-lg">Create reminder</h3>
-          <form id={formId()}>
-            <input {...getActionProps(actions.createReminder)} />
+          <form id={formId()} action={actions.createReminder} method="post">
             <input type="hidden" name="albumId" value={props.album.id} />
           </form>
           <DialogActions>

@@ -7,7 +7,7 @@ import {
   DialogClose,
 } from "@components/Dialog/Dialog";
 import type { Reminder } from "astro:db";
-import { getActionProps, actions } from "astro:actions";
+import { actions } from "astro:actions";
 import type { Component } from "solid-js";
 
 type DeleteReminderDialogProps = {
@@ -28,8 +28,7 @@ export const DeleteReminderDialog: Component<DeleteReminderDialogProps> = (
       <DialogContainer id={dialogId()}>
         <DialogContent>
           <h3 class="font-bold text-lg">Delete reminder</h3>
-          <form id={formId()}>
-            <input {...getActionProps(actions.deleteReminder)} />
+          <form id={formId()} action={actions.deleteReminder} method="post">
             <input type="hidden" name="reminderId" value={props.reminder.id} />
           </form>
           <DialogActions>

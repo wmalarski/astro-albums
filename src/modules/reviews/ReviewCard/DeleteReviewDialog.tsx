@@ -7,7 +7,7 @@ import {
   DialogClose,
 } from "@components/Dialog/Dialog";
 import { formatAlbum } from "@utils/format";
-import { getActionProps, actions } from "astro:actions";
+import { actions } from "astro:actions";
 import type { Review, Album, Artist } from "astro:db";
 import type { Component } from "solid-js";
 
@@ -33,8 +33,7 @@ export const DeleteReviewDialog: Component<DeleteReviewDialogProps> = (
           <h3 class="font-bold text-lg">
             {`Delete review ${formatAlbum({ album: props.album, artist: props.artist })}`}
           </h3>
-          <form id={formId()}>
-            <input {...getActionProps(actions.deleteReview)} />
+          <form id={formId()} action={actions.deleteReview} method="post">
             <input
               type="hidden"
               name="reviewId"

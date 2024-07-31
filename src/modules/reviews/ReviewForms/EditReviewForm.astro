@@ -1,7 +1,7 @@
 ---
 import ReviewFields from "@modules/reviews/ReviewForms/ReviewFields.astro";
 import { Button } from "@components/Button/Button";
-import { getActionProps, actions, isInputError } from "astro:actions";
+import { actions, isInputError } from "astro:actions";
 import type { Review } from "astro:db";
 import { CardActions, CardBody } from "@components/Card/Card";
 
@@ -13,11 +13,10 @@ const { review } = Astro.props;
 
 const results = Astro.getActionResult(actions.updateReview);
 const inputErrors = isInputError(results?.error) ? results.error.fields : null;
-const otherError = !inputErrors ? results?.error?.message ?? null : null;
+const otherError = !inputErrors ? (results?.error?.message ?? null) : null;
 ---
 
-<form class="card" method="post">
-  <input {...getActionProps(actions.updateReview)} />
+<form class="card" method="post" action={actions.updateReview}>
   <input type="hidden" name="reviewId" value={review.id} />
   <CardBody>
     <ReviewFields errors={inputErrors} error={otherError} initial={review} />
