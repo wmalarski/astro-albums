@@ -1,12 +1,8 @@
 ---
 import { Button } from "@components/Button/Button";
 import { Card } from "@components/Card/Card";
-import {
-  TextFieldInput,
-  TextFieldLabel,
-  TextFieldLabelText,
-  TextFieldRoot,
-} from "@components/TextField/TextField";
+import { Label, LabelText } from "@components/Label/Label";
+import { TextFieldInput, TextFieldRoot } from "@components/TextField/TextField";
 
 export type Props = {
   lower?: number;
@@ -23,9 +19,9 @@ const { lower, order, query, upper } = Astro.props;
     <form class="w-full flex flex-row gap-2">
       <div class="flex flex-col gap-2 w-full">
         <TextFieldRoot>
-          <TextFieldLabel for="query">
-            <TextFieldLabelText>Search</TextFieldLabelText>
-          </TextFieldLabel>
+          <Label for="query">
+            <LabelText>Search</LabelText>
+          </Label>
           <TextFieldInput
             id="query"
             name="query"
@@ -35,9 +31,9 @@ const { lower, order, query, upper } = Astro.props;
           />
         </TextFieldRoot>
         <TextFieldRoot>
-          <TextFieldLabel for="lower">
-            <TextFieldLabelText>Lower rate</TextFieldLabelText>
-          </TextFieldLabel>
+          <Label for="lower">
+            <LabelText>Lower rate</LabelText>
+          </Label>
           <TextFieldInput
             id="lower"
             max={10}
@@ -49,9 +45,9 @@ const { lower, order, query, upper } = Astro.props;
           />
         </TextFieldRoot>
         <TextFieldRoot>
-          <TextFieldLabel for="upper">
-            <TextFieldLabelText>Upper rate</TextFieldLabelText>
-          </TextFieldLabel>
+          <Label for="upper">
+            <LabelText>Upper rate</LabelText>
+          </Label>
           <TextFieldInput
             id="upper"
             max={10}
@@ -63,9 +59,9 @@ const { lower, order, query, upper } = Astro.props;
           />
         </TextFieldRoot>
         <TextFieldRoot>
-          <TextFieldLabel for="order">
-            <TextFieldLabelText>Order by</TextFieldLabelText>
-          </TextFieldLabel>
+          <Label for="order">
+            <LabelText>Order by</LabelText>
+          </Label>
           <select class="select" id="order" value={order ?? "createdAt"}>
             <option value="rate">Rate</option>
             <option value="createdAt">Created At</option>

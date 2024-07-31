@@ -1,11 +1,8 @@
 import { splitProps, type Component } from "solid-js";
 
 import {
-  textFieldDescription,
   textFieldErrorMessage,
   textFieldInputClass,
-  textFieldLabelClass,
-  textFieldLabelText,
   textFieldRootClass,
 } from "./TextField.recipes";
 import type { ComponentVariantProps } from "@components/utils/twCva";
@@ -17,39 +14,6 @@ export type TextFieldRootProps = ComponentVariantProps<
 
 export const TextFieldRoot: Component<TextFieldRootProps> = (props) => {
   return <fieldset {...props} class={textFieldRootClass()} />;
-};
-
-export type TextFieldLabelProps = ComponentVariantProps<
-  "label",
-  typeof textFieldLabelClass
->;
-
-export const TextFieldLabel: Component<TextFieldLabelProps> = (props) => {
-  // eslint-disable-next-line jsx-a11y/label-has-associated-control
-  return <label {...props} class={textFieldLabelClass()} />;
-};
-
-export type TextFieldLabelTextProps = ComponentVariantProps<
-  "span",
-  typeof textFieldLabelText
->;
-
-export const TextFieldLabelText: Component<TextFieldLabelTextProps> = (
-  props,
-) => {
-  // eslint-disable-next-line jsx-a11y/label-has-associated-control
-  return <span {...props} class={textFieldLabelText()} />;
-};
-
-export type TextFieldDescriptionProps = ComponentVariantProps<
-  "span",
-  typeof textFieldDescription
->;
-
-export const TextFieldDescription: Component<TextFieldDescriptionProps> = (
-  props,
-) => {
-  return <span {...props} class={textFieldDescription()} />;
 };
 
 export type TextFieldErrorMessageProps = ComponentVariantProps<

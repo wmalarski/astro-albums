@@ -2,12 +2,6 @@ import { twCva } from "../utils/twCva";
 
 export const textFieldRootClass = twCva("form-control");
 
-export const textFieldLabelClass = twCva("label gap-2");
-
-export const textFieldLabelText = twCva("label-text");
-
-export const textFieldDescription = twCva("label-text-alt pt-2");
-
 export const textFieldErrorMessage = twCva("text-sm text-error pt-2");
 
 export const textFieldInputClass = twCva("input", {

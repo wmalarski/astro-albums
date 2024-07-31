@@ -1,10 +1,9 @@
 ---
 import { Alert, AlertIcon } from "@components/Alert/Alert";
+import { Label, LabelText } from "@components/Label/Label";
 import {
   TextFieldErrorMessage,
   TextFieldInput,
-  TextFieldLabel,
-  TextFieldLabelText,
   TextFieldRoot,
 } from "@components/TextField/TextField";
 
@@ -34,9 +33,9 @@ const { initial, error, errors } = Astro.props;
     ) : null
   }
   <TextFieldRoot>
-    <TextFieldLabel for="title">
-      <TextFieldLabelText>Title:</TextFieldLabelText>
-    </TextFieldLabel>
+    <Label for="title">
+      <LabelText>Title:</LabelText>
+    </Label>
     <TextFieldInput
       id="title"
       size="sm"
@@ -54,9 +53,9 @@ const { initial, error, errors } = Astro.props;
     }
   </TextFieldRoot>
   <TextFieldRoot>
-    <TextFieldLabel for="year">
-      <TextFieldLabelText>Year:</TextFieldLabelText>
-    </TextFieldLabel>
+    <Label for="year">
+      <LabelText>Year:</LabelText>
+    </Label>
     <TextFieldInput
       id="year"
       name="year"
