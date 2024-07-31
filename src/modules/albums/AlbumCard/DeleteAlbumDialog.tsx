@@ -30,7 +30,7 @@ export const DeleteAlbumDialog: Component<DeleteAlbumDialogProps> = (props) => {
           <h3 class="font-bold text-lg">
             {`Delete album ${formatAlbum({ album: props.album, artist: props.artist })}`}
           </h3>
-          <form>
+          <form id={formId()}>
             <input {...getActionProps(actions.deleteAlbum)} />
             <input type="hidden" name="albumId" value={props.album.id} />
           </form>

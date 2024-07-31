@@ -28,7 +28,7 @@ export const DeleteReminderDialog: Component<DeleteReminderDialogProps> = (
       <DialogContainer id={dialogId()}>
         <DialogContent>
           <h3 class="font-bold text-lg">Delete reminder</h3>
-          <form>
+          <form id={formId()}>
             <input {...getActionProps(actions.deleteReminder)} />
             <input type="hidden" name="reminderId" value={props.reminder.id} />
           </form>

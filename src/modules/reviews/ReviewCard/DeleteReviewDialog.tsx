@@ -33,7 +33,7 @@ export const DeleteReviewDialog: Component<DeleteReviewDialogProps> = (
           <h3 class="font-bold text-lg">
             {`Delete review ${formatAlbum({ album: props.album, artist: props.artist })}`}
           </h3>
-          <form>
+          <form id={formId()}>
             <input {...getActionProps(actions.deleteReview)} />
             <input
               type="hidden"
