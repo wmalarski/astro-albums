@@ -1,8 +1,9 @@
 import { generateCodeVerifier, generateState, type GoogleTokens } from "arctic";
 
 import type { APIContext, AstroCookieSetOptions } from "astro";
-import { google, lucia } from "@server/session";
+import { lucia } from "@server/auth/lucia";
 import { verifyRequestOrigin } from "lucia";
+import { googleClient } from "./google";
 
 const CODE_KEY = "code";
 const CODE_VERIFIER_KEY = "code_verifier";
@@ -20,7 +21,7 @@ export const createAuthorizationUrl = async (
   const state = generateState();
   const codeVerifier = generateCodeVerifier();
 
-  const url = await google.createAuthorizationURL(state, codeVerifier, {
+  const url = await googleClient.createAuthorizationURL(state, codeVerifier, {
     scopes: ["profile", "email"],
   });
 
@@ -43,7 +44,7 @@ export const validateAuthorizationCode = (
     return Promise.resolve(null);
   }
 
-  return google.validateAuthorizationCode(code, storedCodeVerifier);
+  return googleClient.validateAuthorizationCode(code, storedCodeVerifier);
 };
 
 export const setSessionCookie = async (context: APIContext, userId: string) => {
@@ -78,31 +79,3 @@ export const verifyRequest = (context: APIContext) => {
   );
 };
 
-export const authMiddleware = async (context: APIContext) => {
-  const sessionId = context.cookies.get(lucia.sessionCookieName)?.value ?? null;
-
-  if (!sessionId) {
-    context.locals.user = null;
-    context.locals.session = null;
-    return;
-  }
-
-  const { session, user } = await lucia.validateSession(sessionId);
-
-  if (session && session.fresh) {
-    const sessionCookie = lucia.createSessionCookie(session.id);
-
-    context.cookies.set(
-      sessionCookie.name,
-      sessionCookie.value,
-      sessionCookie.attributes,
-    );
-  }
-
-  if (!session) {
-    setBlankSessionCookie(context);
-  }
-
-  context.locals.session = session;
-  context.locals.user = user;
-};

@@ -1,4 +1,4 @@
-import { setBlankSessionCookie } from "@server/auth";
+import { setBlankSessionCookie } from "@server/auth/session";
 import { paths } from "@utils/paths";
 import type { APIRoute } from "astro";
 

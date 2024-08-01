@@ -1,5 +1,6 @@
 import { defineMiddleware } from "astro:middleware";
-import { authMiddleware, verifyRequest } from "@server/auth";
+import { verifyRequest } from "@server/auth/session";
+import { authMiddleware } from "@server/auth/middleware";
 
 export const onRequest = defineMiddleware(async (context, next) => {
   if (context.request.method !== "GET") {

@@ -2,8 +2,9 @@ import { OAuth2RequestError } from "arctic";
 
 import type { APIContext } from "astro";
 import { paths } from "@utils/paths";
-import { setSessionCookie, validateAuthorizationCode } from "@server/auth";
-import { getGoogleUser, getUserByGoogleId, insertUser } from "@server/user";
+import { setSessionCookie, validateAuthorizationCode } from "@server/auth/session";
+import { getUserByGoogleId, insertUser } from "@server/data/user";
+import { getGoogleUser } from "@server/auth/google";
 
 export const GET = async (context: APIContext): Promise<Response> => {
   try {
