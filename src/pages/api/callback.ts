@@ -2,7 +2,10 @@ import { OAuth2RequestError } from "arctic";
 
 import type { APIContext } from "astro";
 import { paths } from "@utils/paths";
-import { setSessionCookie, validateAuthorizationCode } from "@server/auth/session";
+import {
+  setSessionCookie,
+  validateAuthorizationCode,
+} from "@server/auth/session";
 import { getUserByGoogleId, insertUser } from "@server/data/user";
 import { getGoogleUser } from "@server/auth/google";
 
@@ -30,6 +33,7 @@ export const GET = async (context: APIContext): Promise<Response> => {
 
     return context.redirect(paths.index());
   } catch (error) {
+    // eslint-disable-next-line no-console
     console.error({ error });
     if (error instanceof OAuth2RequestError) {
       return new Response(null, { status: 400 });

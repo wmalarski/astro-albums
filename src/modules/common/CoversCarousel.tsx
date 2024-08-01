@@ -1,4 +1,4 @@
-import { Show, type Component } from "solid-js";
+import { Show, type Component, For } from "solid-js";
 
 type CoversCarouselProps = {
   covers?: string[] | undefined;
@@ -9,11 +9,15 @@ export const CoversCarousel: Component<CoversCarouselProps> = (props) => {
   return (
     <Show when={(props.covers || []).length > 0}>
       <div class="carousel rounded-box">
-        {props.covers?.slice(1)?.map((cover) => (
-          <div class="carousel-item">
-            <img src={cover} alt={props.header} />
-          </div>
-        ))}
+        {
+          <For each={props.covers?.slice(1)}>
+            {(cover) => (
+              <div class="carousel-item">
+                <img src={cover} alt={props.header} />
+              </div>
+            )}
+          </For>
+        }
       </div>
     </Show>
   );

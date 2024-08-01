@@ -19,7 +19,7 @@ export const getGoogleUser = async (
 };
 
 export const googleClient = new Google(
-    import.meta.env.GOOGLE_ID,
-    import.meta.env.GOOGLE_SECRET,
-    import.meta.env.GOOGLE_REDIRECT,
-  );
+  import.meta.env.GOOGLE_ID,
+  import.meta.env.GOOGLE_SECRET,
+  import.meta.env.GOOGLE_REDIRECT,
+);

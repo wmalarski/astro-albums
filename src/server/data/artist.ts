@@ -34,7 +34,7 @@ export const findArtistAlbumsAndReviewsArgs = async ({
 
   return {
     albums: Array.from(albums.values()),
-    reviews: Array.from(reviews.values()),
     reminders,
+    reviews: Array.from(reviews.values()),
   };
 };

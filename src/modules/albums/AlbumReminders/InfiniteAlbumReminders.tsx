@@ -13,9 +13,9 @@ export const InfiniteAlbumReminders: Component<ParentProps> = (props) => {
   const [isLoading, setIsLoading] = createSignal(false);
 
   const [albums, setAlbums] = createStore<ResultsStore>({
-    page: 1,
     data: [],
     error: undefined,
+    page: 1,
   });
 
   const onClick = async () => {

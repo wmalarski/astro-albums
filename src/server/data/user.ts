@@ -10,10 +10,10 @@ export const insertUser = (googleUser: GoogleUser) => {
   const userId = generateId(15);
 
   const values = {
-    sub: googleUser.sub,
     id: userId,
     name: googleUser.name,
     picture: googleUser.picture,
+    sub: googleUser.sub,
   };
 
   return db.insert(User).values(values).returning().get();

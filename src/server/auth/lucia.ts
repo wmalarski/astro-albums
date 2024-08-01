@@ -7,10 +7,10 @@ const adapter = new AstroDBAdapter(db, Session, User);
 export const lucia = new Lucia(adapter, {
   getUserAttributes: (attributes) => {
     return {
-      sub: attributes.sub,
+      id: attributes.id,
       name: attributes.name,
       picture: attributes.picture,
-      id: attributes.id,
+      sub: attributes.sub,
     };
   },
   sessionCookie: {

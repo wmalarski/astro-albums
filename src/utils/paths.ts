@@ -8,16 +8,16 @@ export const paths = {
     return `http://coverartarchive.org/release/${sid}`;
   },
   callback: "/api/callback",
+  editAlbum: (albumId: string) => `/album/${albumId}/edit`,
+  editReview: (reviewId: string) => `/review/${reviewId}/edit`,
   error: "/error",
   index: ({ page, query }: { page?: number; query?: string } = {}) =>
     `/?${buildSearchParams({ page, query })}`,
   login: "/login",
   logout: "/api/logout",
   notFound: "/notFound",
-  review: (albumId: string) => `/album/${albumId}/review`,
-  editReview: (reviewId: string) => `/review/${reviewId}/edit`,
-  editAlbum: (albumId: string) => `/album/${albumId}/edit`,
   reminders: "/reminders",
+  review: (albumId: string) => `/album/${albumId}/review`,
   reviews: (
     args: {
       query?: string;

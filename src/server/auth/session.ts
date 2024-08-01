@@ -78,4 +78,3 @@ export const verifyRequest = (context: APIContext) => {
     verifyRequestOrigin(originHeader, [hostHeader])
   );
 };
-
