@@ -1,5 +1,5 @@
 import { formatAlbum } from "@utils/format";
-import { jsonToCoversField } from "@server/coverArt";
+import { jsonToCoversField } from "@utils/coverArt";
 import { paths } from "@utils/paths";
 import { DeleteReviewDialog } from "./DeleteReviewDialog";
 import { CoversCarousel } from "@modules/common/CoversCarousel";

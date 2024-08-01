@@ -1,4 +1,4 @@
-import type { CountReviewsByDatesResult } from "@server/reviews";
+import type { CountReviewsByDatesResult } from "@server/data/reviews";
 
 export const getCountItems = (groups: CountReviewsByDatesResult[]) => {
   const groupsMap = groups.reduce<Record<string, number>>((prev, curr) => {

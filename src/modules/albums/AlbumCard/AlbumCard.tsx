@@ -1,5 +1,5 @@
 import { formatAlbum } from "@utils/format";
-import { jsonToCoversField } from "@server/coverArt";
+import { jsonToCoversField } from "@utils/coverArt";
 import { AlbumActions } from "@modules/albums/AlbumCard/AlbumActions";
 import { CoversCarousel } from "@modules/common/CoversCarousel";
 import type { Album, Artist, Reminder } from "astro:db";

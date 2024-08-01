@@ -3,7 +3,7 @@ import {
   findAlbumsByQuery,
   findRandomAlbums,
   updateAlbum,
-} from "@server/albums";
+} from "@server/data/albums";
 import { ActionError, defineAction, z } from "astro:actions";
 import { DB_ERROR, UNAUTHORIZED_ERROR } from "./errors";
 

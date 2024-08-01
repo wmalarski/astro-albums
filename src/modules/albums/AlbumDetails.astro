@@ -3,7 +3,7 @@ import EmptyPlaceholder from "@modules/common/EmptyPlaceholder.astro";
 import { CardGrid } from "@modules/common/CardGrid";
 import { AlbumCard } from "@modules/albums/AlbumCard/AlbumCard";
 import { ReviewCard } from "@modules/reviews/ReviewCard/ReviewCard";
-import { findArtistAlbumsAndReviewsArgs } from "@server/artist";
+import { findArtistAlbumsAndReviewsArgs } from "@server/data/artist";
 import type { Album, Artist } from "astro:db";
 
 export type Props = {

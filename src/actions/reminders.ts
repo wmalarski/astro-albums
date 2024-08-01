@@ -2,7 +2,7 @@ import {
   createReminder,
   deleteReminder,
   findReminders,
-} from "@server/reminders";
+} from "@server/data/reminders";
 import { ActionError, defineAction, z } from "astro:actions";
 import { DB_ERROR, UNAUTHORIZED_ERROR } from "./errors";
 

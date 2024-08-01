@@ -4,7 +4,7 @@ import { formatAlbum } from "@utils/format";
 import { paths } from "@utils/paths";
 import AlbumHero from "@modules/albums/AlbumHero.astro";
 import { actions, z } from "astro:actions";
-import { findReview } from "@server/reviews";
+import { findReview } from "@server/data/reviews";
 import EditReviewForm from "@modules/reviews/ReviewForms/EditReviewForm.astro";
 
 const session = Astro.locals.session;

@@ -3,7 +3,7 @@ import {
   deleteReview,
   findReviews,
   updateReview,
-} from "@server/reviews";
+} from "@server/data/reviews";
 import { ActionError, defineAction, z } from "astro:actions";
 import { DB_ERROR, UNAUTHORIZED_ERROR } from "./errors";
 
