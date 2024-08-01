@@ -3,6 +3,7 @@
     "astro",
     "astrodb",
     "astrojs",
+    "compat",
     "daisyui",
     "datetime",
     "formdata",
@@ -12,5 +13,18 @@
     "supabase",
     "tsconfigs",
     "valibot"
-  ]
+  ],
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "editor.codeActionsOnSave": {
+    "source.organizeImports": "always"
+  },
+  "[typescriptreact]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[javascript]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[typescript]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  }
 }

@@ -1,13 +1,13 @@
-import { formatAlbum } from "@utils/format";
-import { jsonToCoversField } from "@utils/coverArt";
-import { paths } from "@utils/paths";
-import { DeleteReviewDialog } from "./DeleteReviewDialog";
-import { CoversCarousel } from "@modules/common/CoversCarousel";
-import { YtButton } from "@modules/common/YtButton";
-import { GoogleButton } from "@modules/common/GoogleButton";
-import type { Album, Artist, Review } from "astro:db";
 import { Link } from "@components/Link/Link";
+import { CoversCarousel } from "@modules/common/CoversCarousel";
+import { GoogleButton } from "@modules/common/GoogleButton";
+import { YtButton } from "@modules/common/YtButton";
+import { jsonToCoversField } from "@utils/coverArt";
+import { formatAlbum } from "@utils/format";
+import { paths } from "@utils/paths";
+import type { Album, Artist, Review } from "astro:db";
 import { Show, type Component } from "solid-js";
+import { DeleteReviewDialog } from "./DeleteReviewDialog";
 
 type ReviewCardProps = {
   review: typeof Review.$inferSelect;
@@ -18,7 +18,7 @@ type ReviewCardProps = {
 export const ReviewCard: Component<ReviewCardProps> = (props) => {
   const details = () =>
     props.album.release ||
-    (props.album.sid && paths.albumRelease({ sid: props.album.sid }));
+    (props.album.sid && paths.albumRelease(props.album.sid));
 
   const header = () =>
     formatAlbum({ album: props.album, artist: props.artist });

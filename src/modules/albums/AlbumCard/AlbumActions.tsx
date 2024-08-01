@@ -1,12 +1,12 @@
-import { paths } from "@utils/paths";
-import { YtButton } from "@modules/common/YtButton";
-import { GoogleButton } from "@modules/common/GoogleButton";
-import type { Album, Artist, Reminder } from "astro:db";
 import { Link } from "@components/Link/Link";
-import { DeleteAlbumDialog } from "./DeleteAlbumDialog.tsx";
+import { GoogleButton } from "@modules/common/GoogleButton";
+import { YtButton } from "@modules/common/YtButton";
+import { paths } from "@utils/paths";
+import type { Album, Artist, Reminder } from "astro:db";
 import { Show, type Component } from "solid-js";
-import { DeleteReminderDialog } from "./DeleteReminderDialog.tsx";
 import { CreateReminderDialog } from "./CreateReminderDialog.tsx";
+import { DeleteAlbumDialog } from "./DeleteAlbumDialog.tsx";
+import { DeleteReminderDialog } from "./DeleteReminderDialog.tsx";
 
 type AlbumActionsProps = {
   album: typeof Album.$inferSelect;
@@ -17,7 +17,7 @@ type AlbumActionsProps = {
 export const AlbumActions: Component<AlbumActionsProps> = (props) => {
   const details = () =>
     props.album.release ||
-    (props.album.sid && paths.albumRelease({ sid: props.album.sid }));
+    (props.album.sid && paths.albumRelease(props.album.sid));
 
   return (
     <div class="card-actions gap-1">

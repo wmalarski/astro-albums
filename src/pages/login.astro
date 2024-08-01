@@ -1,13 +1,14 @@
 ---
-import Layout from "../layouts/Layout.astro";
 import LoginForm from "@modules/auth/LoginForm.astro";
+import { paths } from "@utils/paths";
+import Layout from "../layouts/Layout.astro";
 import { paths } from "@utils/paths";
 
 const session = Astro.locals.session;
 
 paths;
 if (session) {
-  return Astro.redirect(paths.index());
+  return Astro.redirect(paths.index);
 }
 ---
 

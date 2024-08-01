@@ -1,6 +1,7 @@
 ---
 import { Link } from "@components/Link/Link";
 import { paths } from "@utils/paths";
+import { paths } from "@utils/paths";
 
 export type Props = {
   userId: string | null;
@@ -13,7 +14,7 @@ const isLoggedIn = userId !== null;
 <nav class="navbar bg-base-300">
   <div class="flex-1">
     <h1>
-      <Link href={paths.index()} variant="ghost" size="lg">🎵 Albums</Link>
+      <Link href={paths.index} variant="ghost" size="lg">🎵 Albums</Link>
     </h1>
   </div>
   <div class="flex-none">
@@ -21,7 +22,7 @@ const isLoggedIn = userId !== null;
       isLoggedIn ? (
         <ul class="menu menu-horizontal p-0">
           <li>
-            <Link href={paths.reviews()}>Reviews</Link>
+            <Link href={paths.reviews}>Reviews</Link>
           </li>
           <li>
             <Link href={paths.reminders}>Reminders</Link>

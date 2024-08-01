@@ -1,13 +1,13 @@
 import { OAuth2RequestError } from "arctic";
 
-import type { APIContext } from "astro";
-import { paths } from "@utils/paths";
+import { getGoogleUser } from "@server/auth/google";
 import {
   setSessionCookie,
   validateAuthorizationCode,
 } from "@server/auth/session";
 import { getUserByGoogleId, insertUser } from "@server/data/user";
-import { getGoogleUser } from "@server/auth/google";
+import { paths } from "@utils/paths";
+import type { APIContext } from "astro";
 
 export const GET = async (context: APIContext): Promise<Response> => {
   try {
@@ -24,14 +24,14 @@ export const GET = async (context: APIContext): Promise<Response> => {
     if (existingUser) {
       await setSessionCookie(context, existingUser.id);
 
-      return context.redirect(paths.index());
+      return context.redirect(paths.index);
     }
 
     const newUser = await insertUser(googleUser);
 
     await setSessionCookie(context, newUser.id);
 
-    return context.redirect(paths.index());
+    return context.redirect(paths.index);
   } catch (error) {
     // eslint-disable-next-line no-console
     console.error({ error });

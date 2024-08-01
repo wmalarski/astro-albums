@@ -1,8 +1,8 @@
 ---
+import { buttonClass } from "@components/Button/Button.recipes";
 import type { CountReviewsByDatesResult } from "@server/data/reviews";
 import { paths } from "@utils/paths";
 import { getCountItems } from "./ReviewActivity.utils";
-import { buttonClass } from "@components/Button/Button.recipes";
 
 export type Props = {
   groups: CountReviewsByDatesResult[];
@@ -33,7 +33,7 @@ const { items, months } = getCountItems(groups);
   {
     items.map((item) => (
       <a
-        href={paths.reviews()}
+        href={paths.reviews}
         class={buttonClass({ size: "xs", class: `item-${item.suffix}` })}
         title={new Intl.DateTimeFormat().format(item.date)}
       >
