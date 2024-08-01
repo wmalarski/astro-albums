@@ -5,9 +5,8 @@ import { For, createSignal, type Component, type ParentProps } from "solid-js";
 import { createStore, produce } from "solid-js/store";
 import { ReviewCard } from "../ReviewCard/ReviewCard";
 
-type ResultsStore = {
+type ResultsStore = Awaited<ReturnType<typeof actions.findReviews>> & {
   page: number;
-  results: Awaited<ReturnType<typeof actions.findReviews>>;
 };
 
 export const InfiniteReviewResults: Component<ParentProps> = (props) => {
@@ -15,7 +14,8 @@ export const InfiniteReviewResults: Component<ParentProps> = (props) => {
 
   const [reviews, setReviews] = createStore<ResultsStore>({
     page: 1,
-    results: [],
+    data: [],
+    error: undefined,
   });
 
   const onClick = async () => {
@@ -27,7 +27,8 @@ export const InfiniteReviewResults: Component<ParentProps> = (props) => {
       setReviews(
         produce((state) => {
           state.page += 1;
-          state.results.push(...newReviews);
+          state.data?.push(...(newReviews.data ?? []));
+          state.error = newReviews.error;
         }),
       );
     } finally {
@@ -39,7 +40,7 @@ export const InfiniteReviewResults: Component<ParentProps> = (props) => {
     <div class="flex flex-col gap-4">
       <CardGrid>
         {props.children}
-        <For each={reviews.results}>
+        <For each={reviews.data}>
           {(entry) => (
             <ReviewCard
               review={entry.Review}

@@ -5,15 +5,14 @@ import { For, createSignal, type Component, type ParentProps } from "solid-js";
 import { createStore, produce } from "solid-js/store";
 import { AlbumCard } from "../AlbumCard/AlbumCard";
 
-type ResultsStore = {
-  results: Awaited<ReturnType<typeof actions.findRandomAlbums>>;
-};
+type ResultsStore = Awaited<ReturnType<typeof actions.findRandomAlbums>>;
 
 export const InfiniteRandomAlbums: Component<ParentProps> = (props) => {
   const [isLoading, setIsLoading] = createSignal(false);
 
   const [albums, setAlbums] = createStore<ResultsStore>({
-    results: [],
+    data: [],
+    error: undefined,
   });
 
   const onClick = async () => {
@@ -24,7 +23,8 @@ export const InfiniteRandomAlbums: Component<ParentProps> = (props) => {
 
       setAlbums(
         produce((state) => {
-          state.results.push(...newAlbums);
+          state.data?.push(...(newAlbums.data ?? []));
+          state.error = newAlbums.error;
         }),
       );
     } finally {
@@ -36,7 +36,7 @@ export const InfiniteRandomAlbums: Component<ParentProps> = (props) => {
     <div class="flex flex-col gap-4">
       <CardGrid>
         {props.children}
-        <For each={albums.results}>
+        <For each={albums.data}>
           {(entry) => (
             <AlbumCard
               album={entry.Album}

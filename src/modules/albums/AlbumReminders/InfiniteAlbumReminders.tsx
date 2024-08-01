@@ -5,9 +5,8 @@ import { For, createSignal, type Component, type ParentProps } from "solid-js";
 import { createStore, produce } from "solid-js/store";
 import { AlbumCard } from "../AlbumCard/AlbumCard";
 
-type ResultsStore = {
+type ResultsStore = Awaited<ReturnType<typeof actions.findReminders>> & {
   page: number;
-  results: Awaited<ReturnType<typeof actions.findReminders>>;
 };
 
 export const InfiniteAlbumReminders: Component<ParentProps> = (props) => {
@@ -15,7 +14,8 @@ export const InfiniteAlbumReminders: Component<ParentProps> = (props) => {
 
   const [albums, setAlbums] = createStore<ResultsStore>({
     page: 1,
-    results: [],
+    data: [],
+    error: undefined,
   });
 
   const onClick = async () => {
@@ -29,7 +29,8 @@ export const InfiniteAlbumReminders: Component<ParentProps> = (props) => {
       setAlbums(
         produce((state) => {
           state.page += 1;
-          state.results.push(...newAlbums);
+          state.data?.push(...(newAlbums.data ?? []));
+          state.error = newAlbums.error;
         }),
       );
     } finally {
@@ -41,7 +42,7 @@ export const InfiniteAlbumReminders: Component<ParentProps> = (props) => {
     <div class="flex flex-col gap-4">
       <CardGrid>
         {props.children}
-        <For each={albums.results}>
+        <For each={albums.data}>
           {(entry) => (
             <AlbumCard
               album={entry.Album}

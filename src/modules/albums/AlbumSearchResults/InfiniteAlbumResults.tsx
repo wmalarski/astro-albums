@@ -9,9 +9,8 @@ type InfiniteAlbumResultsProps = ParentProps<{
   query: string;
 }>;
 
-type ResultsStore = {
+type ResultsStore = Awaited<ReturnType<typeof actions.findAlbumsByQuery>> & {
   page: number;
-  results: Awaited<ReturnType<typeof actions.findAlbumsByQuery>>;
 };
 
 export const InfiniteAlbumResults: Component<InfiniteAlbumResultsProps> = (
@@ -21,7 +20,8 @@ export const InfiniteAlbumResults: Component<InfiniteAlbumResultsProps> = (
 
   const [albums, setAlbums] = createStore<ResultsStore>({
     page: 1,
-    results: [],
+    data: [],
+    error: undefined,
   });
 
   const onClick = async () => {
@@ -36,7 +36,8 @@ export const InfiniteAlbumResults: Component<InfiniteAlbumResultsProps> = (
       setAlbums(
         produce((state) => {
           state.page += 1;
-          state.results.push(...newAlbums);
+          state.data?.push(...(newAlbums.data ?? []));
+          state.error = newAlbums.error;
         }),
       );
     } finally {
@@ -48,7 +49,7 @@ export const InfiniteAlbumResults: Component<InfiniteAlbumResultsProps> = (
     <div class="flex flex-col gap-4">
       <CardGrid>
         {props.children}
-        <For each={albums.results}>
+        <For each={albums.data}>
           {(entry) => (
             <AlbumCard
               album={entry.Album}
