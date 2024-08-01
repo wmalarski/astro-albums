@@ -1,13 +1,13 @@
 import { Button } from "@components/Button/Button";
 import {
-  DialogTrigger,
-  DialogContainer,
-  DialogContent,
   DialogActions,
   DialogClose,
+  DialogContainer,
+  DialogContent,
+  DialogTrigger,
 } from "@components/Dialog/Dialog";
-import type { Reminder } from "astro:db";
 import { actions } from "astro:actions";
+import type { Reminder } from "astro:db";
 import type { Component } from "solid-js";
 
 type DeleteReminderDialogProps = {
@@ -22,7 +22,7 @@ export const DeleteReminderDialog: Component<DeleteReminderDialogProps> = (
 
   return (
     <>
-      <DialogTrigger dialogId={dialogId()} color="success" size="xs">
+      <DialogTrigger dialogId={dialogId()} color="error" size="xs">
         Delete
       </DialogTrigger>
       <DialogContainer id={dialogId()}>

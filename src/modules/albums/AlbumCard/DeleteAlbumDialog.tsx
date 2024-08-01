@@ -1,14 +1,14 @@
 import { Button } from "@components/Button/Button";
 import {
-  DialogTrigger,
-  DialogContainer,
-  DialogContent,
   DialogActions,
   DialogClose,
+  DialogContainer,
+  DialogContent,
+  DialogTrigger,
 } from "@components/Dialog/Dialog";
 import { formatAlbum } from "@utils/format";
-import type { Album, Artist } from "astro:db";
 import { actions } from "astro:actions";
+import type { Album, Artist } from "astro:db";
 import type { Component } from "solid-js";
 
 type DeleteAlbumDialogProps = {
@@ -22,7 +22,7 @@ export const DeleteAlbumDialog: Component<DeleteAlbumDialogProps> = (props) => {
 
   return (
     <>
-      <DialogTrigger dialogId={dialogId()} size="xs">
+      <DialogTrigger dialogId={dialogId()} size="xs" color="error">
         Delete
       </DialogTrigger>
       <DialogContainer id={dialogId()}>

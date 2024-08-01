@@ -7,5 +7,10 @@ export const jsonToCoversField = (json?: any): CoversField => {
   if (!json) {
     return {};
   }
-  return json as CoversField;
+
+  try {
+    return JSON.parse(json);
+  } catch {
+    return {};
+  }
 };

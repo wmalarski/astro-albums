@@ -1,14 +1,14 @@
 import { Button } from "@components/Button/Button";
 import {
-  DialogTrigger,
-  DialogContainer,
-  DialogContent,
   DialogActions,
   DialogClose,
+  DialogContainer,
+  DialogContent,
+  DialogTrigger,
 } from "@components/Dialog/Dialog";
 import { formatAlbum } from "@utils/format";
 import { actions } from "astro:actions";
-import type { Review, Album, Artist } from "astro:db";
+import type { Album, Artist, Review } from "astro:db";
 import type { Component } from "solid-js";
 
 type DeleteReviewDialogProps = {
@@ -25,7 +25,7 @@ export const DeleteReviewDialog: Component<DeleteReviewDialogProps> = (
 
   return (
     <>
-      <DialogTrigger dialogId={dialogId()} size="xs">
+      <DialogTrigger dialogId={dialogId()} size="xs" color="error">
         Delete
       </DialogTrigger>
       <DialogContainer id={dialogId()}>

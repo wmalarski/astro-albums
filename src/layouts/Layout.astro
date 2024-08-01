@@ -1,6 +1,5 @@
 ---
 import Navbar from "@layouts/Navbar.astro";
-import { ViewTransitions } from "astro:transitions";
 
 export type Props = {
   title: string;
@@ -18,7 +17,6 @@ const { title, userId } = Astro.props;
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="generator" content={Astro.generator} />
     <title>{title}</title>
-    <ViewTransitions />
   </head>
   <body>
     <Navbar userId={userId} />
