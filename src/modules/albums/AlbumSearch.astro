@@ -13,15 +13,14 @@ const { query } = Astro.props;
 ---
 
 <form class="w-full flex flex-row gap-2">
-  <TextFieldRoot class="">
+  <TextFieldRoot class="flex-row items-center gap-4 flex-grow">
     <Label for="input">
-      <LabelText>Search</LabelText>
+      <LabelText class="font-bold">Search</LabelText>
     </Label>
     <TextFieldInput
       id="input"
       name="query"
       width="full"
-      placeholder="Search"
       type="search"
       value={query}
     />

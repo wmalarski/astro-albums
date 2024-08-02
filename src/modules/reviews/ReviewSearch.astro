@@ -18,7 +18,7 @@ const { lower, order, query, upper } = Astro.props;
   <div class="card-body flex gap-2">
     <form class="w-full flex flex-row gap-2">
       <div class="flex flex-col gap-2 w-full">
-        <TextFieldRoot>
+        <TextFieldRoot class="flex-row gap-2 items-center">
           <Label for="query">
             <LabelText>Search</LabelText>
           </Label>
@@ -26,11 +26,12 @@ const { lower, order, query, upper } = Astro.props;
             id="query"
             name="query"
             placeholder="Search"
+            class="w-full"
             type="text"
             value={query ?? ""}
           />
         </TextFieldRoot>
-        <TextFieldRoot>
+        <TextFieldRoot class="flex-row gap-2 items-center">
           <Label for="lower">
             <LabelText>Lower rate</LabelText>
           </Label>
@@ -41,10 +42,11 @@ const { lower, order, query, upper } = Astro.props;
             placeholder="Lower"
             step={0.1}
             type="number"
+            class="w-full"
             value={lower ?? 0}
           />
         </TextFieldRoot>
-        <TextFieldRoot>
+        <TextFieldRoot class="flex-row gap-2 items-center">
           <Label for="upper">
             <LabelText>Upper rate</LabelText>
           </Label>
@@ -54,11 +56,12 @@ const { lower, order, query, upper } = Astro.props;
             min={0}
             placeholder="Upper"
             step={0.1}
+            class="w-full"
             type="number"
             value={upper ?? 0}
           />
         </TextFieldRoot>
-        <TextFieldRoot>
+        <TextFieldRoot class="flex-row gap-2 items-center">
           <Label for="order">
             <LabelText>Order by</LabelText>
           </Label>
