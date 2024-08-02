@@ -1,6 +1,7 @@
 export const paths = {
   album: (id: string) => `/album/${id}`,
   albumRelease: (sid: string) => `http://coverartarchive.org/release/${sid}`,
+  apiLogin: "/api/login",
   callback: "/api/callback",
   editAlbum: (albumId: string) => `/album/${albumId}/edit`,
   editReview: (reviewId: string) => `/review/${reviewId}/edit`,

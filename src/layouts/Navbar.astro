@@ -21,19 +21,27 @@ const isLoggedIn = userId !== null;
       isLoggedIn ? (
         <ul class="menu menu-horizontal p-0">
           <li>
-            <Link href={paths.reviews}>Reviews</Link>
+            <Link variant="ghost" href={paths.reviews}>
+              Reviews
+            </Link>
           </li>
           <li>
-            <Link href={paths.reminders}>Reminders</Link>
+            <Link variant="ghost" href={paths.reminders}>
+              Reminders
+            </Link>
           </li>
           <li>
-            <Link href={paths.logout}>Logout</Link>
+            <Link variant="ghost" href={paths.logout}>
+              Logout
+            </Link>
           </li>
         </ul>
       ) : (
         <ul class="menu menu-horizontal p-0">
           <li>
-            <Link href={paths.login}>Login</Link>
+            <Link variant="ghost" href={paths.login}>
+              Login
+            </Link>
           </li>
         </ul>
       )

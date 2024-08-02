@@ -1,6 +1,6 @@
+import type { ComponentVariantProps } from "@components/utils/twCva";
 import { splitProps, type Component } from "solid-js";
 import { buttonClass } from "./Button.recipes";
-import type { ComponentVariantProps } from "@components/utils/twCva";
 
 export const buttonSplitProps = [
   "color",
@@ -10,6 +10,7 @@ export const buttonSplitProps = [
   "variant",
   "width",
   "disabled",
+  "class",
 ] as const;
 
 export type ButtonProps = ComponentVariantProps<"button", typeof buttonClass>;

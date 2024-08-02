@@ -1,17 +1,17 @@
 import type { Component } from "solid-js";
 
+import type { ComponentVariantProps } from "@components/utils/twCva";
 import {
-  labelDescriptionClass,
   labelClass,
+  labelDescriptionClass,
   labelTextClass,
 } from "./Label.recipes";
-import type { ComponentVariantProps } from "@components/utils/twCva";
 
 export type LabelProps = ComponentVariantProps<"label", typeof labelClass>;
 
 export const Label: Component<LabelProps> = (props) => {
   // eslint-disable-next-line jsx-a11y/label-has-associated-control
-  return <label {...props} class={labelClass()} />;
+  return <label {...props} class={labelClass({ class: props.class })} />;
 };
 
 export type LabelTextProps = ComponentVariantProps<
@@ -21,7 +21,7 @@ export type LabelTextProps = ComponentVariantProps<
 
 export const LabelText: Component<LabelTextProps> = (props) => {
   // eslint-disable-next-line jsx-a11y/label-has-associated-control
-  return <span {...props} class={labelTextClass()} />;
+  return <span {...props} class={labelTextClass({ class: props.class })} />;
 };
 
 export type LabelDescriptionProps = ComponentVariantProps<
@@ -30,5 +30,7 @@ export type LabelDescriptionProps = ComponentVariantProps<
 >;
 
 export const Description: Component<LabelDescriptionProps> = (props) => {
-  return <span {...props} class={labelDescriptionClass()} />;
+  return (
+    <span {...props} class={labelDescriptionClass({ class: props.class })} />
+  );
 };

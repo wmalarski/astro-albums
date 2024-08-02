@@ -1,12 +1,12 @@
+import { buttonSplitProps } from "@components/Button/Button";
+import { buttonClass } from "@components/Button/Button.recipes";
+import type { ComponentVariantProps } from "@components/utils/twCva";
 import { splitProps, type Component } from "solid-js";
 import {
   dialogActionsClass,
   dialogContainerClass,
   dialogContentClass,
 } from "./Dialog.recipes";
-import type { ComponentVariantProps } from "@components/utils/twCva";
-import { buttonClass } from "@components/Button/Button.recipes";
-import { buttonSplitProps } from "@components/Button/Button";
 
 export type DialogTriggerProps = ComponentVariantProps<
   "button",
@@ -47,7 +47,9 @@ export type DialogContainerProps = ComponentVariantProps<
 > & { id: string };
 
 export const DialogContainer: Component<DialogContainerProps> = (props) => {
-  return <dialog {...props} class={dialogContainerClass()} />;
+  return (
+    <dialog {...props} class={dialogContainerClass({ class: props.class })} />
+  );
 };
 
 export type DialogContentProps = ComponentVariantProps<
@@ -56,7 +58,7 @@ export type DialogContentProps = ComponentVariantProps<
 >;
 
 export const DialogContent: Component<DialogContentProps> = (props) => {
-  return <div {...props} class={dialogContentClass()} />;
+  return <div {...props} class={dialogContentClass({ class: props.class })} />;
 };
 
 export type DialogActionsProps = ComponentVariantProps<
@@ -65,5 +67,5 @@ export type DialogActionsProps = ComponentVariantProps<
 >;
 
 export const DialogActions: Component<DialogActionsProps> = (props) => {
-  return <div {...props} class={dialogActionsClass()} />;
+  return <div {...props} class={dialogActionsClass({ class: props.class })} />;
 };

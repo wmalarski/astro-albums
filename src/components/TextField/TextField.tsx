@@ -1,11 +1,11 @@
 import { splitProps, type Component } from "solid-js";
 
+import type { ComponentVariantProps } from "@components/utils/twCva";
 import {
   textFieldErrorMessage,
   textFieldInputClass,
   textFieldRootClass,
 } from "./TextField.recipes";
-import type { ComponentVariantProps } from "@components/utils/twCva";
 
 export type TextFieldRootProps = ComponentVariantProps<
   "fieldset",
@@ -13,7 +13,9 @@ export type TextFieldRootProps = ComponentVariantProps<
 >;
 
 export const TextFieldRoot: Component<TextFieldRootProps> = (props) => {
-  return <fieldset {...props} class={textFieldRootClass()} />;
+  return (
+    <fieldset {...props} class={textFieldRootClass({ class: props.class })} />
+  );
 };
 
 export type TextFieldErrorMessageProps = ComponentVariantProps<
@@ -24,10 +26,18 @@ export type TextFieldErrorMessageProps = ComponentVariantProps<
 export const TextFieldErrorMessage: Component<TextFieldErrorMessageProps> = (
   props,
 ) => {
-  return <span {...props} class={textFieldErrorMessage()} />;
+  return (
+    <span {...props} class={textFieldErrorMessage({ class: props.class })} />
+  );
 };
 
-const variantPropsList = ["color", "size", "variant", "width"] as const;
+const variantPropsList = [
+  "color",
+  "size",
+  "variant",
+  "width",
+  "class",
+] as const;
 
 export type TextFieldInputProps = ComponentVariantProps<
   "input",

@@ -1,6 +1,7 @@
 ---
 import { CardActions } from "@components/Card/Card";
 import { Link } from "@components/Link/Link";
+import { paths } from "@utils/paths";
 ---
 
 <div class="card bg-base-300 w-fit">
@@ -12,7 +13,7 @@ import { Link } from "@components/Link/Link";
         variant="default"
         size="lg"
         width="full"
-        href="/api/login"
+        href={paths.apiLogin}
       >
         Sign In using Google!
       </Link>

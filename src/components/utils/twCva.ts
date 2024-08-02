@@ -7,12 +7,12 @@ import { twMerge } from "tailwind-merge";
 export type ComponentVariantProps<
   Tag extends ValidComponent,
   Component extends (...args: any) => any,
-> = Omit<ComponentProps<Tag>, "class"> & VariantProps<Component>;
+> = ComponentProps<Tag> & VariantProps<Component>;
 
 export type ComponentVariantAttributes<
   Tag extends HTMLTag,
   Component extends (...args: any) => any,
-> = Omit<HTMLAttributes<Tag>, "class"> & VariantProps<Component>;
+> = HTMLAttributes<Tag> & VariantProps<Component>;
 
 export const twCva: typeof cva = (...args) => {
   const result = cva(...args);
