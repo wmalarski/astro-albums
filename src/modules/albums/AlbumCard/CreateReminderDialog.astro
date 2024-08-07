@@ -1,0 +1,37 @@
+---
+import { Button } from "@components/Button/Button";
+import {
+  DialogActions,
+  DialogClose,
+  DialogContainer,
+  DialogContent,
+} from "@components/Dialog/Dialog";
+import DialogTrigger from "@components/Dialog/DialogTrigger.astro";
+import { actions } from "astro:actions";
+import type { Album } from "astro:db";
+
+export type Props = {
+  album: typeof Album.$inferSelect;
+};
+
+const { album } = Astro.props;
+
+const dialogId = `dialog-create-reminder-${album.id}`;
+const formId = `form-create-reminder-${album.id}`;
+---
+
+<DialogTrigger dialogId={dialogId}>
+  <Button color="accent" size="xs">Remind me</Button>
+</DialogTrigger>
+<DialogContainer id={dialogId}>
+  <DialogContent>
+    <h3 class="font-bold text-lg">Create reminder</h3>
+    <form id={formId} action={actions.createReminder} method="post">
+      <input type="hidden" name="albumId" value={album.id} />
+    </form>
+    <DialogActions>
+      <DialogClose>Close</DialogClose>
+      <Button form={formId} type="submit">Submit</Button>
+    </DialogActions>
+  </DialogContent>
+</DialogContainer>

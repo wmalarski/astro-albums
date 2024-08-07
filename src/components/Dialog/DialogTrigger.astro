@@ -1,0 +1,35 @@
+---
+export type Props = {
+  dialogId: string;
+};
+
+const { dialogId } = Astro.props;
+---
+
+<dialog-trigger dialogId={dialogId}>
+  <slot />
+</dialog-trigger>
+
+<script>
+  class DialogTrigger extends HTMLElement {
+    dialogId = "";
+
+    constructor() {
+      super();
+
+      const trigger = this.querySelector("button");
+
+      const dialogId = this.getAttribute("dialogId");
+
+      console.log("dialogId", dialogId);
+
+      trigger?.addEventListener("click", () => {
+        const elementId = `dialog#${dialogId}`;
+        const element = document.querySelector<HTMLDialogElement>(elementId);
+        element?.showModal();
+      });
+    }
+  }
+
+  customElements.define("dialog-trigger", DialogTrigger);
+</script>
