@@ -1,13 +1,13 @@
 import {
   Album,
+  Artist,
   db,
   eq,
-  or,
-  like,
-  Artist,
   inArray,
-  sql,
+  like,
+  or,
   Reminder,
+  sql,
 } from "astro:db";
 
 type FindAlbumArgs = {
@@ -83,6 +83,10 @@ export const findRandomAlbums = async ({
 
   return withReviews;
 };
+
+export type FindRandomAlbumsResult = Awaited<
+  ReturnType<typeof findRandomAlbums>
+>;
 
 type UpdateAlbumArgs = {
   year?: number | undefined;
