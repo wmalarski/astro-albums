@@ -1,0 +1,48 @@
+---
+import { Link } from "@components/Link/Link";
+import { twCx } from "@components/utils/twCva";
+import { formatAlbum } from "@utils/format";
+import { paths } from "@utils/paths";
+import type { Album, Artist, Reminder } from "astro:db";
+
+export type Props = {
+  album: typeof Album.$inferSelect;
+  artist: typeof Artist.$inferSelect;
+  reminder?: typeof Reminder.$inferSelect | null | undefined;
+  reviews?: number;
+};
+
+const { album, artist, reviews } = Astro.props;
+
+const header = formatAlbum({ album, artist });
+---
+
+<article
+  data-reviewed={String(Boolean(reviews))}
+  class={twCx(
+    "card card-side card-compact bg-base-300 w-full h-60 relative",
+    "data-[card-reviewed='true']:card-bordered data-[card-reviewed='true']:border-green-400",
+  )}
+>
+  <a
+    href={paths.album(album.id)}
+    data-card-body-link
+    class="absolute inset-0"
+    aria-label="Details"></a>
+  <!-- <figure class="max-w-[250px]">
+    <CoversCarousel
+    header={header()}
+    covers={jsonToCoversField(props.album.covers).small}
+    />
+    </figure> -->
+  <div class="card-body z-10 h-min">
+    <Link href={paths.album(album.id)} data-card-link variant="ghost">
+      <span class="line-clamp-2" data-card-link-text>{header}</span>
+    </Link>
+    <!-- <AlbumActions
+        album={props.album}
+        artist={props.artist}
+        reminder={props.reminder}
+        /> -->
+  </div>
+</article>

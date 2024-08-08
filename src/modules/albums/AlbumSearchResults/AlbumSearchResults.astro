@@ -1,7 +1,8 @@
 ---
-import { findAlbumsByQuery } from "@server/data/albums";
 import { AlbumCard } from "@modules/albums/AlbumCard/AlbumCard";
+import AlbumCardTemplate from "@modules/albums/AlbumCard/AlbumCardTemplate.astro";
 import EmptyPlaceholder from "@modules/common/EmptyPlaceholder.astro";
+import { findAlbumsByQuery } from "@server/data/albums";
 import { InfiniteAlbumResults } from "./InfiniteAlbumResults";
 
 export type Props = {
@@ -12,6 +13,7 @@ const { query } = Astro.props;
 const data = await findAlbumsByQuery({ query, skip: 0, take: 20 });
 ---
 
+<AlbumCardTemplate />
 <InfiniteAlbumResults client:load query={query}>
   {
     data.map((entry) => (

@@ -1,8 +1,11 @@
 ---
-import { findRandomAlbums } from "@server/data/albums";
 import { AlbumCard } from "@modules/albums/AlbumCard/AlbumCard";
+import AlbumCardTemplate from "@modules/albums/AlbumCard/AlbumCardTemplate.astro";
 import EmptyPlaceholder from "@modules/common/EmptyPlaceholder.astro";
+import { findRandomAlbums } from "@server/data/albums";
 import { InfiniteRandomAlbums } from "./InfiniteRandomAlbums";
+import { Button } from "@components/Button/Button";
+import { CardGrid } from "@modules/common/CardGrid";
 
 export type Props = {
   userId: string;
@@ -13,6 +16,7 @@ const { userId } = Astro.props;
 const data = await findRandomAlbums({ userId, take: 20 });
 ---
 
+<AlbumCardTemplate />
 <InfiniteRandomAlbums client:load>
   {
     data.map((entry) => (
@@ -25,4 +29,32 @@ const data = await findRandomAlbums({ userId, take: 20 });
     ))
   }
 </InfiniteRandomAlbums>
+<infinite-random-albums-loader>
+  <div class="flex flex-col gap-4">
+    <CardGrid data-loader-grid />
+    <Button data-loader-button>Load More</Button>
+  </div>
+</infinite-random-albums-loader>
 {data.length === 0 && <EmptyPlaceholder />}
+
+<script>
+  import { actions } from "astro:actions";
+
+  class InfinteRandomAlbumsLoader extends HTMLElement {
+    constructor() {
+      super();
+
+      const loaderButton = this.querySelector("[data-loader-button]");
+
+      loaderButton?.addEventListener("click", async () => {
+        const newAlbums = await actions.findRandomAlbums();
+        console.log("newAlbums", newAlbums);
+      });
+    }
+  }
+
+  customElements.define(
+    "infinite-random-albums-loader",
+    InfinteRandomAlbumsLoader,
+  );
+</script>
