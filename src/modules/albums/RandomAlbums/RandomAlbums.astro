@@ -51,14 +51,26 @@ const data = await findRandomAlbums({ userId, take: 20 });
 
 <script>
   import type { FindRandomAlbumsResult } from "@server/data/albums";
+  import { formatAlbum } from "@utils/format";
+  import { paths } from "@utils/paths";
   import { actions } from "astro:actions";
 
   const cloneAlbumCard = (
     template: HTMLTemplateElement,
-    _album: FindRandomAlbumsResult[0],
+    result: FindRandomAlbumsResult[0],
   ) => {
     const clone = template?.content?.cloneNode(true) as HTMLDivElement;
-    const headingLink = clone.querySelector("[data-card-body-link]")!;
+    const header = formatAlbum({ album: result.Album, artist: result.Artist });
+    const href = paths.album(result.Album.id);
+    const reviewed = String(result.reviews > 0);
+
+    clone.querySelector("[data-card-link]")?.setAttribute("href", href);
+    clone.querySelector("[data-card-body-link]")?.setAttribute("href", href);
+    clone
+      .querySelector("[data-reviewed]")
+      ?.setAttribute("data-reviewed", reviewed);
+
+    clone.querySelector("[data-card-link-text]")!.innerHTML = header;
 
     return clone;
   };
