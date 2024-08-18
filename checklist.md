@@ -4,10 +4,10 @@
 [x] - search albums + loading
 [x] - random albums + loading
 [x] - update album
-[ ] - add reminder
-[ ] - delete reminder
-[ ] - find reminders + loading
-[ ] - add review
-[ ] - delete review
+[x] - add reminder
+[x] - delete reminder
+[x] - find reminders + loading
+[x] - add review
+[x] - delete review
 [ ] - find reviews + loading
-[ ] - update review
+[x] - update review

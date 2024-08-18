@@ -1,10 +1,10 @@
 ---
 import Layout from "@layouts/Layout.astro";
+import AlbumDetails from "@modules/albums/AlbumDetails.astro";
+import AlbumHero from "@modules/albums/AlbumHero.astro";
 import { findAlbum } from "@server/data/albums";
 import { formatAlbum } from "@utils/format";
 import { paths } from "@utils/paths";
-import AlbumHero from "@modules/albums/AlbumHero.astro";
-import AlbumDetails from "@modules/albums/AlbumDetails.astro";
 import { z } from "astro:actions";
 
 const session = Astro.locals.session;

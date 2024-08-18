@@ -2,10 +2,10 @@ import { NOW, column, defineDb, defineTable } from "astro:db";
 
 const User = defineTable({
   columns: {
-    sub: column.text(),
     id: column.text({ primaryKey: true }),
     name: column.text(),
     picture: column.text(),
+    sub: column.text(),
   },
   indexes: [{ on: "id" }],
 });
@@ -80,9 +80,9 @@ export default defineDb({
   tables: {
     Album,
     Artist,
+    Reminder,
     Review,
     Session,
     User,
-    Reminder,
   },
 });

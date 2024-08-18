@@ -1,4 +1,4 @@
-import { Album, Artist, db, eq, Review, sql, Reminder } from "astro:db";
+import { Album, Artist, db, eq, Reminder, Review, sql } from "astro:db";
 
 type FindReviewArgs = {
   reviewId: string;
@@ -61,7 +61,8 @@ export const createReview = ({
   albumId,
   userId,
 }: CreateReviewArgs) => {
-  return db.insert(Review).values({ albumId, rate, text, userId }).run();
+  const id = crypto.randomUUID();
+  return db.insert(Review).values({ albumId, id, rate, text, userId }).run();
 };
 
 type UpdateReviewArgs = {

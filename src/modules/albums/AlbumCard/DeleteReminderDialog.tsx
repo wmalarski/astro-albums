@@ -22,8 +22,8 @@ export const DeleteReminderDialog: Component<DeleteReminderDialogProps> = (
 
   return (
     <>
-      <DialogTrigger dialogId={dialogId()} color="error" size="xs">
-        Delete
+      <DialogTrigger dialogId={dialogId()} color="accent" size="xs">
+        Remove reminder
       </DialogTrigger>
       <DialogContainer id={dialogId()}>
         <DialogContent>

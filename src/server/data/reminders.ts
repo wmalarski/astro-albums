@@ -1,4 +1,4 @@
-import { Album, db, eq, Artist, Reminder } from "astro:db";
+import { Album, Artist, db, eq, Reminder } from "astro:db";
 
 type FindRemindersArgs = {
   take: number;
@@ -23,7 +23,8 @@ type CreateReminderArgs = {
 };
 
 export const createReminder = ({ albumId, userId }: CreateReminderArgs) => {
-  return db.insert(Reminder).values({ albumId, userId }).run();
+  const id = crypto.randomUUID();
+  return db.insert(Reminder).values({ albumId, id, userId }).run();
 };
 
 type DeleteReminderArgs = {

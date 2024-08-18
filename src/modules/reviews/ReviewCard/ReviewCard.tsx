@@ -42,6 +42,10 @@ export const ReviewCard: Component<ReviewCardProps> = (props) => {
           <span class="font-semibold">Rate:</span>
           <span>{props.review.rate}</span>
         </div>
+        <div class="flex gap-2">
+          <span class="font-semibold">Text:</span>
+          <span>{props.review.text}</span>
+        </div>
         <div class="card-actions gap-1">
           <YtButton title={props.album.title} name={props.artist.name} />
           <GoogleButton title={props.album.title} name={props.artist.name} />
@@ -55,7 +59,11 @@ export const ReviewCard: Component<ReviewCardProps> = (props) => {
               </Link>
             )}
           </Show>
-          <Link size="xs" href={paths.editReview(props.review.id)}>
+          <Link
+            size="xs"
+            color="secondary"
+            href={paths.editReview(props.review.id)}
+          >
             Edit
           </Link>
           <DeleteReviewDialog

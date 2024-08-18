@@ -39,10 +39,10 @@ export const AlbumActions: Component<AlbumActionsProps> = (props) => {
       >
         {(reminder) => <DeleteReminderDialog reminder={reminder()} />}
       </Show>
-      <Link size="xs" href={paths.review(props.album.id)}>
+      <Link size="xs" color="primary" href={paths.review(props.album.id)}>
         Review
       </Link>
-      <Link size="xs" href={paths.editAlbum(props.album.id)}>
+      <Link size="xs" color="secondary" href={paths.editAlbum(props.album.id)}>
         Edit
       </Link>
       <DeleteAlbumDialog album={props.album} artist={props.artist} />
