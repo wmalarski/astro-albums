@@ -48,6 +48,7 @@
     "decode-formdata": "^0.7.5",
     "lucia": "^3.2.0",
     "lucia-adapter-astrodb": "^0.1.0",
+    "nanoid": "^5.0.7",
     "oslo": "^1.2.1",
     "solid-js": "1.8.21",
     "tailwind-merge": "2.5.2",

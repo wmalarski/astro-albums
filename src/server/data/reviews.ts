@@ -1,4 +1,5 @@
 import { Album, Artist, db, eq, Reminder, Review, sql } from "astro:db";
+import { nanoid } from "nanoid";
 
 type FindReviewArgs = {
   reviewId: string;
@@ -61,7 +62,7 @@ export const createReview = ({
   albumId,
   userId,
 }: CreateReviewArgs) => {
-  const id = crypto.randomUUID();
+  const id = nanoid();
   return db.insert(Review).values({ albumId, id, rate, text, userId }).run();
 };
 

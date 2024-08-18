@@ -1,4 +1,5 @@
 import { Album, Artist, db, eq, Reminder } from "astro:db";
+import { nanoid } from "nanoid";
 
 type FindRemindersArgs = {
   take: number;
@@ -23,7 +24,7 @@ type CreateReminderArgs = {
 };
 
 export const createReminder = ({ albumId, userId }: CreateReminderArgs) => {
-  const id = crypto.randomUUID();
+  const id = nanoid();
   return db.insert(Reminder).values({ albumId, id, userId }).run();
 };
 

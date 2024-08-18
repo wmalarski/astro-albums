@@ -1,3 +1,4 @@
+import { nanoid } from "nanoid";
 import fs from "node:fs/promises";
 
 export const loadDumpData = async () => {
@@ -38,15 +39,15 @@ export const loadDumpData = async () => {
   const users = tables.get("User")?.map((entry) => {
     const [id, name] = entry;
     return {
-      sub: id!,
       id: id!,
       name: name!,
       picture:
         "https://lh3.googleusercontent.com/a/ACg8ocLWk1JEjbj0iZIH91z1zUGpnNWEQz85mv0FPSD255PeBo17Qg=s96-c",
+      sub: id!,
     };
   });
 
-  const userId = users?.[0]?.id ?? crypto.randomUUID();
+  const userId = users?.[0]?.id ?? nanoid();
 
   const albums = tables.get("Album")?.map((entry) => {
     const [
@@ -66,8 +67,8 @@ export const loadDumpData = async () => {
       covers: covers === "\\N" ? null : covers,
       createdAt: new Date(createdAt!),
       id: id!,
-      release: release === "\\N" ? null : release ?? null,
-      sid: sid === "\\N" ? null : sid ?? null,
+      release: release === "\\N" ? null : (release ?? null),
+      sid: sid === "\\N" ? null : (sid ?? null),
       title: title!,
       userId,
       year: (year === "\\N" ? null : Number(year)) ?? null,
@@ -80,7 +81,7 @@ export const loadDumpData = async () => {
       createdAt: new Date(createdAt!),
       id: id!,
       name: name!,
-      sid: sid === "\\N" ? null : sid ?? null,
+      sid: sid === "\\N" ? null : (sid ?? null),
       userId,
     };
   });
