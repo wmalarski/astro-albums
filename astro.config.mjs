@@ -1,12 +1,16 @@
-import { defineConfig } from "astro/config";
-import tailwind from "@astrojs/tailwind";
-import solidJs from "@astrojs/solid-js";
 import db from "@astrojs/db";
+import solidJs from "@astrojs/solid-js";
+import tailwind from "@astrojs/tailwind";
+import { defineConfig } from "astro/config";
 
 import vercel from "@astrojs/vercel/serverless";
 
 // https://astro.build/config
 export default defineConfig({
+  adapter: vercel(),
+  experimental: {
+    actions: true,
+  },
   integrations: [tailwind(), solidJs(), db()],
   output: "server",
   vite: {
@@ -14,8 +18,4 @@ export default defineConfig({
       exclude: ["astro:db", "oslo"],
     },
   },
-  experimental: {
-    actions: true,
-  },
-  adapter: vercel(),
 });
