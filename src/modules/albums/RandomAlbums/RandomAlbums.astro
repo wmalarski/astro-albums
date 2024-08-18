@@ -1,11 +1,8 @@
 ---
 import { AlbumCard as SolidAlbumCard } from "@modules/albums/AlbumCard/AlbumCard";
-import AlbumCardTemplate from "@modules/albums/AlbumCard/AlbumCardTemplate.astro";
 import EmptyPlaceholder from "@modules/common/EmptyPlaceholder.astro";
 import { findRandomAlbums } from "@server/data/albums";
 import { InfiniteRandomAlbums } from "./InfiniteRandomAlbums";
-import { Button } from "@components/Button/Button";
-import { CardGrid } from "@modules/common/CardGrid";
 
 export type Props = {
   userId: string;
@@ -28,90 +25,4 @@ const data = await findRandomAlbums({ userId, take: 20 });
     ))
   }
 </InfiniteRandomAlbums>
-
-<infinite-random-albums-loader>
-  <AlbumCardTemplate />
-  <div class="flex flex-col gap-4">
-    <CardGrid data-loader-grid>
-      {
-        data.map((entry) => (
-          <SolidAlbumCard
-            client:load
-            album={entry.Album}
-            artist={entry.Artist}
-            reminder={entry.Reminder}
-          />
-        ))
-      }
-    </CardGrid>
-    <Button data-loader-button>Load More</Button>
-  </div>
-</infinite-random-albums-loader>
 {data.length === 0 && <EmptyPlaceholder />}
-
-<script>
-  import type { FindRandomAlbumsResult } from "@server/data/albums";
-  import { formatAlbum } from "@utils/format";
-  import { paths } from "@utils/paths";
-  import { actions } from "astro:actions";
-
-  const cloneAlbumCard = (
-    template: HTMLTemplateElement,
-    result: FindRandomAlbumsResult[0],
-  ) => {
-    const clone = template?.content?.cloneNode(true) as HTMLDivElement;
-    const header = formatAlbum({ album: result.Album, artist: result.Artist });
-    const href = paths.album(result.Album.id);
-    const reviewed = String(result.reviews > 0);
-
-    clone.querySelector("[data-card-link]")?.setAttribute("href", href);
-    clone.querySelector("[data-card-body-link]")?.setAttribute("href", href);
-    clone
-      .querySelector("[data-reviewed]")
-      ?.setAttribute("data-reviewed", reviewed);
-
-    clone.querySelector("[data-card-link-text]")!.innerHTML = header;
-
-    return clone;
-  };
-
-  class InfinteRandomAlbumsLoader extends HTMLElement {
-    constructor() {
-      super();
-
-      const loaderButton = this.querySelector<HTMLButtonElement>(
-        "[data-loader-button]",
-      );
-      const grid = this.querySelector<HTMLDivElement>("[data-loader-grid]");
-      const template = this.querySelector<HTMLTemplateElement>(
-        "#album-card-template",
-      );
-
-      // Clone the new row and insert it into the table
-
-      loaderButton?.addEventListener("click", async () => {
-        if (!template) {
-          return;
-        }
-
-        const newAlbums = await actions.findRandomAlbums();
-        console.log("newAlbums", newAlbums);
-
-        if (!newAlbums.data) {
-          return;
-        }
-
-        const nodes = newAlbums.data.map((album) =>
-          cloneAlbumCard(template, album),
-        );
-
-        grid?.append(...nodes);
-      });
-    }
-  }
-
-  customElements.define(
-    "infinite-random-albums-loader",
-    InfinteRandomAlbumsLoader,
-  );
-</script>
