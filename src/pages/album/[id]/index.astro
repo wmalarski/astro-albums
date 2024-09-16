@@ -5,7 +5,7 @@ import AlbumHero from "@modules/albums/AlbumHero.astro";
 import { findAlbum } from "@server/data/albums";
 import { formatAlbum } from "@utils/format";
 import { paths } from "@utils/paths";
-import { z } from "astro:actions";
+import { z } from "astro/zod";
 
 const session = Astro.locals.session;
 

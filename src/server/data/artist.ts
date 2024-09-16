@@ -1,4 +1,4 @@
-import { Album, Artist, Review, Reminder, db, eq } from "astro:db";
+import { Album, Artist, Reminder, Review, db, eq } from "astro:db";
 
 type FindArtistAlbumsAndReviewsArgs = {
   artistId: string;

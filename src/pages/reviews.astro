@@ -1,10 +1,10 @@
 ---
 import Layout from "@layouts/Layout.astro";
-import { paths } from "@utils/paths";
-import ReviewSearch from "@modules/reviews/ReviewSearch.astro";
-import { z } from "astro:actions";
 import ReviewActivityCard from "@modules/reviews/ReviewActivity/ReviewActivityCard.astro";
+import ReviewSearch from "@modules/reviews/ReviewSearch.astro";
 import ReviewSearchResults from "@modules/reviews/ReviewSearchResults/ReviewSearchResults.astro";
+import { paths } from "@utils/paths";
+import { z } from "astro/zod";
 
 const session = Astro.locals.session;
 

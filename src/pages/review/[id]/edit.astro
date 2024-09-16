@@ -1,11 +1,12 @@
 ---
 import Layout from "@layouts/Layout.astro";
+import AlbumHero from "@modules/albums/AlbumHero.astro";
+import EditReviewForm from "@modules/reviews/ReviewForms/EditReviewForm.astro";
+import { findReview } from "@server/data/reviews";
 import { formatAlbum } from "@utils/format";
 import { paths } from "@utils/paths";
-import AlbumHero from "@modules/albums/AlbumHero.astro";
-import { actions, z } from "astro:actions";
-import { findReview } from "@server/data/reviews";
-import EditReviewForm from "@modules/reviews/ReviewForms/EditReviewForm.astro";
+import { z } from "astro/zod";
+import { actions } from "astro:actions";
 
 const session = Astro.locals.session;
 

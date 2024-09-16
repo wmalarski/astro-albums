@@ -4,7 +4,8 @@ import {
   findRandomAlbums,
   updateAlbum,
 } from "@server/data/albums";
-import { ActionError, defineAction, z } from "astro:actions";
+import { z } from "astro/zod";
+import { ActionError, defineAction } from "astro:actions";
 import { DB_ERROR, UNAUTHORIZED_ERROR } from "./errors";
 
 export const albums = {

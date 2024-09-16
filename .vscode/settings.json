@@ -8,6 +8,7 @@
     "datetime",
     "formdata",
     "pkce",
+    "plopfile",
     "sbat",
     "sret",
     "supabase",
